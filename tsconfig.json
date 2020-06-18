@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["jest"],
+    "esModuleInterop": true,
+    "lib": ["ES2015"],
+    "declaration": true,
+    "declarationMap": true
+  }
+}

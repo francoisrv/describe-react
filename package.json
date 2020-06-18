@@ -1,0 +1,33 @@
+{
+  "name": "describe-react",
+  "version": "1.0.2",
+  "description": "Write your react tests in JSX and using Jest",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "prepublishOnly": "npm run build && npm test",
+    "test": "jest dist"
+  },
+  "keywords": [
+    "react",
+    "test"
+  ],
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.10.1",
+    "@testing-library/react": "^10.3.0",
+    "@types/lodash": "^4.14.155",
+    "@types/react": "^16.9.38",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-test-renderer": "^16.9.2",
+    "lodash": "^4.17.15",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-test-renderer": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "jest": "^26.0.1",
+    "typescript": "^3.9.5"
+  }
+}

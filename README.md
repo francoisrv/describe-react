@@ -51,7 +51,7 @@ type Render = React.FC<{}>
 ## Expect
 
 ```ts
-type Render = React.FC<{
+type Expect = React.FC<{
   at?:              number
   element?:         string | React.ComponentType<any> | true
   elements?:        string

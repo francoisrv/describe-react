@@ -20,9 +20,10 @@ run(() => (
       </ul>
     </Render>
     <Expect element toHaveType="ul" />
+    <Expect element notToHaveType="li" />
     <Expect element="ul" toHaveType="ul" />
     <Expect element="li" toHaveType="li" />
-    <Expect element={ Foo } toHaveType="div" />
+    <Expect element={ Foo } toHaveType={ Foo } />
     <Expect first element="li" toHaveText="1" />
     <Expect last element="li" toHaveText="100" />
     <Expect element="li" at={1} toHaveText="2" />

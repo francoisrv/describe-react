@@ -8,10 +8,11 @@ interface ExpectProps {
   elements?: string
   first?: boolean
   last?: boolean
+  notToHaveType?:  string | React.ComponentType<any>
   toHaveLength?: number | boolean
   toHaveProperty?: string
   toHaveText?: string
-  toHaveType?: string
+  toHaveType?:  string | React.ComponentType<any>
   whichEquals?: any
 }
 
@@ -51,7 +52,14 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
           label += ` to have ${ props.toHaveLength } item(s)`
         }
         if (props.toHaveType) {
-          label += ` to be ${ props.toHaveType }`
+          if (typeof props.toHaveType === 'string') {
+            label += ` to be a <${ props.toHaveType }>`
+          } else {
+            label += ` to be a <${ props.toHaveType.name }>`
+          }
+        }
+        if (props.notToHaveType) {
+          label += ` not to be a <${ props.notToHaveType }>`
         }
         if (props.toHaveProperty) {
           label += ` to have property ${ props.toHaveProperty }`
@@ -93,6 +101,12 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
                 if ('whichEquals' in props) {
                   expect(elem.props).toHaveProperty(props.toHaveProperty, props.whichEquals)
                 }
+              }
+              if (props.toHaveType) {
+                expect(elem.type).toEqual(props.toHaveType)
+              }
+              if (props.notToHaveType) {
+                expect(elem.type).not.toEqual(props.notToHaveType)
               }
             } else if (props.element) {
               // @ts-ignore

@@ -3,13 +3,14 @@ import ReactContext from './context'
 import ReactTestRenderer from 'react-test-renderer'
 
 interface ExpectProps {
+  at?: number
   element?: string
   elements?: string
-  toHaveText?: string
   first?: boolean
   last?: boolean
   toHaveLength?: number | boolean
-  at?: number
+  toHaveText?: string
+  toHaveType?: string
 }
 
 export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
@@ -27,6 +28,9 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
         }
         if (props.toHaveLength) {
           label += ` to have ${ props.toHaveLength } item(s)`
+        }
+        if (props.toHaveType) {
+          label += ` to be ${ props.toHaveType }`
         }
         value.its.push({
           label,

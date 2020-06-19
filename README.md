@@ -40,6 +40,8 @@ type Describe = React.FC<{
 }>
 ```
 
+- there can be only one Describe
+
 ## Render
 
 ```ts

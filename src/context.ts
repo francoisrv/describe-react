@@ -8,6 +8,8 @@ interface ItSpec {
 
 interface DescribeSpec {
   label: string
+  skip?: boolean
+  only?: boolean
 }
 
 type BeforeAllSpec = () => Promise<void>

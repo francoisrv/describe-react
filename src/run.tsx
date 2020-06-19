@@ -14,7 +14,13 @@ export default function run(Type: React.ComponentType<any>) {
   if (!context.describer) {
     throw new Error('Missing describer')
   }
-  describe(context.describer.label, () => {
+  let describer = describe
+  if (context.describer.skip) {
+    describer = describe.skip
+  } else if (context.describer.only) {
+    describer = describe.only
+  }
+  describer(context.describer.label, () => {
     beforeAll(async () => {
       for (const fn of context.beforeAll) {
         await fn()

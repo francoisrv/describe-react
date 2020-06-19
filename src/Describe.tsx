@@ -1,7 +1,13 @@
 import * as React from 'react'
 import ReactContext from './context'
 
-export default function Describe(props: React.PropsWithChildren<{ label: string }>) {
+interface DescribeProps {
+  label: string
+  skip?: boolean
+  only?: boolean
+}
+
+export default function Describe(props: React.PropsWithChildren<DescribeProps>) {
   return (
     <ReactContext.Consumer>
       { value => {
@@ -9,7 +15,9 @@ export default function Describe(props: React.PropsWithChildren<{ label: string 
           throw new Error('There is already a describer')
         }
         value.describer = {
-          label: props.label
+          label: props.label,
+          only: Boolean(props.only),
+          skip: Boolean(props.skip),
         }
         return (
           <>

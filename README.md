@@ -29,3 +29,19 @@ run(Specs)
 ```bash
 jest list.test
 ```
+
+## Describe
+
+```ts
+type Describe = React.FC<{
+  label: string
+  skip?: boolean
+  only?: boolean
+}>
+```
+
+## Render
+
+```ts
+type Render = React.FC<{}>
+```

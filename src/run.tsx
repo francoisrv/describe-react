@@ -3,12 +3,14 @@ import ReactTestRenderer from 'react-test-renderer'
 import ReactContext, { defaultContext } from './context'
 
 export default function run(Type: React.ComponentType<any>) {
-  const context = { ...defaultContext }
-  const elem = ReactTestRenderer.create(
-    <ReactContext.Provider value={ context }>
-      <Type />
-    </ReactContext.Provider>
-  )
+  const context = { ...defaultContext, its: [] }
+  ReactTestRenderer.act(() => {
+    ReactTestRenderer.create(
+      <ReactContext.Provider value={ context }>
+        <Type />
+      </ReactContext.Provider>
+    )
+  })
   if (!context.describer) {
     throw new Error('Missing describer')
   }

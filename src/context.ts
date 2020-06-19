@@ -12,18 +12,20 @@ interface DescribeSpec {
 
 type BeforeAllSpec = () => Promise<void>
 
-interface ContextInterface {
+export interface ContextInterface {
   elem: ReactTestRenderer.ReactTestRenderer | null
   describer: DescribeSpec | null
   its: ItSpec[]
   beforeAll: BeforeAllSpec[]
+  state: { [name: string]: any }
 }
 
 export const defaultContext = {
   elem: null,
   describer: null,
   its: [],
-  beforeAll: []
+  beforeAll: [],
+  state: {}
 }
 
 export default React.createContext<ContextInterface>(defaultContext)

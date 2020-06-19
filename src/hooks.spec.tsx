@@ -3,7 +3,6 @@ import * as React from 'react'
 
 function App() {
   const [value, setValue] = React.useState(false)
-  const [name, setName] = React.useState('')
   const onClick = () => {
     setValue(!value)
   }

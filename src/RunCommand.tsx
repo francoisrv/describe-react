@@ -1,8 +1,9 @@
 import * as React from 'react'
-import ReactContext from './context'
+import ReactTestRenderer from 'react-test-renderer'
+import ReactContext, { ContextInterface } from './context'
 
 interface RunProps {
-  function: Function
+  function: (context: ContextInterface) => Promise<void>
   label?: string
 }
 
@@ -13,7 +14,9 @@ export default function RunProps(props: RunProps) {
         value.its.push({
           label: props.label || 'Run function',
           fn: async () => {
-            await props.function()
+            await ReactTestRenderer.act(async () => {
+              await props.function(value)
+            })
           }
         })
         return <div />

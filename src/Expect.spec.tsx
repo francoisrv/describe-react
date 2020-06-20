@@ -1,4 +1,4 @@
-import run, { Describe, Render, Expect } from "."
+import run, { Describe, Render, Expect, Run } from "."
 import * as React from 'react'
 
 function Foo() {
@@ -31,3 +31,17 @@ run(() => (
     <Expect first element="li" toHaveProperty="className" whichEquals="foo" />
   </Describe>
 ))
+
+// function ABC() {
+//   console.log(123)
+//   return <div />
+// }
+
+// run(() => (
+//   <Describe label="ABC">
+//     <Render>
+//       <ABC />
+//     </Render>
+//     <Expect element />
+//   </Describe>
+// ))

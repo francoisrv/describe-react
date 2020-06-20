@@ -3,9 +3,11 @@ import ReactTestRenderer from 'react-test-renderer'
 import ReactContext, { defaultContext } from './context'
 
 export default function run(Type: React.ComponentType<any>) {
-  const context = { ...defaultContext, its: [] }
+  let source: ReactTestRenderer.ReactTestRenderer
+
+  const context = { ...defaultContext, its: [], getSource: () => source }
   ReactTestRenderer.act(() => {
-    ReactTestRenderer.create(
+    source = ReactTestRenderer.create(
       <ReactContext.Provider value={ context }>
         <Type />
       </ReactContext.Provider>

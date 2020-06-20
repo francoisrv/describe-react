@@ -1,6 +1,7 @@
 import * as React from 'react'
 import ReactContext from './context'
 import ReactTestRenderer from 'react-test-renderer'
+import Render from './Render';
 
 interface ExpectProps {
   at?: number
@@ -70,10 +71,8 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
         value.its.push({
           label,
           fn: async () => {
-            if (!value.elem) {
-              throw new Error('Missing element')
-            }
-            const testInstance = value.elem.root
+            const source = value.getSource()
+            const testInstance = source.root.findByType(Render).children[0] as ReactTestRenderer.ReactTestInstance
             if (props.element) {
               let elem: ReactTestRenderer.ReactTestInstance
               if (props.element === true) {

@@ -1,4 +1,4 @@
-import React, { Context } from 'react'
+import React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
 
 interface ItSpec {
@@ -20,6 +20,7 @@ export interface ContextInterface {
   its: ItSpec[]
   beforeAll: BeforeAllSpec[]
   state: { [name: string]: any }
+  getSource: () => ReactTestRenderer.ReactTestRenderer
 }
 
 export const defaultContext = {
@@ -27,7 +28,10 @@ export const defaultContext = {
   describer: null,
   its: [],
   beforeAll: [],
-  state: {}
+  state: {},
+  getSource: () => {
+    throw new Error('You are using master template')
+  }
 }
 
 export default React.createContext<ContextInterface>(defaultContext)

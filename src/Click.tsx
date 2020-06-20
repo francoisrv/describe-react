@@ -1,6 +1,7 @@
 import * as React from 'react'
 import ReactContext from './context'
 import ReactTestRenderer from 'react-test-renderer'
+import Render from './Render'
 
 interface ClickProps {
   element: string
@@ -17,10 +18,8 @@ export default function Click(props: ClickProps) {
         value.its.push({
           label,
           fn: async () => {
-            if (!value.elem) {
-              throw new Error('Missing element')
-            }
-            const testInstance = value.elem.root
+            const source = value.getSource()
+            const testInstance = source.root.findByType(Render).children[0] as ReactTestRenderer.ReactTestInstance
             let elem: ReactTestRenderer.ReactTestInstance
             // @ts-ignore
             const elems = testInstance.findAllByType(props.element)

@@ -19,9 +19,9 @@ type SelectedElement = ReactTestRenderer.ReactTestInstance | string
 
 export function findElement(
   describer: SingleDescriber,
-  elements: ReactTestRenderer.ReactTestInstance  
+  instance: ReactTestRenderer.ReactTestInstance  
 ): SelectedElement | null {
-  const elems = findElements(describer, elements)
+  const elems = findElements(describer, instance)
   if (describer.last) {
     return elems.pop()
   }

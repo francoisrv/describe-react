@@ -93,7 +93,7 @@ function Foo(props) {
   return <div>{ props.name }</div>
 }
 
-<Describe label="Selecting root element">
+<Describe label="Selecting element">
   <Render>
     <div>
       <input disabled />
@@ -102,7 +102,7 @@ function Foo(props) {
   </Render>
   
   <Expect element="input" toHaveProperty="disabled" />
-  <Expect element={ Foo } toHaveText="Hello" />
+  <Expect element={ Foo } toHaveProperty="name" />
 </Describe>
 ```
 
@@ -111,7 +111,7 @@ function Foo(props) {
 By default, the first element matching your criteria is returned. You can specify which one to return using `first`, `last` and `at`
 
 ```jsx
-<Describe label="Selecting root element">
+<Describe label="Selecting element by position">
   <Render>
     <ul>
       <li>1</li>

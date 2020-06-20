@@ -30,6 +30,18 @@ run(Specs)
 jest list.test
 ```
 
+- Components
+  - [Describe]('#Describe')
+  - [Render]('#Render')
+  - [Expect]('#Expect')
+  - [Element]('#Element')
+  - [Property]('#Property')
+  - [Trigger]('#Trigger')
+  - [Update]('#Update')
+  - [Wait]('#Wait')
+  - [Unmount]('#Unmount')
+  - [Run]('#Run')
+
 ## Describe
 
 ```ts
@@ -37,7 +49,18 @@ type Describe = React.FC<{
   label: string
   skip?: boolean
   only?: boolean
+
+  children?: DescribeAcceptedChildren | DescribeAcceptedChildren[]
 }>
+
+type DescribeAcceptedChildren =
+| Expect
+| Render
+| Trigger
+| Update
+| Wait
+| Unmount
+| Run
 ```
 
 - there can be only one Describe
@@ -48,7 +71,7 @@ type Describe = React.FC<{
 type Render = React.FC<{}>
 ```
 
-## Expect
+## <a id="Expect"></a>Expect
 
 ```ts
 type Expect = React.FC<{
@@ -65,7 +88,7 @@ type Expect = React.FC<{
 }>
 ```
 
-### Expect element
+### Expect element(s)
 
 ##### Root element
 
@@ -82,6 +105,12 @@ If `props.element` is `true`, then the root element will be targeted:
   
   <Expect element toHaveType="ul" />
 </Describe>
+```
+
+**Note** You could also use `root element` which is the same -- verbosity added:
+
+```jsx
+<Expect root element toHaveType="ul" />
 ```
 
 #### Children element
@@ -125,3 +154,69 @@ By default, the first element matching your criteria is returned. You can specif
   <Expect last element="li" toHaveText="3" />
 </Describe>
 ```
+
+#### Element describer
+
+You can use the `<Element />` component to fine-grain your selection (view usage below)
+
+```jsx
+<Describe label="Selecting element using Element">
+  <Render>
+    <table>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td colSpan={ 2 }>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td colSpan={ 2 }>5</td>
+          <td>6</td>
+        </tr>
+      </tbody>
+    </table>
+  </Render>
+  
+  <Expect
+    element={
+      <Element
+        parent={ <Element type="tr" at={ 1 } /> }
+        props={{ colSpan: 2 }}
+      />
+    }
+    toHaveText="5"
+  />
+</Describe>
+```
+
+## Element
+
+
+
+## Events
+
+```ts
+type Event = React.FC<{
+  name:         string
+  target?:      string | React.ComponentType<any>
+}>
+```
+
+If the element targeted has en event handler, you can call it like this:
+
+```jsx
+let foo = 0
+
+<Describe label="Selecting element by position">
+  <Render>
+    <button onClick={ () => foo++ } />
+  </Render>
+  
+  <Run function={ async() => { expect(foo).toEqual(0) } } />
+  <Event name="click" target root />
+  <Run function={ async() => { expect(foo).toEqual(1) } } />
+</Describe>
+```
+
+## Update

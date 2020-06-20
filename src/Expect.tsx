@@ -1,15 +1,20 @@
 import * as React from 'react'
 import ReactContext from './context'
 import ReactTestRenderer from 'react-test-renderer'
+import ElementDescriber, { ElementDescriberProps } from './Element'
 import Render from './Render';
+import { findElement } from './utils';
+
+type ChildElement<C, P = any> = { type: C }
 
 interface ExpectProps {
   at?: number
-  element?: string | React.ComponentType<any> | true
+  element?: string | React.ComponentType<any> | true | React.ReactElement<ElementDescriberProps>
   elements?: string
   first?: boolean
   last?: boolean
   notToHaveType?:  string | React.ComponentType<any>
+  root?: true
   toHaveLength?: number | boolean
   toHaveProperty?: string
   toHaveText?: string
@@ -32,6 +37,8 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
           label += ' first'
         } else if (props.last) {
           label += ' last'
+        }  else if (props.root) {
+          label += ' root'
         } else if (typeof props.at === 'number') {
           label += ` ${ getNumberWithOrdinal(props.at + 1) }`
         }
@@ -40,7 +47,7 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
             label += ` element <${ props.element }>`
           } else if (props.element === true) {
             label += ' root element'
-          } else if (props.element.name) {
+          } else if (typeof props.element === 'function' && props.element.name) {
             label += ` element <${ props.element.name }>`
           }
         } else if (props.elements) {
@@ -77,6 +84,8 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
               let elem: ReactTestRenderer.ReactTestInstance
               if (props.element === true) {
                 elem = testInstance
+              } else if (typeof props.element === 'object' && 'type' in props.element && props.element.type === ElementDescriber) {
+                elem = findElement(props.element.props, testInstance)
               } else {
                 // @ts-ignore
                 const elems = testInstance.findAllByType(props.element)

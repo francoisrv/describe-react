@@ -3,6 +3,7 @@ import React from "react";
 import Describe from "./Describe";
 import Render from "./Render";
 import Expect from "./Expect";
+import Element from "./Element"
 
 describe('README', () => {
   run(() => (
@@ -63,6 +64,37 @@ describe('README', () => {
       <Expect first element="li" toHaveText="1" />
       <Expect element="li" at={1} toHaveText="2" />
       <Expect last element="li" toHaveText="3" />
+    </Describe>
+  ))
+
+  run(() => (
+    <Describe label="Selecting element using Element">
+      <Render>
+        <table>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td colSpan={ 2 }>2</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td colSpan={ 2 }>5</td>
+              <td>6</td>
+            </tr>
+          </tbody>
+        </table>
+      </Render>
+      
+      <Expect
+        element={
+          <Element
+            parent={ <Element type="tr" at={ 1 } /> }
+            props={{ colSpan: 2 }}
+          />
+        }
+        toHaveText="5"
+      />
     </Describe>
   ))
 })

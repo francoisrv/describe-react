@@ -1,6 +1,6 @@
 import ReactTestRenderer from 'react-test-renderer'
 import React from 'react'
-import { findElements, getText, findNodesWithText } from './utils'
+import { findElements, getText, findNodesWithText, hasProperty, ExpectProperty } from './utils'
 
 describe('Utils', () => {
   describe('Get text', () => {
@@ -230,6 +230,46 @@ describe('Utils', () => {
       expect(found).toHaveLength(2)
       expect(found[0]).toHaveProperty('type', 'td')
       expect(found[1]).toHaveProperty('type', 'td')
+    })
+  })
+  describe('Has Property', () => {
+    it('should find by string', () => {
+      const elem = ReactTestRenderer.create(
+        <div id="foo" />
+      )
+      expect(hasProperty(elem.root, 'id')).toBe(true)
+    })
+    it('should find by strings', () => {
+      const elem = ReactTestRenderer.create(
+        <div id="foo" className="bar" />
+      )
+      expect(hasProperty(elem.root, ['id', 'className'])).toBe(true)
+    })
+    it('should find by regex', () => {
+      const elem = ReactTestRenderer.create(
+        <div id="foo" className="bar" />
+      )
+      expect(hasProperty(elem.root, /class/)).toBe(true)
+    })
+    it('should find by strings or regex', () => {
+      const elem = ReactTestRenderer.create(
+        <div id="foo" className="bar" />
+      )
+      expect(hasProperty(elem.root, ['id', /class/])).toBe(true)
+    })
+    it('should find by object', () => {
+      function foo() {
+
+      }
+      const elem = ReactTestRenderer.create(
+        <div id="foo" className="bar" onClick={ foo } tabIndex={ 7 } title="hello" />
+      )
+      expect(hasProperty(elem.root, {
+        id: new ExpectProperty(/foo/),
+        className: 'bar',
+        onClick: foo,
+        title: new ExpectProperty((v, props) => v !== 'goodbye' && props.tabIndex > 5)
+      })).toBe(true)
     })
   })
 })

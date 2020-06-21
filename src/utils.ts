@@ -1,6 +1,6 @@
 import { ReactElement, ElementType } from "react";
 import ElementDescriber, { ElementDescriberProps } from "./Element";
-
+import { isEqual, Dictionary } from 'lodash'
 import ReactTestRenderer from 'react-test-renderer'
 
 export interface Describer {
@@ -16,6 +16,20 @@ export interface SingleDescriber extends Describer {
 }
 
 type SelectedElement = ReactTestRenderer.ReactTestInstance | string
+
+type ExpectPropertyFn = (value: any, props: Dictionary<any>) => boolean
+
+export class ExpectProperty {
+  fn: ExpectPropertyFn
+
+  constructor(fn: ExpectPropertyFn | RegExp) {
+    if (fn instanceof RegExp) {
+      this.fn = value => fn.test(value)
+    } else {
+      this.fn = fn
+    }
+  }
+}
 
 export function findElement(
   describer: SingleDescriber,
@@ -101,4 +115,46 @@ export function getText(elem: SelectedElement): string | null {
     return null
   }
   return textNodes.join(' ')
+}
+
+export type PropertyEvaluater =
+| string
+| (string | RegExp)[]
+| { [name: string]: any }
+| RegExp
+
+export function hasProperty(elem: ReactTestRenderer.ReactTestInstance, property: PropertyEvaluater) {
+  if (property instanceof RegExp) {
+    for (const prop in elem.props) {
+      if (property.test(prop)) {
+        return true
+      }
+    }
+    return false
+  }
+  if (typeof property === 'string') {
+    return (property in elem.props)
+  }
+  if (Array.isArray(property)) {
+    const matches: boolean[] = []
+    for (const prop of property) {
+      if (typeof prop === 'string') {
+        matches.push(prop in elem.props)
+      } else {
+        matches.push(hasProperty(elem, prop))
+      }
+    }
+    return matches.every(Boolean)
+  }
+  const matches: boolean[] = []
+  for (const prop in property) {
+    if (!(prop in elem.props)) {
+      matches.push(false)
+    } else if (property[prop] instanceof ExpectProperty) {
+      matches.push(property[prop].fn(elem.props[prop], elem.props))
+    } else {
+      matches.push(isEqual(elem.props[prop], property[prop]))
+    }
+  }
+  return matches.every(Boolean)
 }

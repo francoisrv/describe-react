@@ -4,6 +4,7 @@ import Describe from "./Describe";
 import Render from "./Render";
 import Expect from "./Expect";
 import Element from "./Element"
+import { property } from "lodash";
 
 describe('README', () => {
   run(() => (
@@ -72,12 +73,12 @@ describe('README', () => {
       <Render>
         <table>
           <tbody>
-            <tr>
+            <tr id="f1">
               <td>1</td>
               <td colSpan={ 2 }>2</td>
               <td>3</td>
             </tr>
-            <tr>
+            <tr id="f2">
               <td>4</td>
               <td colSpan={ 2 }>5</td>
               <td>6</td>
@@ -90,10 +91,9 @@ describe('README', () => {
         element={
           <Element
             parent={ <Element type="tr" at={ 1 } /> }
-            props={{ colSpan: 2 }}
           />
         }
-        toHaveText="5"
+        toHaveProperty={{ id: 'f1' }}
       />
     </Describe>
   ))

@@ -1,5 +1,6 @@
 import run, { Describe, Render, Expect, Run } from "."
 import * as React from 'react'
+import { ExpectProperty } from "./utils"
 
 function Foo() {
   return (
@@ -23,7 +24,7 @@ run(() => (
   <Describe label="List">
     <Render>
       <ul>
-        <li className="foo">1</li>
+        <li className="foo" id="barz" tabIndex={ 7 }>1</li>
         <li>2</li>
         <li><Foo /></li>
         <li><Bar /></li>
@@ -40,7 +41,13 @@ run(() => (
     <Expect last element="li" toHaveText="100" />
     <Expect element="li" at={1} toHaveText="2" />
     <Expect first element="li" toHaveProperty="className" />
-    <Expect first element="li" toHaveProperty="className" whichEquals="foo" />
+    <Expect first element="li" notToHaveProperty="foo" />
+    <Expect first element="li" toHaveProperty={ ['id', /class/ ] } />
+    <Expect first element="li" toHaveProperty={ /class/ } />
+    <Expect first element="li" toHaveProperty={{
+      className: 'foo',
+      id: new ExpectProperty((v, props) => v === 'barz' && props.tabIndex === 7)
+    }} />
   </Describe>
 ))
 

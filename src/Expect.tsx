@@ -3,7 +3,7 @@ import ReactContext from './context'
 import ReactTestRenderer from 'react-test-renderer'
 import ElementDescriber, { ElementDescriberProps } from './Element'
 import Render from './Render';
-import { findElement } from './utils';
+import { findElement, PropertyEvaluater, hasProperty, ExpectProperty } from './utils';
 
 type ChildElement<C, P = any> = { type: C }
 
@@ -16,10 +16,10 @@ interface ExpectProps {
   notToHaveType?:  string | React.ComponentType<any>
   root?: true
   toHaveLength?: number | boolean
-  toHaveProperty?: string
+  toHaveProperty?: PropertyEvaluater
+  notToHaveProperty?: PropertyEvaluater
   toHaveText?: string
   toHaveType?:  string | React.ComponentType<any>
-  whichEquals?: any
 }
 
 function getNumberWithOrdinal(n: number) {
@@ -28,53 +28,92 @@ function getNumberWithOrdinal(n: number) {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+function makeExpectPropertyLabel(describer: PropertyEvaluater, not = false) {
+  let label = ''
+  if (typeof describer === 'string') {
+    label += `${ not ? 'not ' : '' }to have a property named "${ describer }"`
+  } else if (describer instanceof RegExp) {
+    label += `${ not ? 'not ' : '' }to have a property which name matches regular expression "${ describer }"`
+  } else if (Array.isArray(describer)) {
+    const conds: string[] = []
+    for (const item of describer) {
+      if (typeof item === 'string') {
+        conds.push(`${ not ? 'not ' : '' }to have a property named "${ item }"`)
+      } else if (item instanceof RegExp) {
+        conds.push(`${ not ? 'not ' : '' }to have a property which name matches regular expression "${ item }"`)
+      }
+    }
+    label += `${ conds.join(' and ')}`
+  } else if (typeof describer === 'object') {
+    const conds: string[] = []
+    for (const prop in describer) {
+      if (describer[prop] instanceof ExpectProperty) {
+        if (describer[prop].fn.name) {
+          conds.push(`${ not ? 'not ' : '' }to have a property named "${ prop }" which returns true to the function ${ describer[prop].fn.name }`)
+        } else {
+          conds.push(`${ not ? 'not ' : '' }to have a property named "${ prop }" which returns true to the ${ describer[prop].fn }`)
+        }
+      } else {
+        conds.push(`${ not ? 'not ' : '' }to have a property named "${ prop }" which equals ${ JSON.stringify(describer[prop]) }`)
+      }
+    }
+    label += `${ conds.join(' and ')}`
+  }
+  return label
+}
+
+function makeExpectLabel(props: React.PropsWithChildren<ExpectProps>) {
+  let label = 'Expect'
+  if (props.first) {
+    label += ' first'
+  } else if (props.last) {
+    label += ' last'
+  }  else if (props.root) {
+    label += ' root'
+  } else if (typeof props.at === 'number') {
+    label += ` ${ getNumberWithOrdinal(props.at + 1) }`
+  }
+  if (props.element) {
+    if (typeof props.element === 'string') {
+      label += ` element <${ props.element }>`
+    } else if (props.element === true) {
+      label += ' root element'
+    } else if (typeof props.element === 'function' && props.element.name) {
+      label += ` element <${ props.element.name }>`
+    }
+  } else if (props.elements) {
+    label += ` elements <${ props.elements }>`
+  }
+  if ('toHaveText' in props) {
+    label += ` to have text "${ props.toHaveText }"`
+  }
+  if (props.toHaveLength) {
+    label += ` to have ${ props.toHaveLength } item(s)`
+  }
+  if (props.toHaveType) {
+    if (typeof props.toHaveType === 'string') {
+      label += ` to be a <${ props.toHaveType }>`
+    } else {
+      label += ` to be a <${ props.toHaveType.name }>`
+    }
+  }
+  if (props.notToHaveType) {
+    label += ` not to be a <${ props.notToHaveType }>`
+  }
+  if (props.toHaveProperty) {
+    label += ` ${ makeExpectPropertyLabel(props.toHaveProperty) }`
+  }
+  if (props.notToHaveProperty) {
+    label += ` ${ makeExpectPropertyLabel(props.notToHaveProperty, true) }`
+  }
+  return label
+}
+
 export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
   return (
     <ReactContext.Consumer>
       { value => {
-        let label = 'Expect'
-        if (props.first) {
-          label += ' first'
-        } else if (props.last) {
-          label += ' last'
-        }  else if (props.root) {
-          label += ' root'
-        } else if (typeof props.at === 'number') {
-          label += ` ${ getNumberWithOrdinal(props.at + 1) }`
-        }
-        if (props.element) {
-          if (typeof props.element === 'string') {
-            label += ` element <${ props.element }>`
-          } else if (props.element === true) {
-            label += ' root element'
-          } else if (typeof props.element === 'function' && props.element.name) {
-            label += ` element <${ props.element.name }>`
-          }
-        } else if (props.elements) {
-          label += ` elements <${ props.elements }>`
-        }
-        if ('toHaveText' in props) {
-          label += ` to have text "${ props.toHaveText }"`
-        }
-        if (props.toHaveLength) {
-          label += ` to have ${ props.toHaveLength } item(s)`
-        }
-        if (props.toHaveType) {
-          if (typeof props.toHaveType === 'string') {
-            label += ` to be a <${ props.toHaveType }>`
-          } else {
-            label += ` to be a <${ props.toHaveType.name }>`
-          }
-        }
-        if (props.notToHaveType) {
-          label += ` not to be a <${ props.notToHaveType }>`
-        }
-        if (props.toHaveProperty) {
-          label += ` to have property ${ props.toHaveProperty }`
-        }
-        if ('whichEquals' in props) {
-          label += ` which equals ${ JSON.stringify(props.whichEquals) }`
-        }
+        const label = makeExpectLabel(props)
         value.its.push({
           label,
           fn: async () => {
@@ -105,10 +144,10 @@ export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
                 expect(text).toEqual(props.toHaveText)
               }
               if (props.toHaveProperty) {
-                expect(elem.props).toHaveProperty(props.toHaveProperty)
-                if ('whichEquals' in props) {
-                  expect(elem.props).toHaveProperty(props.toHaveProperty, props.whichEquals)
-                }
+                expect(hasProperty(elem, props.toHaveProperty)).toBe(true)
+              }
+              if (props.notToHaveProperty) {
+                expect(hasProperty(elem, props.notToHaveProperty)).toBe(false)
               }
               if (props.toHaveType) {
                 expect(elem.type).toEqual(props.toHaveType)

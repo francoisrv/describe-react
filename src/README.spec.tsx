@@ -93,7 +93,7 @@ describe('README', () => {
             parent={ <Element type="tr" at={ 1 } /> }
           />
         }
-        toHaveProperty={{ id: 'f1' }}
+        toHaveType="td"
       />
     </Describe>
   ))

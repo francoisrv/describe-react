@@ -1,10 +1,5 @@
-import run from "./run";
-import React from "react";
-import Describe from "./Describe";
-import Render from "./Render";
-import Expect from "./Expect";
-import Element from "./Element"
-import { property } from "lodash";
+import React from 'react'
+import run, { Describe, Render, Expect, Element } from '.'
 
 describe('README', () => {
   run(() => (
@@ -91,9 +86,10 @@ describe('README', () => {
         element={
           <Element
             parent={ <Element type="tr" at={ 1 } /> }
+            props={{ colSpan: 2 }}
           />
         }
-        toHaveType="td"
+        toHaveText="5"
       />
     </Describe>
   ))

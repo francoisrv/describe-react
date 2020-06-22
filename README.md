@@ -1,7 +1,7 @@
 describe-react
 ===
 
-Write your react tests in JSX and using Jest
+Write your react tests in JSX
 
 ```jsx
 // list.test.jsx

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SingleDescriber } from './utils'
+import { SingleDescriber } from './types'
 
 export interface ElementDescriberProps extends SingleDescriber {
 }

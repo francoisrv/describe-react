@@ -180,7 +180,7 @@ describe('Lib / Describers / Has property', () => {
   hasPropertySpec(
     'plain object with only value function',
     <div id="foo" />,
-    { value: expectPropertyValue(v => v === 'foo2') },
+    { value: expectPropertyValue(v => v === 'foo') },
     { value: expectPropertyValue(v => v === 'foo2') },
   )
 })

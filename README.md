@@ -35,12 +35,11 @@ jest list.test
 ```
 PASS  list.test.js
 Quick usage
-  ✓ Expect root element
+  Expect root element
     ✓ to be a <span>
     ✓ to have text "Hello"
     ✓ to have a property which name is "id" AND which value is "foo"
-    ✓ *not* to have a property which name is "className" (2 ms)
-
+    ✓ NOT to have a property which name is "className" (2 ms)
 ```
 
 - Components

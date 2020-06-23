@@ -4,8 +4,7 @@ import { ContextInterface } from './types'
 export const defaultContext: ContextInterface = {
   elem: null,
   describer: null,
-  its: [],
-  beforeAll: [],
+  sections: [],
   state: {},
   getSource: () => {
     throw new Error('You are using master template')

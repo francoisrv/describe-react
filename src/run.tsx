@@ -1,6 +1,17 @@
 import * as React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
 import ReactContext, { defaultContext } from './context'
+import { ItProps } from './types'
+
+function makeDescriber(opt: ItProps, fn: typeof describe | typeof it = describe) {
+  let describer = fn
+  if (opt.skip) {
+    describer = describe.skip
+  } else if (opt.only) {
+    describer = describe.only
+  }
+  return describer
+}
 
 export default function run(Type: React.ComponentType<any>) {
   let source: ReactTestRenderer.ReactTestRenderer
@@ -16,20 +27,16 @@ export default function run(Type: React.ComponentType<any>) {
   if (!context.describer) {
     throw new Error('Missing describer')
   }
-  let describer = describe
-  if (context.describer.skip) {
-    describer = describe.skip
-  } else if (context.describer.only) {
-    describer = describe.only
-  }
+  const describer = makeDescriber(context.describer)
   describer(context.describer.label, () => {
-    beforeAll(async () => {
-      for (const fn of context.beforeAll) {
-        await fn()
-      }
-    })
-    for (const itSection of context.its) {
-      it(itSection.label, itSection.fn)
+    for (const itSection of context.sections) {
+      const sectionDescriber = makeDescriber(context.describer)
+      sectionDescriber(itSection.label, () => {
+        for (const sub of itSection.subs) {
+          const itDescriber = makeDescriber(sub, it)
+          itDescriber(sub.label, sub.fn)
+        }
+      })
     }
   })
 }

@@ -10,9 +10,6 @@ describe('README', () => {
       
       <Expect
         root element
-        toHaveText="Hello"
-        toHaveProperty={ <Property name="id" value="foo" /> }
-        notToHaveProperty="className"
       />
     </Describe>
   ))

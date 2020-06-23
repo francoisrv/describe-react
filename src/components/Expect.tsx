@@ -2,12 +2,18 @@ import * as React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
 import ElementDescriber, { ElementDescriberProps } from './Element'
 import Render from './Render'
-import { ItProps, ElementExpectations } from '../types'
+import { ItProps, ElementExpectations, ContextInterface } from '../types'
 import Context from '../context'
 import findElement from '../finders/findElement'
 import expectElement from '../expectations/expectElement'
 import Property, { PropertyProps, makePropertyLabel } from './Property'
 import { includes, startCase } from 'lodash'
+
+interface ExpectAnatomy {
+  selector: any
+  label: string
+  expectations: any[]
+}
 
 interface ExpectElementProps {
   element: true | React.ReactElement<ElementDescriberProps>
@@ -21,7 +27,7 @@ type ExpectExpectationsOverwriter =
 | 'toHaveProperty'
 
 interface ExpectExpectations extends Omit<ElementExpectations, ExpectExpectationsOverwriter> {
-  toHaveProperty:
+  toHaveProperty?:
   | ElementExpectations['toHaveProperty']
   | React.ReactElement<PropertyProps>
 }
@@ -78,41 +84,72 @@ function makeExpectLabel(props: ExpectProps) {
   return bits.join(' ')
 }
 
+export function makeExpectAnatomy(props: ExpectProps, source: ReactTestRenderer.ReactTestRenderer): ExpectAnatomy {
+  const bits: string[] = []
+  const testInstance = source.root.findByType(Render).children[0] as ReactTestRenderer.ReactTestInstance
+  let selector
+
+  if ('element' in props) {
+    if (props.element === true) {
+      selector = testInstance
+      bits.push('root element')
+    } else if (typeof props.element === 'object' && 'type' in props.element && props.element.type === ElementDescriber) {
+      const found = findElement(props.element.props, testInstance)
+      if (typeof found !== 'string') {
+        selector = found
+      }
+    }
+  }
+
+  return {
+    label: bits.join(' '),
+    selector,
+    expectations: []
+  }
+}
+
 export default function Expect(props: React.PropsWithChildren<ExpectProps>)  {
   return (
     <Context.Consumer>
       { value => {
-        const label = makeExpectLabel(props)
-        value.its.push({
+        const { selector, expectations, label } = makeExpectAnatomy(props, value.getSource())
+        value.sections.push({
           only: !!props.only,
           skip: !!props.skip,
-          timeout: props.timeout,
-          label,
-          fn: async () => {
-            const source = value.getSource()
-            const testInstance = source.root.findByType(Render).children[0] as ReactTestRenderer.ReactTestInstance
-            let element: ReactTestRenderer.ReactTestInstance | null = null
-
-            if ('element' in props) {
-              if (props.element === true) {
-                element = testInstance
-              } else if (typeof props.element === 'object' && 'type' in props.element && props.element.type === ElementDescriber) {
-                const found = findElement(props.element.props, testInstance)
-                if (typeof found !== 'string') {
-                  element = found
-                }
-              }
-
-              if (element) {
-                for (const prop in props) {
-                  if (expectElement[prop]) {
-                    expectElement[prop](element, props[prop])
-                  }
-                }
+          label: `Expect `,
+          subs: [
+            {
+              label: 'hello',
+              fn: () => {
+                console.log(123)
               }
             }
-          }
-        })
+          ]})
+          // fn: async () => {
+          //   const source = value.getSource()
+          //   const testInstance = source.root.findByType(Render).children[0] as ReactTestRenderer.ReactTestInstance
+          //   let element: ReactTestRenderer.ReactTestInstance | null = null
+
+          //   if ('element' in props) {
+          //     if (props.element === true) {
+          //       element = testInstance
+          //     } else if (typeof props.element === 'object' && 'type' in props.element && props.element.type === ElementDescriber) {
+          //       const found = findElement(props.element.props, testInstance)
+          //       if (typeof found !== 'string') {
+          //         element = found
+          //       }
+          //     }
+
+          //     if (element) {
+          //       for (const prop in props) {
+          //         if (expectElement[prop]) {
+          //           expectElement[prop](element, props[prop])
+          //         }
+          //       }
+          //     }
+          //   }
+          // }
+        // })
         return (
           <>
             { props.children }

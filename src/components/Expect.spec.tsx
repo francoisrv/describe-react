@@ -1,5 +1,7 @@
-import run, { Describe, Render, Expect, Run } from "."
 import * as React from 'react'
+import { makeExpectAnatomy } from "./Expect"
+import ReactTestRenderer from 'react-test-renderer'
+import Render from './Render'
 
 function Foo() {
   return (
@@ -32,16 +34,46 @@ function List() {
 }
 
 describe('Expect', () => {
-  run(() => (
-    <Describe label="Targeting root element">
-      <Render>
-        <List />
-      </Render>
-      <Expect element toHaveType={ List } />
-      <Expect root element toHaveType={ List } />
-      <Expect element notToHaveType={ Foo } />
-    </Describe>
-  ))
+  describe('Expect anatomy', () => {
+    describe('Selector', () => {
+      it('{ element: true } <=> root element', () => {
+        const { selector } = makeExpectAnatomy(
+          { element: true },
+          ReactTestRenderer.create(
+            <div>
+              <Render>
+                <div />
+              </Render>
+            </div>
+          )
+        )
+        expect(selector).toHaveProperty('type', 'div')
+      })
+    })
+    describe('Label', () => {
+      it('{ element: true } <=> root element', () => {
+        const { label } = makeExpectAnatomy(
+          { element: true },
+          ReactTestRenderer.create(
+            <Render>
+              <div />
+            </Render>
+          )
+        )
+        expect(label).toEqual('root element')
+      })
+    })
+  })
+  // run(() => (
+  //   <Describe label="Targeting root element">
+  //     <Render>
+  //       <List />
+  //     </Render>
+  //     <Expect element toHaveType={ List } />
+  //     <Expect root element toHaveType={ List } />
+  //     <Expect element notToHaveType={ Foo } />
+  //   </Describe>
+  // ))
 })
 
 // run(() => (

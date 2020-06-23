@@ -124,12 +124,14 @@ export type LengthDescriber =
 | number
 | boolean
 
-export interface ItSpec {
+export interface SectionSpec {
   label: string
   only?: boolean
   skip?: boolean
-  timeout?: number
-  fn: () => Promise<void>
+  subs: Array<ItProps & {
+    label: string
+    fn: () => void | Promise<void>
+  }>
 }
 
 export interface DescribeSpec {
@@ -143,7 +145,7 @@ export type BeforeAllSpec = () => Promise<void>
 export interface ContextInterface {
   elem: ReactTestRenderer.ReactTestRenderer | null
   describer: DescribeSpec | null
-  its: ItSpec[]
+  sections: SectionSpec[]
   state: { [name: string]: any }
   getSource: () => ReactTestRenderer.ReactTestRenderer
 }

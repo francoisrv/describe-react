@@ -1,5 +1,5 @@
 import React from 'react'
-import run, { Describe, Render, Expect, Element } from '.'
+import run, { Describe, Render, Expect, Element, Property } from '.'
 
 describe('README', () => {
   run(() => (
@@ -7,12 +7,13 @@ describe('README', () => {
       <Render>
         <span id="foo">Hello</span>
       </Render>
+      
       <Expect
         root element
         toHaveText="Hello"
-        toHaveProperty="id"
+        toHaveProperty={ <Property name="id" value="foo" /> }
+        notToHaveProperty="className"
       />
     </Describe>
   ))
-
 })

@@ -1,3 +1,5 @@
+import { SelectedElement } from "./types"
+
 export function printAny(v: any): string {
   if (typeof v === 'function') {
     if (v.name) {

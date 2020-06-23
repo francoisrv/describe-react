@@ -1,6 +1,5 @@
 import ReactTestRenderer from 'react-test-renderer'
 import React from 'react'
-import { TypeDescriber, ElementsObjectDescriber, SelectedElement } from '../..'
 import findElements, { FindElementsDescriber } from './findElements'
 import labelType from '../labelers/type'
 import { getNumberWithOrdinal } from '../utils'
@@ -192,4 +191,5 @@ describe('Find elements', () => {
         [{ type: 'span' }]
       )
     })
+  })
 })

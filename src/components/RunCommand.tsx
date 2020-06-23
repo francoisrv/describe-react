@@ -1,6 +1,7 @@
 import * as React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
-import ReactContext, { ContextInterface } from './context'
+import Context from '../context'
+import { ContextInterface } from '../types'
 
 interface RunProps {
   function: (context: ContextInterface) => Promise<void>
@@ -9,7 +10,7 @@ interface RunProps {
 
 export default function RunProps(props: RunProps) {
   return (
-    <ReactContext.Consumer>
+    <Context.Consumer>
       { value => {
         value.its.push({
           label: props.label || 'Run function',
@@ -21,6 +22,6 @@ export default function RunProps(props: RunProps) {
         })
         return <div />
       } }
-    </ReactContext.Consumer>
+    </Context.Consumer>
   )
 }

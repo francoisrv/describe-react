@@ -1,7 +1,7 @@
 import * as React from 'react'
-import ReactContext from './context'
 import ReactTestRenderer from 'react-test-renderer'
 import Render from './Render'
+import Context from '../context'
 
 interface ClickProps {
   element: string
@@ -12,7 +12,7 @@ interface ClickProps {
 
 export default function Click(props: ClickProps) {
   return (
-    <ReactContext.Consumer>
+    <Context.Consumer>
       { value => {
         const label = `Click element <${ props.element }>`
         value.its.push({
@@ -39,6 +39,6 @@ export default function Click(props: ClickProps) {
         })
         return <div />
       } }
-    </ReactContext.Consumer>
+    </Context.Consumer>
   )
 }

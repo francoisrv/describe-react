@@ -9,10 +9,20 @@ export interface ItProps {
 }
 
 export interface ElementExpectations {
-  toHaveType: TypeDescriber
-  notToHaveType: TypeDescriber
-  toHaveOneOfTheseTypes: TypeDescriber[]
-  notToHaveOneOfTheseTypes: TypeDescriber[]
+  toHaveType?: TypeDescriber
+  notToHaveType?: TypeDescriber
+  toHaveOneOfTheseTypes?: TypeDescriber[]
+  notToHaveOneOfTheseTypes?: TypeDescriber[]
+
+  toHaveText?: TextDescriber
+  notToHaveText?: TextDescriber
+  toHaveOneOfTheseTexts?: TextDescriber[]
+  notToHaveOneOfTheseTexts?: TextDescriber[]
+
+  toHaveProperty?: PropertyDescriber
+  notToHaveProperty?: PropertyDescriber
+  toHaveOneOfTheseProperties?: PropertyDescriber[]
+  notToHaveOneOfTheseProperties?: PropertyDescriber[]
 }
 
 export type AdvancedDescriber<T> = {
@@ -70,7 +80,7 @@ export type ParentDescriber =
 | React.ComponentType<any>
 | SingleDescriber
 
-export type BasicPropertyDescriber =
+export type PropertyDescriber =
 | string
 | RegExp
 | {
@@ -80,14 +90,6 @@ export type BasicPropertyDescriber =
 
 export type ExpectPropertyValueFn = (v: any, props: Dictionary<any>) => boolean
 
-/**
- * Props describer
- */
-export type PropertyDescriber =
-| BasicPropertyDescriber
-| IsOneOf<BasicPropertyDescriber>
-| IsNot<BasicPropertyDescriber>
-| IsNotOneOf<BasicPropertyDescriber>
 
 export type BasicPropertiesDescriber =
 | Array<
@@ -124,6 +126,9 @@ export type LengthDescriber =
 
 export interface ItSpec {
   label: string
+  only?: boolean
+  skip?: boolean
+  timeout?: number
   fn: () => Promise<void>
 }
 
@@ -139,7 +144,6 @@ export interface ContextInterface {
   elem: ReactTestRenderer.ReactTestRenderer | null
   describer: DescribeSpec | null
   its: ItSpec[]
-  beforeAll: BeforeAllSpec[]
   state: { [name: string]: any }
   getSource: () => ReactTestRenderer.ReactTestRenderer
 }

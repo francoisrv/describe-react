@@ -1,5 +1,5 @@
 import * as React from 'react'
-import ReactContext from './context'
+import Context from '../context'
 
 interface DescribeProps {
   label: string
@@ -9,7 +9,7 @@ interface DescribeProps {
 
 export default function Describe(props: React.PropsWithChildren<DescribeProps>) {
   return (
-    <ReactContext.Consumer>
+    <Context.Consumer>
       { value => {
         if (value.describer) {
           throw new Error('There is already a describer')
@@ -25,6 +25,6 @@ export default function Describe(props: React.PropsWithChildren<DescribeProps>) 
           </>
         )
       } }
-    </ReactContext.Consumer>
+    </Context.Consumer>
   )
 }

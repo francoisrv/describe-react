@@ -1,5 +1,5 @@
 import * as React from 'react'
-import ReactContext from './context'
+import Context from '../context'
 
 interface WaitProps {
   milliseconds?: number
@@ -17,7 +17,7 @@ export default function Wait(props: React.PropsWithChildren<WaitProps>) {
     label += ` ${ props.seconds } seconds`
   }
   return (
-    <ReactContext.Consumer>
+    <Context.Consumer>
       { value => {
         value.its.push({
           label,
@@ -27,6 +27,6 @@ export default function Wait(props: React.PropsWithChildren<WaitProps>) {
         })
         return <div />
       } }
-    </ReactContext.Consumer>
+    </Context.Consumer>
   )
 }

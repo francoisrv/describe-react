@@ -48,7 +48,8 @@ export default function findElements(
       case 'hasNotOneOfTheseTypes': {
         filterFound(n => expectElementNotToHaveOneOfTheseTypes(n, describer.hasNotOneOfTheseTypes))
       } break
-
     }
+  }
+  
   return found
 }

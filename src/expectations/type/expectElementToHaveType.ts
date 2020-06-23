@@ -1,7 +1,7 @@
 import ReactTestRenderer from 'react-test-renderer'
-import { TypeDescriber } from '../../../types'
 import labelTestInstance from '../../labelers/testInstance'
 import { printAny } from '../../utils'
+import { TypeDescriber } from '../../types'
 
 export default function expectElementToHaveType(
   elem: ReactTestRenderer.ReactTestInstance,

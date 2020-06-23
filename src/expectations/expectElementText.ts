@@ -71,10 +71,10 @@ export default function expectElementText(
     } break
 
     case 'notToHaveText': {
-      let fails = false
-      try {
-        expectElementText(elem, 'toHaveText', text)
-      }
+      // let fails = false
+      // try {
+      //   expectElementText(elem, 'toHaveText', text)
+      // }
     } break
 
   }

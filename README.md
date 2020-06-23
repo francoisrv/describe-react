@@ -6,18 +6,18 @@ Write your react tests in JSX
 ```jsx
 // list.test.jsx
 import React from 'react'
-import run, { Describe, Expect, Render } from 'describe-react'
+import run, { Describe, Expect, Property, Render } from 'describe-react'
 
 function Specs() {
   return (
-    <Describe label="List">
+    <Describe label="Quick usage">
       <Render>
         <span id="foo">Hello</span>
       </Render>
       <Expect
         root element
         toHaveText="Hello"
-        toHaveProperty="id"
+        toHaveProperty={ <Property name="id" value="foo" /> }
       />
     </Describe>
   )

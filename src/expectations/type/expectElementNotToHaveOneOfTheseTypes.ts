@@ -18,7 +18,7 @@ export default function expectElementNotToHaveOneOfTheseTypes(
     }
     matches.push(passed)
   }
-  if (!matches.some(Boolean)) {
+  if (!matches.every(Boolean)) {
     throw new Error(`Expected ${ labelTestInstance(elem) } *NOT* to have one of these types: ${ types.map(printAny).join(', ') }`)
   }
 }

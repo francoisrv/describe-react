@@ -1,8 +1,12 @@
 import ReactTestRenderer from 'react-test-renderer'
 import { Dictionary } from 'lodash'
-import IsOneOf from './lib/entities/IsOneOf'
-import IsNot from './lib/entities/IsNot'
-import IsNotOneOf from './lib/entities/IsNotOneOf'
+
+export interface ItProps {
+  skip?: boolean
+  only?: boolean
+  label?: string
+  timeout?: number
+}
 
 export interface ElementExpectations {
   toHaveType: TypeDescriber

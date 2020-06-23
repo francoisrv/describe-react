@@ -12,4 +12,6 @@ export const defaultContext: ContextInterface = {
   }
 }
 
-export default React.createContext<ContextInterface>(defaultContext)
+const Context = React.createContext<ContextInterface>(defaultContext)
+
+export default Context

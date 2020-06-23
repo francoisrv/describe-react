@@ -84,6 +84,27 @@ export type PropertyDescriber =
 | IsNot<BasicPropertyDescriber>
 | IsNotOneOf<BasicPropertyDescriber>
 
+export type BasicPropertiesDescriber =
+| Array<
+  | {
+    name: string | RegExp
+    value: any
+  }
+  | {
+    value: any
+  }
+  | {
+    name: string | RegExp
+  }
+  >
+| boolean
+
+export type PropertiesDescriber =
+| BasicPropertiesDescriber
+| IsOneOf<BasicPropertiesDescriber>
+| IsNot<BasicPropertiesDescriber>
+| IsNotOneOf<BasicPropertiesDescriber>
+
 /**
  * Text describer
  */

@@ -14,43 +14,57 @@ function Bar() {
 function hasTypeSpec(
   label: string,
   context: React.ReactElement<any>,
-  describer: TypeDescriber
+  describer: TypeDescriber,
+  failer: any
 ) {
   it(label, () => {
     const elem = ReactTestRenderer.create(context)
-    const has = hasType(elem.root, describer)
-    expect(has).toBe(true)
+    hasType(elem.root, describer)
+  })
+  it(`SHOULD FAIL: ${ label }`, () => {
+    const elem = ReactTestRenderer.create(context)
+    try {
+      hasType(elem.root, failer)
+      throw new Error('Should have failed')
+    } catch (error) {
+      expect(error.message).not.toEqual('Should have failed')
+    }
   })
 }
 
 describe('Lib / Describers / Has Type', () => {
   hasTypeSpec(
-    'describe as string',
+    'string',
     <span />,
-    'span'
+    'span',
+    'div'
   )
 
   hasTypeSpec(
-    'describe as component',
+    'component',
     <Foo />,
-    Foo
+    Foo,
+    Bar
   )
 
   hasTypeSpec(
-    'describe as one of',
+    'one of',
     <Foo />,
-    isOneOf(Foo, Bar, 'span')
+    isOneOf(Bar, Foo),
+    isOneOf('div', 'span', Bar)
   )
 
   hasTypeSpec(
-    'describe as not',
+    'not',
     <Foo />,
-    isNot(Bar)
+    isNot(Bar),
+    isNot(Foo)
   )
 
   hasTypeSpec(
-    'describe as not one of',
+    'not one of',
     <Foo />,
-    isNotOneOf(Bar, 'span')
+    isNotOneOf(Bar, 'span'),
+    isNotOneOf(Bar, 'span', Foo),
   )
 })

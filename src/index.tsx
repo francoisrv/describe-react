@@ -24,3 +24,7 @@ export { isOneOf as isOneOf } from './lib/entities/IsOneOf'
 export { default as hasProperties } from './lib/describers/hasProperties'
 export { default as hasProperty } from './lib/describers/hasProperty'
 export { default as hasType } from './lib/describers/hasType'
+
+// Utils
+
+export * as utils from './lib/utils'

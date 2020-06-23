@@ -4,7 +4,7 @@ import { getText } from '../utils'
 import labelTestInstance from '../labelers/testInstance'
 import { isEmpty } from 'lodash'
 
-export default function hasText(
+export default function expectElementText(
   elem: ReactTestRenderer.ReactTestInstance,
   text: TextDescriber
 ) {

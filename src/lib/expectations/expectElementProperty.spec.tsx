@@ -1,9 +1,14 @@
 import React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
 
-import { PropertyDescriber, hasProperty, isNot, isOneOf, isNotOneOf, expectPropertyValue } from '../..'
+import { PropertyDescriber } from '../..'
+import expectElementProperty from './expectElementProperty'
+import { isNot } from '../entities/IsNot'
+import { isOneOf } from '../entities/IsOneOf'
+import { isNotOneOf } from '../entities/IsNotOneOf'
+import { expectPropertyValue } from '../entities/ExpectPropertyValue'
 
-function hasPropertySpec(
+function expectElementPropertySpec(
   label: string,
   context: React.ReactElement<any>,
   describer: PropertyDescriber,
@@ -11,12 +16,12 @@ function hasPropertySpec(
 ) {
   it(label, () => {
     const elem = ReactTestRenderer.create(context)
-    hasProperty(elem.root, describer)
+    expectElementProperty(elem.root, describer)
   })
   it(`SHOULD FAIL: ${ label }`, () => {
     const elem = ReactTestRenderer.create(context)
     try {
-      hasProperty(elem.root, failer)
+      expectElementProperty(elem.root, failer)
       throw new Error('Should have failed')
     } catch (error) {
       expect(error.message).not.toEqual('Should have failed')
@@ -25,84 +30,84 @@ function hasPropertySpec(
 }
 
 describe('Lib / Describers / Has property', () => {
-  hasPropertySpec(
+  expectElementPropertySpec(
     'string',
     <div id="foo" />,
     'id',
     'id2'
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'regex',
     <div id="foo" />,
     /id/,
     /id2/
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'not string',
     <div id="foo" />,
     isNot('foo'),
     isNot('id')
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'not regex',
     <div id="foo" />,
     isNot(/id2/),
     isNot(/id/)
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'one of string',
     <div id="foo" />,
     isOneOf('foo', 'id'),
     isOneOf('foo', 'bar')
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'one of regex',
     <div id="foo" />,
     isOneOf('foo', /id/),
     isOneOf('foo', /bar/)
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'not one of string',
     <div id="foo" />,
     isNotOneOf('foo', 'bar'),
     isNotOneOf('id', 'bar')
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'not one of regex',
     <div id="foo" />,
     isNotOneOf(/foo/, /bar/),
     isNotOneOf(/id/)
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with string and failing on name',
     <div id="foo" />,
     { name: 'id', value: 'foo' },
     { name: 'id2', value: 'foo' },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with string and failing on value',
     <div id="foo" />,
     { name: 'id', value: 'foo' },
     { name: 'id', value: 'foo2' },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'is not plain object with string',
     <div id="foo" />,
     isNot({ name: 'id', value: 'foo22' }),
     isNot({ name: 'id', value: 'foo' }),
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'is one of plain object with string',
     <div id="foo" />,
     isOneOf(
@@ -115,7 +120,7 @@ describe('Lib / Describers / Has property', () => {
     )
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'is not one of plain object with string',
     <div id="foo" />,
     isNotOneOf(
@@ -128,56 +133,56 @@ describe('Lib / Describers / Has property', () => {
     )
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with regex and wrong name',
     <div id="foo" />,
     { name: /id/, value: 'foo' },
     { name: /id2/, value: 'foo' },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with regex and wrong value',
     <div id="foo" />,
     { name: /id/, value: 'foo' },
     { name: /id/, value: 'foo2' },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with only value',
     <div id="foo" />,
     { value: 'foo' },
     { value: 'foo2' },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with string and value function',
     <div id="foo" />,
     { name: 'id', value: expectPropertyValue(v => v === 'foo') },
     { name: 'id', value: expectPropertyValue(v => v === 'foo2') },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with string and value function with props',
     <div id="foo" tabIndex={ 7 } />,
     { name: 'id', value: expectPropertyValue((v, props) => v === 'foo' && props.tabIndex === 7) },
     { name: 'id', value: expectPropertyValue((v, props) => v === 'foo' && props.tabIndex === 9) },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with regex and value function',
     <div id="foo" />,
     { name: /id/, value: expectPropertyValue(v => v === 'foo') },
     { name: /id/, value: expectPropertyValue(v => v === 'foo2') },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with regex and value function with props',
     <div id="foo" tabIndex={ 7 } />,
     { name: /id/, value: expectPropertyValue((v, props) => v === 'foo' && props.tabIndex === 7) },
     { name: /id/, value: expectPropertyValue((v, props) => v === 'foo' && props.tabIndex === 9) },
   )
 
-  hasPropertySpec(
+  expectElementPropertySpec(
     'plain object with only value function',
     <div id="foo" />,
     { value: expectPropertyValue(v => v === 'foo') },

@@ -1,20 +1,21 @@
 import React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
-import { hasProperties, PropertiesDescriber } from '../..'
+import { PropertiesDescriber } from '../..'
+import expectElementProperties from './expectElementProperties'
 
-function hasPropertiesSpec(
+function expectElementPropertiesSpec(
   label: string,
   context: React.ReactElement<any>,
   describer: PropertiesDescriber,
 ) {
   it(label, () => {
     const elem = ReactTestRenderer.create(context)
-    hasProperties(elem.root, describer)
+    expectElementProperties(elem.root, describer)
     
   })
 }
 
-function hasPropertiesSpecFail(
+function expectElementPropertiesSpecFail(
   label: string,
   context: React.ReactElement<any>,
   describer: any,
@@ -22,7 +23,7 @@ function hasPropertiesSpecFail(
   it(`SHOULD FAIL: ${ label }`, () => {
     const elem = ReactTestRenderer.create(context)
     try {
-      hasProperties(elem.root, describer)
+      expectElementProperties(elem.root, describer)
       throw new Error('Should have failed')
     } catch (error) {
       expect(error.message).not.toEqual('Should have failed')
@@ -31,37 +32,37 @@ function hasPropertiesSpecFail(
 }
 
 describe('Lib / Describers / Has property', () => {
-  hasPropertiesSpec(
+  expectElementPropertiesSpec(
     'empty Arrray',
     <div id="foo" className="bar" />,
     []
   )
 
-  hasPropertiesSpec(
+  expectElementPropertiesSpec(
     'true for any',
     <div id="foo" className="bar" />,
     true
   )
 
-  hasPropertiesSpecFail(
+  expectElementPropertiesSpecFail(
     'true for any',
     <div />,
     true
   )
 
-  hasPropertiesSpec(
+  expectElementPropertiesSpec(
     'false for none',
     <div />,
     false
   )
 
-  hasPropertiesSpecFail(
+  expectElementPropertiesSpecFail(
     'false for none',
     <div id="foo" />,
     false
   )
 
-  hasPropertiesSpec(
+  expectElementPropertiesSpec(
     'by name only using string',
     <div id="foo" className="bar" />,
     [
@@ -69,7 +70,7 @@ describe('Lib / Describers / Has property', () => {
     ]
   )
 
-  hasPropertiesSpecFail(
+  expectElementPropertiesSpecFail(
     'by name only using string',
     <div id="foo" className="bar" />,
     [
@@ -77,7 +78,7 @@ describe('Lib / Describers / Has property', () => {
     ]
   )
 
-  hasPropertiesSpec(
+  expectElementPropertiesSpec(
     'by name only using regex',
     <div id="foo" className="bar" />,
     [
@@ -85,7 +86,7 @@ describe('Lib / Describers / Has property', () => {
     ]
   )
 
-  hasPropertiesSpecFail(
+  expectElementPropertiesSpecFail(
     'by name only using regex',
     <div id="foo" className="bar" />,
     [
@@ -93,7 +94,7 @@ describe('Lib / Describers / Has property', () => {
     ]
   )
 
-  hasPropertiesSpec(
+  expectElementPropertiesSpec(
     'by string name and value',
     <div id="foo" className="bar" />,
     [
@@ -101,7 +102,7 @@ describe('Lib / Describers / Has property', () => {
     ]
   )
 
-  hasPropertiesSpecFail(
+  expectElementPropertiesSpecFail(
     'by string name and value',
     <div id="foo" className="bar" />,
     [
@@ -109,7 +110,7 @@ describe('Lib / Describers / Has property', () => {
     ]
   )
 
-  hasPropertiesSpec(
+  expectElementPropertiesSpec(
     'by value',
     <div id="foo" className="bar" />,
     [
@@ -117,7 +118,7 @@ describe('Lib / Describers / Has property', () => {
     ]
   )
 
-  hasPropertiesSpecFail(
+  expectElementPropertiesSpecFail(
     'by value',
     <div id="foo" className="bar" />,
     [

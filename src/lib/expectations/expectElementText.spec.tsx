@@ -1,18 +1,10 @@
 import React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
 
-import { TextDescriber, hasType, isOneOf, isNot, isNotOneOf } from '../..'
-import hasText from './hasText'
+import { TextDescriber } from '../..'
+import expectElementText from './expectElementText'
 
-function Foo() {
-  return <div />
-}
-
-function Bar() {
-  return <div />
-}
-
-function hasTextSpec(
+function expectElementTextSpec(
   label: string,
   context: React.ReactElement<any>,
   describer: TextDescriber,
@@ -20,12 +12,12 @@ function hasTextSpec(
 ) {
   it(label, () => {
     const elem = ReactTestRenderer.create(context)
-    hasText(elem.root, describer)
+    expectElementText(elem.root, describer)
   })
   it(`SHOULD FAIL: ${ label }`, () => {
     const elem = ReactTestRenderer.create(context)
     try {
-      hasText(elem.root, failer)
+      expectElementText(elem.root, failer)
       throw new Error('Should have failed')
     } catch (error) {
       expect(error.message).not.toEqual('Should have failed')
@@ -34,28 +26,28 @@ function hasTextSpec(
 }
 
 describe('Lib / Describers / Has Text', () => {
-  hasTextSpec(
+  expectElementTextSpec(
     'true',
     <span>Hello</span>,
     true,
     false
   )
 
-  hasTextSpec(
+  expectElementTextSpec(
     'false',
     <span />,
     false,
     true
   )
   
-  hasTextSpec(
+  expectElementTextSpec(
     'simple text',
     <span>Hello</span>,
     'Hello',
     'foo'
   )
 
-  hasTextSpec(
+  expectElementTextSpec(
     'regex',
     <span>Hello</span>,
     /hello/i,

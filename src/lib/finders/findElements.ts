@@ -1,9 +1,9 @@
 import { ElemensDescriber, SelectedElement } from '../../types'
 import ReactTestRenderer from 'react-test-renderer'
 import findAllNodes from './findAllNodes'
-import hasType from '../describers/hasType'
-import hasProperty from '../describers/hasProperty'
-import hasText from '../describers/hasText'
+import expectElementType from '../expectations/expectElementType'
+import expectElementProperty from '../expectations/expectElementProperty'
+import expectElementText from '../expectations/expectElementText'
 import IsOneOf from '../entities/IsOneOf'
 import IsNot from '../entities/IsNot'
 import IsNotOneOf from '../entities/IsNotOneOf'
@@ -17,7 +17,7 @@ export default function findElements(
   if (typeof describer === 'string' || typeof describer === 'function') {
     found = found.filter(n => {
       try {
-        hasType(n, describer)
+        expectElementType(n, describer)
         return true
       } catch (error) {
         return false
@@ -46,7 +46,7 @@ export default function findElements(
       if (filter === 'type') {
         found = found.filter(n => {
           try {
-            hasType(n, describer.type)
+            expectElementType(n, describer.type)
             return true
           } catch (error) {
             return false
@@ -55,7 +55,7 @@ export default function findElements(
       } else if (filter === 'property') {
         found = found.filter(n => {
           try {
-            hasProperty(n, describer.property)
+            expectElementProperty(n, describer.property)
             return true
           } catch (error) {
             return false
@@ -64,7 +64,7 @@ export default function findElements(
       } else if (filter === 'text') {
         found = found.filter(n => {
           try {
-            hasText(n, describer.text)
+            expectElementText(n, describer.text)
             return true
           } catch (error) {
             return false

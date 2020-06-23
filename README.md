@@ -422,7 +422,7 @@ function ChangeValue(props) {
   )
 }
 
-<Describe label="Targeting child">
+<Describe label="Passing event arguments">
   <Render>
     <Foo />
   </Render>

@@ -2,9 +2,9 @@ import ReactTestRenderer from 'react-test-renderer'
 import { PropertiesDescriber } from '../../types'
 import { isEmpty } from 'lodash'
 import labelTestInstance from '../labelers/testInstance'
-import hasProperty from './hasProperty'
+import expectElementProperty from './expectElementProperty'
 
-export default function hasProperties(
+export default function expectElementProperties(
   elem: ReactTestRenderer.ReactTestInstance,
   describer: PropertiesDescriber
 ) {
@@ -25,10 +25,10 @@ export default function hasProperties(
   if (Array.isArray(describer)) {
     for (const item of describer) {
       if ('name' in item) {
-        hasProperty(elem, item.name)
+        expectElementProperty(elem, item.name)
       }
       if ('value' in item) {
-        hasProperty(elem, item)
+        expectElementProperty(elem, item)
       }
     }
   }

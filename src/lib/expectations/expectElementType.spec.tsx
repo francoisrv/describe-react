@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactTestRenderer from 'react-test-renderer'
 
-import { TypeDescriber, hasType, isOneOf, isNot, isNotOneOf } from '../..'
+import { TypeDescriber } from '../..'
+import expectElementType, { ExpectElementTypeLabel } from './expectElementType'
 
 function Foo() {
   return <div />
@@ -11,20 +12,21 @@ function Bar() {
   return <div />
 }
 
-function hasTypeSpec(
-  label: string,
+function expectElementTypeSpec(
+  title: string,
   context: React.ReactElement<any>,
-  describer: TypeDescriber,
+  label: ExpectElementTypeLabel,
+  describer: TypeDescriber | TypeDescriber[],
   failer: any
 ) {
-  it(label, () => {
+  it(title, () => {
     const elem = ReactTestRenderer.create(context)
-    hasType(elem.root, describer)
+    expectElementType(elem.root, label as any, describer as any)
   })
   it(`SHOULD FAIL: ${ label }`, () => {
     const elem = ReactTestRenderer.create(context)
     try {
-      hasType(elem.root, failer)
+      expectElementType(elem.root, label as any, failer)
       throw new Error('Should have failed')
     } catch (error) {
       expect(error.message).not.toEqual('Should have failed')
@@ -33,38 +35,43 @@ function hasTypeSpec(
 }
 
 describe('Lib / Describers / Has Type', () => {
-  hasTypeSpec(
+  expectElementTypeSpec(
     'string',
     <span />,
+    'toHaveType',
     'span',
     'div'
   )
 
-  hasTypeSpec(
+  expectElementTypeSpec(
     'component',
     <Foo />,
+    'toHaveType',
     Foo,
     Bar
   )
 
-  hasTypeSpec(
+  expectElementTypeSpec(
     'one of',
     <Foo />,
-    isOneOf(Bar, Foo),
-    isOneOf('div', 'span', Bar)
+    'toHaveOneOfTheseTypes',
+    [Bar, Foo],
+    ['div', 'span', Bar]
   )
 
-  hasTypeSpec(
+  expectElementTypeSpec(
     'not',
     <Foo />,
-    isNot(Bar),
-    isNot(Foo)
+    'notToHaveType',
+    Bar,
+    Foo
   )
 
-  hasTypeSpec(
+  expectElementTypeSpec(
     'not one of',
     <Foo />,
-    isNotOneOf(Bar, 'span'),
-    isNotOneOf(Bar, 'span', Foo),
+    'notToHaveOneOfTheseTypes',
+    [Bar, 'span'],
+    [Bar, 'span', Foo],
   )
 })

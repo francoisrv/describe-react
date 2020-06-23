@@ -7,7 +7,7 @@ import ExpectPropertyValue from '../entities/ExpectPropertyValue'
 import labelTestInstance from '../labelers/testInstance'
 import { printAny } from '../utils'
 
-export default function hasProperty(
+export default function expectElementProperty(
   elem: ReactTestRenderer.ReactTestInstance,
   property: PropertyDescriber
 ) {
@@ -28,7 +28,7 @@ export default function hasProperty(
   } else if (property instanceof IsNot) {
     let fails = false
     try {
-      hasProperty(elem, property.value)
+      expectElementProperty(elem, property.value)
     } catch (error) {
       fails = true
     }
@@ -48,7 +48,7 @@ export default function hasProperty(
     for (const value of property.values) {
       let result = false
       try {
-        hasProperty(elem, value)
+        expectElementProperty(elem, value)
         result = true
       } catch (error) {
         result = false
@@ -78,7 +78,7 @@ export default function hasProperty(
     for (const value of property.values) {
       let result = false
       try {
-        hasProperty(elem, value)
+        expectElementProperty(elem, value)
         result = true
       } catch (error) {
         result = false
@@ -101,7 +101,7 @@ export default function hasProperty(
     const { name, value } = property
 
     if (name) {
-      hasProperty(elem, name)
+      expectElementProperty(elem, name)
     
       if (typeof name === 'string') {
         if (value instanceof ExpectPropertyValue) {

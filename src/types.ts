@@ -45,14 +45,9 @@ export type SelectedElement =
  */
 export type ExpectPropertyFn = (value: any, props: Dictionary<any>) => boolean
 
-export type BasicTypeDescriber =
+export type TypeDescriber =
 | string
 | React.ComponentType<any>
-
-/**
- * Type describer
- */
-export type TypeDescriber = AdvancedDescriber<BasicTypeDescriber>
 
 /**
  * Parent describer

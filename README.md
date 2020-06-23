@@ -41,6 +41,15 @@ jest list.test
   - [Wait]('#Wait')
   - [Unmount]('#Unmount')
   - [Run]('#Run')
+- Expectations
+  - [type]('#Describe')
+  - [text]('#Describe')
+  - [props]('#Describe')
+  - [state]('#Describe')
+  - [parent]('#Describe')
+  - [children]('#Describe')
+  - [siblings]('#Describe')
+  - [any]('#Describe')
 
 ## Describe
 
@@ -193,6 +202,30 @@ You can use the `<Element />` component to fine-grain your selection (view usage
 ## Element
 
 ## Expectation
+
+### Any expectations
+
+```jsx
+class Foo extends React.Component {
+  foo = true
+  render() {
+    return <div />
+  }
+}
+
+<Describe>
+  <Render>
+    <Foo />
+  </Render>
+
+  <Expect
+    root element
+    to={ element => {
+      expect(element.instance).toHaveProperty('foo', true)
+    } }
+  />
+</Describe>
+```
 
 ### Type expectation
 
@@ -379,17 +412,23 @@ function ExpectValue(props) {
   )
 }
 
+function ChangeValue(props) {
+  return (
+    <Event
+      name="change"
+      target="input"
+      argument={{ target: { value: props.value } }}
+    />
+  )
+}
+
 <Describe label="Targeting child">
   <Render>
     <Foo />
   </Render>
   
   <ExpectValue value="" />
-  <Event
-    name="change"
-    target="input"
-    argument={{ target: { value: 'test' } }}
-  />
+  <ChangeValue value="test" />
   <ExpectValue value="test" />
 </Describe>
 ```

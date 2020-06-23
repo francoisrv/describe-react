@@ -1,5 +1,6 @@
 import { utils } from '..'
 import React from 'react'
+import ReactTestRenderer from 'react-test-renderer'
 
 describe('Utils', () => {
   describe('Print any', () => {
@@ -53,6 +54,45 @@ describe('Utils', () => {
         }
       }
       expect(utils.printType(Foo)).toEqual('Foo')
+    })
+  })
+
+  describe('Get text', () => {
+    it('should return null if no children', () => {
+      const elem = ReactTestRenderer.create(
+        <div />
+      )
+      const text = utils.getText(elem.root)
+      expect(text).toBe(null)
+    })
+    it('should return null if no text children', () => {
+      const elem = ReactTestRenderer.create(
+        <div>
+          <span />
+        </div>
+      )
+      const text = utils.getText(elem.root)
+      expect(text).toBe(null)
+    })
+    it('should return text', () => {
+      const elem = ReactTestRenderer.create(
+        <div>
+          Hello
+        </div>
+      )
+      const text = utils.getText(elem.root)
+      expect(text).toBe('Hello')
+    })
+    it('should return text among nodes', () => {
+      const elem = ReactTestRenderer.create(
+        <div>
+          Hello
+          <span>dear</span>
+          Friend
+        </div>
+      )
+      const text = utils.getText(elem.root)
+      expect(text).toBe('Hello Friend')
     })
   })
 })

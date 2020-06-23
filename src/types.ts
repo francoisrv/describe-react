@@ -4,15 +4,26 @@ import IsOneOf from './lib/entities/IsOneOf'
 import IsNot from './lib/entities/IsNot'
 import IsNotOneOf from './lib/entities/IsNotOneOf'
 
-/**
- * Object that describe a selector for all elements
- */
+export type AdvancedDescriber<T> =
+| T
+| IsOneOf<T>
+| IsNot<T>
+| IsNotOneOf<T>
+
 export interface    ElementsObjectDescriber {
   type?:            TypeDescriber
-  parent?:          ParentDescriber
-  props?:           PropsDescriber
+  parent?:          SingleDescriber
+  property?:        PropertyDescriber
   text?:            TextDescriber
 }
+
+export type BasicElementsDescriber =
+| string
+| React.ComponentType<any>
+| true
+| ElementsObjectDescriber
+
+export type ElemensDescriber = AdvancedDescriber<BasicElementsDescriber>
 
 /**
  * Object that describe a selector for a single element
@@ -21,16 +32,6 @@ export interface    SingleDescriber extends ElementsObjectDescriber {
   at?:              number
   last?:            true
 }
-
-/**
- * Props to describe a selector for all elements
- */
-
-export type ElementsDescriber =
-| string
-| React.ComponentType<any>
-| true
-| React.ReactElement<ElementDescriberProps>
 
 /**
  * Object returned by ReactTestRender findAll methods
@@ -51,11 +52,7 @@ export type BasicTypeDescriber =
 /**
  * Type describer
  */
-export type TypeDescriber =
-| BasicTypeDescriber
-| IsOneOf<BasicTypeDescriber>
-| IsNot<BasicTypeDescriber>
-| IsNotOneOf<BasicTypeDescriber>
+export type TypeDescriber = AdvancedDescriber<BasicTypeDescriber>
 
 /**
  * Parent describer
@@ -108,7 +105,7 @@ export type PropertiesDescriber =
 /**
  * Text describer
  */
-export type TextDescriber = string | RegExp
+export type TextDescriber = string | RegExp | boolean
 
 /**
  * Length describer

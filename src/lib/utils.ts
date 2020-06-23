@@ -1,4 +1,4 @@
-import { BasicTypeDescriber } from '../types'
+import { BasicTypeDescriber, SelectedElement } from '../types'
 
 export function printAny(v: any): string {
   if (typeof v === 'function') {
@@ -40,4 +40,24 @@ export function printProperties(props: { [name: string]: any }): string {
     }
   }
   return results.join(' ')
+}
+
+export function getText(elem: SelectedElement): string | null {
+  if (typeof elem === 'string') {
+    return null
+  }
+  if (!elem.children.length) {
+    return null
+  }
+  const textNodes: string[] = elem.children.filter(c => typeof c === 'string') as string[]
+  if (!textNodes.length) {
+    return null
+  }
+  return textNodes.join(' ')
+}
+
+export function getNumberWithOrdinal(n: number) {
+  var s = ["th", "st", "nd", "rd"],
+      v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }

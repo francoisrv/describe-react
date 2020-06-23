@@ -1,8 +1,8 @@
 import ReactTestRenderer from 'react-test-renderer'
 import React from 'react'
-import { utils, SelectedElement, ElementsObjectDescriber, isNot, isOneOf, isNotOneOf } from '.'
-import { TypeDescriber } from './types'
-import { labelToHaveType } from './labelers'
+import { TypeDescriber, ElementsObjectDescriber, SelectedElement, utils, isOneOf, isNot, isNotOneOf } from '../..'
+import findElements from './findElements'
+import labelType from '../labelers/type'
 
 function Bar() {
   return (
@@ -19,7 +19,7 @@ function Foo() {
 function Context() {
   return (
     <div>
-      <span>Hello</span>
+      <span className="foo">Hello</span>
       <ul>
         <li>1</li>
         <li>2</li>
@@ -29,7 +29,7 @@ function Context() {
           <table>
             <tbody>
               <tr>
-                <td>A</td>
+                <td className="foo">A</td>
                 <td>B</td>
                 <td>C</td>
               </tr>
@@ -49,7 +49,7 @@ interface Spec {
   type: TypeDescriber
 }
 
-function findElements(
+function findElementsSpec(
   label: string,
   describer: ElementsObjectDescriber,
   length: number,
@@ -60,7 +60,7 @@ function findElements(
     let found: SelectedElement[] = []
     beforeAll(() => {
       elem = ReactTestRenderer.create(<Context />).root
-      found = utils.findElements(describer, elem)
+      found = findElements(describer, elem)
     })
     it(`should have found ${ length } element(s)`, () => {
       expect(found).toHaveLength(length)
@@ -68,7 +68,7 @@ function findElements(
     specs.forEach((spec, index) => {
       describe(`${ utils.getNumberWithOrdinal(index + 1) } element`, () => {
         if (spec.type) {
-          it(labelToHaveType(spec.type), () => {
+          it(labelType(spec.type), () => {
             if (typeof found[index] === 'string') {
               throw new Error('Expected element, instead got text')
             }
@@ -82,7 +82,7 @@ function findElements(
 
 describe('Find elements', () => {
   describe('General', () => {
-    findElements(
+    findElementsSpec(
       'Return all elements',
       {},
       21,
@@ -91,49 +91,49 @@ describe('Find elements', () => {
   })
 
   describe('Find by type', () => {
-    findElements(
+    findElementsSpec(
       'Find elements by type string',
       { type: 'span' },
       2,
       [{ type: 'span' }, { type: 'span' }]
     )
   
-    findElements(
+    findElementsSpec(
       'Find elements by type component',
       { type: Foo },
       1,
       [{ type: Foo }]
     )
   
-    findElements(
+    findElementsSpec(
       'Find elements by type range string',
       { type: isOneOf('input', 'section') },
       2,
       [{ type: 'section' }, { type: 'input' }]
     )
   
-    findElements(
+    findElementsSpec(
       'Find elements by type range string',
       { type: isOneOf('input', 'section') },
       2,
       [{ type: 'section' }, { type: 'input' }]
     )
   
-    findElements(
+    findElementsSpec(
       'Find elements by type range component',
       { type: isOneOf(Foo, Bar) },
       2,
       [{ type: Foo }, { type: Bar }]
     )
   
-    findElements(
+    findElementsSpec(
       'Find elements by type exclusion',
       { type: isNot(Foo) },
       20,
       []
     )
 
-    findElements(
+    findElementsSpec(
       'Find elements by type range exclusion',
       { type: isNotOneOf(Foo, Bar) },
       19,
@@ -141,10 +141,21 @@ describe('Find elements', () => {
     )
   })
 
-  // describe('Find by property', () => {
-  //   findElements(
-  //     'Find elements by property name',
-  //     {}
-  //   )
-  // })
+  describe('Find by property', () => {
+    findElementsSpec(
+      'Find elements by property name',
+      { property: { name: 'className', value: 'foo' } },
+      2,
+      []
+    )
+  })
+
+  describe('Find by text', () => {
+    findElementsSpec(
+      'Find elements by property name',
+      { text: 'Hello' },
+      1,
+      []
+    )
+  })
 })

@@ -196,27 +196,182 @@ You can use the `<Element />` component to fine-grain your selection (view usage
 
 ## Events
 
-```ts
-type Event = React.FC<{
-  name:         string
-  target?:      string | React.ComponentType<any>
-}>
-```
-
 If the element targeted has en event handler, you can call it like this:
 
 ```jsx
 let foo = 0
 
-<Describe label="Selecting element by position">
+<Describe label="Targeting root element">
   <Render>
     <button onClick={ () => foo++ } />
   </Render>
   
   <Run function={ async() => { expect(foo).toEqual(0) } } />
-  <Event name="click" target root />
+  <Event name="click" />
   <Run function={ async() => { expect(foo).toEqual(1) } } />
 </Describe>
 ```
 
+### Targeting event
+
+By default the targeted element will be the root element. You can target a child by using the `target` attribute which is the same as the `element` attribute of `<Expect />`.
+
+```jsx
+function Foo() {
+  const [counter, setCounter] = React.useState(0)
+  return (
+    <div>
+      <span>{ counter }</span>
+      <button
+        value="+"
+        onClick={ () => setCounter(counter + 1) }
+      />
+    </div>
+  )
+}
+
+<Describe label="Targeting child">
+  <Render>
+    <Foo />
+  </Render>
+  
+  <Expect element="span" toHaveText="0" />
+  <Event name="click" target="button" />
+  <Expect element="span" toHaveText="1" />
+</Describe>
+```
+
+### Passing arguments to the handler
+
+You can pass arguments using either the `argument` attribute -- or the `arguments` attribute to pass more than one argument
+
+```jsx
+function Foo() {
+  const [name, setName] = React.useState(')
+  return (
+    <input
+      value={ name }
+      onChange={ e => setName(e.target.value) }
+    />
+  )
+}
+
+<Describe label="Targeting child">
+  <Render>
+    <Foo />
+  </Render>
+  
+  <Expect
+    element="input"
+    toHaveProperty={{ value: '' }}
+  />
+  <Event
+    name="change"
+    target="input"
+    argument={{ target: { value: 'test' } }}
+  />
+  <Expect
+    element="input"
+    toHaveProperty={{ value: 'test' }}
+  />
+</Describe>
+```
+
 ## Update
+
+You can force the update of the root element. You can pass an optional `props` attribute with new props.
+
+```jsx
+function Foo(props) {
+  return (
+    <div>
+      { props.name }
+    </div>
+  )
+}
+
+<Describe label="Update">
+  <Render>
+    <Foo name="joe" />
+  </Render>
+  
+  <Expect
+    element="div"
+    toHaveText="joe"
+  />
+  <Update
+    props={{ name: 'jess' }}
+  />
+  <Expect
+    element="div"
+    toHaveText="jess"
+  />
+</Describe>
+```
+
+## Unmount
+
+You can unmount the root element
+
+## Run
+
+You can run any function. The context of the tests is passed as the function argument
+
+```jsx
+let foo = 0
+
+function Foo() {
+  return (
+    <div>
+      { foo }
+    </div>
+  )
+}
+
+<Describe label="Run function">
+  <Render>
+    <Foo />
+  </Render>
+
+  <Expect
+    first element
+    toHaveText="0"
+  />
+  <Run
+    function={ () => { foo++ } }
+  />
+  <Update />
+  <Expect
+    first element
+    toHaveText="1"
+  />
+</Describe>
+```
+
+The function can be asynchronous. If so, you can use the `timeout` property to make sure the test does not tinmeout on a long function.
+
+You can also use the `label` attribute to change the default test label, and the `skip` and `only` attributes as well.
+
+## Wait
+
+You can delay execution too
+
+### Wait time
+
+You can wait either milliseconds (via the `milliseconds` or `ms` attribute) or seconds (via the `seconds` attribute)
+
+```jsx
+<Describe label="Wait for time">
+  <Wait seconds={ 5 } label="Simulate slow server response" />
+</Describer>
+```
+
+You can also wait for an element via the `element` attribute or for elements via the `elements` attribute
+
+```jsx
+<Wait for element="div" />
+<Wait
+  for elements={{ elements: 'span', length: 4 }}
+  label="Waiting for 4 spans to show up"
+/>
+```

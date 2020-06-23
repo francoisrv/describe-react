@@ -1,30 +1,9 @@
-import * as React from 'react'
-import Context from '../context'
+import React from 'react'
 
-interface DescribeProps {
-  label: string
-  skip?: boolean
-  only?: boolean
-}
-
-export default function Describe(props: React.PropsWithChildren<DescribeProps>) {
+const Describe: React.FC<{}> = props => {
   return (
-    <Context.Consumer>
-      { value => {
-        if (value.describer) {
-          throw new Error('There is already a describer')
-        }
-        value.describer = {
-          label: props.label,
-          only: Boolean(props.only),
-          skip: Boolean(props.skip),
-        }
-        return (
-          <>
-            { props.children }
-          </>
-        )
-      } }
-    </Context.Consumer>
+    <div></div>
   )
 }
+
+export default Describe

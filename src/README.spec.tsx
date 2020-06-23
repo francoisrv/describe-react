@@ -1,16 +1,11 @@
-import React from 'react'
-import run, { Describe, Render, Expect, Element, Property } from '.'
+import run from "./run"
+import Describe from "./components/Describe"
+import React from "react"
 
 describe('README', () => {
   run(() => (
-    <Describe label="Quick usage">
-      <Render>
-        <span id="foo">Hello</span>
-      </Render>
+    <Describe>
       
-      <Expect
-        root element
-      />
     </Describe>
   ))
 })

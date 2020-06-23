@@ -12,13 +12,13 @@ function Specs() {
   return (
     <Describe label="List">
       <Render>
-        <ul>
-          <li>1</li>
-          <li>2</li>
-        </ul>
+        <span id="foo">Hello</span>
       </Render>
-      <Expect elements="li" toHaveLength={2} />
-      <Expect first element="li" toHaveText="1" />
+      <Expect
+        root element
+        toHaveText="Hello"
+        toHaveProperty="id"
+      />
     </Describe>
   )
 }
@@ -200,6 +200,45 @@ You can use the `<Element />` component to fine-grain your selection (view usage
 ```
 
 ## Element
+
+## Elements
+
+```jsx
+<Expect
+  all elements="div"
+  toHaveText="Hello"
+/>
+
+<Expect
+  some elements="div"
+  toHaveText="Hello"
+/>
+
+<Expect
+  first={ 5 } elements="div"
+  toHaveText="Hello"
+/>
+
+<Expect
+  last={ 5 } elements="div"
+  toHaveText="Hello"
+/>
+
+<Expect
+  odd elements="div"
+  toHaveText="Hello"
+/>
+
+<Expect
+  even elements="div"
+  toHaveText="Hello"
+/>
+
+<Expect
+  elements="div" range={[ 5, 15 ]}
+  toHaveText="Hello"
+/>
+```
 
 ## Expectation
 

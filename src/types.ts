@@ -4,11 +4,20 @@ import IsOneOf from './lib/entities/IsOneOf'
 import IsNot from './lib/entities/IsNot'
 import IsNotOneOf from './lib/entities/IsNotOneOf'
 
-export type AdvancedDescriber<T> =
-| T
-| IsOneOf<T>
-| IsNot<T>
-| IsNotOneOf<T>
+export interface ElementExpectations {
+  toHaveType: TypeDescriber
+  notToHaveType: TypeDescriber
+  toHaveOneOfTheseTypes: TypeDescriber[]
+  notToHaveOneOfTheseTypes: TypeDescriber[]
+}
+
+export type AdvancedDescriber<T> = {
+  equals: T
+  equalsNot: T
+  equalsOneOf: T[]
+  equalsNotOneOf: T[]
+  assert(): void
+}
 
 export interface    ElementsObjectDescriber {
   type?:            TypeDescriber
@@ -23,7 +32,7 @@ export type BasicElementsDescriber =
 | true
 | ElementsObjectDescriber
 
-export type ElemensDescriber = AdvancedDescriber<BasicElementsDescriber>
+export type ElementsDescriber = AdvancedDescriber<BasicElementsDescriber>
 
 /**
  * Object that describe a selector for a single element

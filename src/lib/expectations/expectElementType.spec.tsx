@@ -23,7 +23,7 @@ function expectElementTypeSpec(
     const elem = ReactTestRenderer.create(context)
     expectElementType(elem.root, label as any, describer as any)
   })
-  it(`SHOULD FAIL: ${ label }`, () => {
+  it(`SHOULD FAIL: ${ title }`, () => {
     const elem = ReactTestRenderer.create(context)
     try {
       expectElementType(elem.root, label as any, failer)

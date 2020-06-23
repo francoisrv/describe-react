@@ -1,4 +1,4 @@
-import { ElemensDescriber, SelectedElement } from '../../types'
+import { SelectedElement, ElementsDescriber } from '../../types'
 import ReactTestRenderer from 'react-test-renderer'
 import findAllNodes from './findAllNodes'
 import expectElementType from '../expectations/expectElementType'
@@ -8,16 +8,17 @@ import IsOneOf from '../entities/IsOneOf'
 import IsNot from '../entities/IsNot'
 import IsNotOneOf from '../entities/IsNotOneOf'
 import { isEqual } from 'lodash'
+import expectElementToHaveType from '../expectations/type/expectElementToHaveType'
 
 export default function findElements(
-  describer: ElemensDescriber,
+  describer: ElementsDescriber,
   instance: ReactTestRenderer.ReactTestInstance
 ): SelectedElement[] {
   let found = findAllNodes(instance)
   if (typeof describer === 'string' || typeof describer === 'function') {
     found = found.filter(n => {
       try {
-        expectElementType(n, describer)
+        expectElementToHaveType(n, describer)
         return true
       } catch (error) {
         return false
@@ -46,7 +47,7 @@ export default function findElements(
       if (filter === 'type') {
         found = found.filter(n => {
           try {
-            expectElementType(n, describer.type)
+            expectElementToHaveType(n, describer.type)
             return true
           } catch (error) {
             return false

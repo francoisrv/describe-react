@@ -17,6 +17,7 @@ function Specs() {
       
       <Expect
         root element
+        toHaveType="span"
         toHaveText="Hello"
         toHaveProperty={ <Property name="id" value="foo" /> }
         notToHaveProperty="className"
@@ -35,7 +36,8 @@ jest list.test
 PASS  list.test.js
 Quick usage
   ✓ Expect root element
-    - to have text "Hello" 
+    - to be a <span>
+    - to have text "Hello"
     - to have a property which name is "id" AND which value is "foo"
     - *not* to have a property which name is "className" (2 ms)
 

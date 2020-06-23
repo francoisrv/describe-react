@@ -192,7 +192,121 @@ You can use the `<Element />` component to fine-grain your selection (view usage
 
 ## Element
 
+## Expectation
 
+### Type expectation
+
+Expect an element to have said type
+
+```jsx
+function Foo() {
+  return <span />
+}
+
+<Describe>
+  <Render>
+    <Foo />
+  </Render>
+
+  <Expect
+    root element
+    toHaveType={ Foo }
+  />
+  <Expect
+    first element
+    toHaveType="div"
+  />
+</Describe>
+```
+
+#### Is not type
+
+```jsx
+<Expect element notToHaveType="div" />
+```
+
+#### Is one of types
+
+```jsx
+<Expect element toHaveOneOfTheseTypes={[ 'div', Foo ]} />
+```
+
+#### Is not one of types
+
+```jsx
+<Expect element notToHaveOneOfTheseTypes={[ 'div', Foo ]} />
+```
+
+### Text expectation
+
+```jsx
+<Describe>
+  <Render>
+    <span>Hello</span>
+  </Render>
+
+  <Expect
+    root element
+    toHaveText="Hello"
+  />
+  <Expect
+    root element
+    toHaveText={ /hello/i }
+  />
+</Describe>
+```
+
+#### Has any text
+
+```jsx
+<Expect element toHaveText />
+```
+
+#### Does not have text
+
+```jsx
+<Expect element notToHaveText />
+```
+
+#### Does not have specific text
+
+```jsx
+<Expect element notToHaveText="Hello" />
+<Expect element notToHaveText={ /hello/i } />
+```
+
+#### Matches a range of text
+
+```jsx
+<Expect element toHaveOneOfTheseTexts={[ 'hello', /hello/i ]} />
+```
+
+#### Does not match a range of text
+
+```jsx
+<Expect element notToHaveOneOfTheseTexts={[ 'hello', /hello/i ]} />
+```
+
+### Properties expectation
+
+```jsx
+<Describe label="Properties expectations">
+  <Render>
+    <div id="foo" tabIndex={ 7 } />
+  </Render>
+
+  <Expect element toHaveProperty="id" />
+  <Expect element toHaveProperty={ /id/ } />
+  <Expect element toHaveProperty={{ name: 'id', value: 'foo' }} />
+  <Expect element toHaveProperty={{
+    name: /id/,
+    value: (value, props) => value === 'foo' && props.tabIndex === 7
+  }} />
+  <Expect element notToHaveProperty="id" />
+  <Expect element toHaveOneOfTheseProperties={[ 'id', 'className' ]} />
+  <Expect element noToHaveOneOfTheseProperties={[ 'id', 'className' ]} />
+</Describe>
+```
 
 ## Events
 
@@ -256,24 +370,27 @@ function Foo() {
   )
 }
 
+function ExpectValue(props) {
+  return (
+    <Expect
+      element="input"
+      toHaveProperty={{ value: props.value }}
+    />
+  )
+}
+
 <Describe label="Targeting child">
   <Render>
     <Foo />
   </Render>
   
-  <Expect
-    element="input"
-    toHaveProperty={{ value: '' }}
-  />
+  <ExpectValue value="" />
   <Event
     name="change"
     target="input"
     argument={{ target: { value: 'test' } }}
   />
-  <Expect
-    element="input"
-    toHaveProperty={{ value: 'test' }}
-  />
+  <ExpectValue value="test" />
 </Describe>
 ```
 

@@ -1,6 +1,7 @@
 import ReactTestRenderer from 'react-test-renderer'
 import One, { OneProps } from './components/One'
 import Assert from './entities/Assert'
+import Property, { PropertyProps } from './components/Property'
 
 // ////////////////////////////////////////////////////////////
 // TESTS
@@ -50,15 +51,12 @@ export type UnitTextIdentifier = string | RegExp
 
 export type TextIdentifier = Idenitifier<UnitTextIdentifier>
 
-export interface PropertyObjectIdentifier {
-  name?: string | RegExp
-  value?: any
-}
-
-export type PropertyIdentifier =
+export type UnitPropertyIdentifier =
 | string
 | RegExp
-| PropertyObjectIdentifier
+| React.ReactElement<PropertyProps, typeof Property>
+
+export type PropertyIdentifier = Idenitifier<UnitPropertyIdentifier>
 
 export interface ElementExpectations {
 

@@ -3,10 +3,11 @@ import { startCase, omit } from 'lodash'
 import colors from 'colors'
 import Context from '../context'
 import { SubSection, ElementExpectations, ItProps, Of, UnitTypeIdentifier } from '../types'
-import printType from '../print'
+import { printType, printHasText, printHasType, printHasProperty } from '../print'
 import { getNumberWithOrdinal, isReactElementComponentOf } from '../utils'
 import AssertType from '../entities/Assert'
 import One from './One'
+import Assert from '../entities/Assert'
 
 interface ExpectAnatomy {
   label: string
@@ -67,6 +68,7 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
 
   for (const prop in nextProps) {
     let label = startCase(prop).toLowerCase()
+      .replace(/^not /, colors.italic('not '))
     const identifier = nextProps[prop]
 
     switch (prop) {
@@ -77,95 +79,17 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
 
       case 'toHaveType':
       case 'notToHaveType': {
-        label = ''
-        if (prop === 'notToHaveType') {
-          label += colors.italic('not ')
-        }
-        label += 'to have type'
-        if (identifier instanceof AssertType) {
-          if (identifier.label) {
-            label += ` which satisfies assertion "${ colors.bold.underline(identifier.label) }"`
-          } else {
-            label += ` which satisfies assertion ${ colors.bold.underline(identifier.assert.name || identifier.assert.toString()) }`
-          }
-        } else if(isReactElementComponentOf(identifier, One)) {
-          label += ' which either '
-          label += identifier.props.of
-            .map((t: Of<UnitTypeIdentifier>) => {
-              if (typeof t === 'string' || typeof t === 'function') {
-                return `is <${ colors.bold.underline(printType(t)) }>`
-              }
-              if (t.label) {
-                return `which satisfies assertion "${ colors.bold.underline(t.label) }"`
-              } else {
-                return `which satisfies assertion ${ colors.bold.underline(t.assert.name || t.assert.toString()) }`
-              }
-            })
-            .join(colors.italic(' or '))
-        } else {
-          label += ` <${ colors.bold.underline(printType(identifier)) }>`
-        }
-      } break
-
-      case 'toIncludeType':
-      case 'notToIncludeType': {
-        label = ''
-        if (prop === 'notToIncludeType') {
-          label += colors.italic('not ')
-        }
-        label += `to have type ${ identifier.map(n => `<${ colors.bold.underline(printType(n)) }>`).join(colors.italic(` ${ prop === 'notToIncludeType' ? 'n' : '' }or `) ) }`
+        label += ` ${  printHasType(identifier, prop === 'notToHaveType') }`
       } break
 
       case 'toHaveText':
       case 'notToHaveText': {
-        if (typeof identifier === 'string') {
-          label += ` "${ colors.bold.underline(identifier.toString()) }"`
-        } else if (identifier instanceof RegExp) {
-          label += ` which matches ${ colors.bold.underline(identifier.toString()) }`
-        }
-      } break
-
-      case 'toIncludeText':
-      case 'notToIncludeText': {
-        label = ''
-        if (prop === 'notToIncludeText') {
-          label += colors.italic('not ')
-        }
-        label += 'to have text which'
-        const inbits: string[] = []
-        for (const item of identifier) {
-          if (typeof item === 'string') {
-            inbits.push(`equals "${ colors.bold.underline(item) }"`)
-          } else if (item instanceof RegExp) {
-            inbits.push(`matches ${ colors.bold.underline(item.toString()) }`)
-          }
-        }
-        label += ` ${ inbits.join(colors.italic(` ${ prop === 'notToIncludeText' ? 'n' : '' }or `) ) }`
+        label += ` ${ printHasText(identifier, prop === 'notToHaveText') }`
       } break
 
       case 'toHaveProperty':
       case 'notToHaveProperty': {
-        if (typeof identifier === 'string') {
-          label += ` named "${ colors.bold.underline(identifier.toString()) }"`
-        } else if (identifier instanceof RegExp) {
-          label += ` which name matches ${ colors.bold.underline(identifier.toString()) }`
-          // @ts-ignore
-        } else if (typeof identifier === 'object'){
-          if ('name' in identifier) {
-            if (typeof identifier.name === 'string') {
-              label += ` which name is "${ colors.bold.underline(identifier.name.toString()) }"`
-            } else if (identifier.name instanceof RegExp) {
-              label += ` which name matches ${ colors.bold.underline(identifier.name.toString()) }`
-              // @ts-ignore
-            }
-            if ('value' in identifier) {
-              label += colors.italic(' and')
-            }
-          }
-          if ('value' in identifier) {
-            label += ' which value'
-          }
-        }
+        label += ` ${ printHasProperty(identifier, prop === 'notToHaveProperty') }`
       } break
 
     }

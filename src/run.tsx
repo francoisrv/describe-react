@@ -1,5 +1,6 @@
 import ReactTestRenderer from 'react-test-renderer'
 import React from 'react'
+import colors from 'colors'
 import { ItProps, ContextInterface } from './types'
 import Context from './context'
 
@@ -17,10 +18,10 @@ export function convertToTests(ctx: ContextInterface) {
   if (!ctx.describer) {
     throw new Error('Missing Describe element')
   }
-  makeDescriber(ctx.describer)(ctx.describer.label, () => {
+  makeDescriber(ctx.describer)(colors.bold(ctx.describer.label), () => {
     for (const section of ctx.sections) {
       if (section.customLabel) {
-        makeDescriber(section)(section.customLabel, () => {
+        makeDescriber(section)(colors.underline(section.customLabel), () => {
           describe(section.label, () => {
             for (const subSection of section.sections) {
               makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())

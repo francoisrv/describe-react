@@ -82,35 +82,26 @@ export type StateIdentifier =
 | UnitStateIdentifier
 
 export interface ElementExpectations {
-
-  toHaveType?: TypeIdentifier
-  notToHaveType?: TypeIdentifier
-
-  toHaveText?: TextIdentifier
-  notToHaveText?: TextIdentifier
-
-  toHaveProperty?: PropertyIdentifier
-  notToHaveProperty?: PropertyIdentifier
-
-  toHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-  notToHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-
-  toHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-  notToHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-
-  toHaveState?: StateIdentifier
-  notToHaveState?: StateIdentifier
-
-  toHaveChild?: TypeIdentifier
-  notToHaveChild?: TypeIdentifier
-
-  toBeOnlyChild?: boolean
   notToBeOnlyChild?: boolean
-
-  toHaveParent?: any
-  notToHaveParent?: any
-
-  toHaveDirectParent?: any
+  notToHaveChild?: TypeIdentifier
   notToHaveDirectParent?: any
-
+  notToHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+  notToHaveParent?: any
+  notToHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+  notToHaveProperty?: PropertyIdentifier
+  notToHaveState?: StateIdentifier
+  notToHaveText?: TextIdentifier
+  notToHaveType?: TypeIdentifier
+  toBeOnlyChild?: boolean
+  toHaveChild?: TypeIdentifier
+  toHaveDirectParent?: any
+  toHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+  toHaveParent?: any
+  toHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+  toHaveProperty?: PropertyIdentifier
+  toHaveState?: StateIdentifier
+  toHaveText?: TextIdentifier
+  toHaveType?: TypeIdentifier
+  toHaveSibling?: any
+  toHaveSiblings?: any
 }

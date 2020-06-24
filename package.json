@@ -14,7 +14,8 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "prepublishOnly": "npm run build && npm test",
-    "test": "jest dist"
+    "test": "jest dist",
+    "docsify": "docsify serve ./docs"
   },
   "keywords": [
     "react",
@@ -26,6 +27,7 @@
     "@types/react": "^16.9.38",
     "@types/react-test-renderer": "^16.9.2",
     "colors": "^1.4.0",
+    "docsify-cli": "^4.4.1",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

@@ -3,7 +3,7 @@ import { startCase, omit } from 'lodash'
 import colors from 'colors'
 import Context from '../context'
 import { SubSection, ElementExpectations, ItProps, Of, UnitTypeIdentifier } from '../types'
-import { printType, printHasText, printHasType, printHasProperty } from '../print'
+import { printType, printHasText, printHasType, printHasProperty, printHasProperties, printHasState } from '../print'
 import { getNumberWithOrdinal, isReactElementComponentOf } from '../utils'
 import AssertType from '../entities/Assert'
 import One from './One'
@@ -89,7 +89,20 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
 
       case 'toHaveProperty':
       case 'notToHaveProperty': {
+        if (Array.isArray(identifier)) {
+          label = label.replace(/property/, 'properties')
+        }
         label += ` ${ printHasProperty(identifier, prop === 'notToHaveProperty') }`
+      } break
+
+      case 'toHaveProperties':
+      case 'notToHaveProperties': {
+        label += ` ${ printHasProperties(identifier, prop === 'notToHaveProperties') }`
+      } break
+
+      case 'toHaveState':
+      case 'notToHaveState': {
+        label += ` ${ printHasState(identifier, prop === 'notToHaveState') }`
       } break
 
     }

@@ -2,6 +2,7 @@ import ReactTestRenderer from 'react-test-renderer'
 import One, { OneProps } from './components/One'
 import Assert from './entities/Assert'
 import Property, { PropertyProps } from './components/Property'
+import State, { StateProps } from './components/State'
 
 // ////////////////////////////////////////////////////////////
 // TESTS
@@ -56,7 +57,29 @@ export type UnitPropertyIdentifier =
 | RegExp
 | React.ReactElement<PropertyProps, typeof Property>
 
-export type PropertyIdentifier = Idenitifier<UnitPropertyIdentifier>
+export type PropertyIdentifier = 
+| Idenitifier<UnitPropertyIdentifier>
+| Array<Idenitifier<UnitPropertyIdentifier>>
+
+export type UnitPropertiesIdentifier = Array<
+  | string
+  | RegExp
+  | React.ReactElement<OneProps<string | RegExp>, typeof One>
+  | React.ReactElement<PropertyProps, typeof Property>
+>
+
+export type PropertiesIdentifier = 
+| UnitPropertiesIdentifier
+| Assert<UnitPropertiesIdentifier>
+
+export type UnitStateIdentifier =
+| string
+| RegExp
+| React.ReactElement<StateProps, typeof State>
+| Assert<UnitStateIdentifier>
+
+export type StateIdentifier =
+| UnitStateIdentifier
 
 export interface ElementExpectations {
 
@@ -68,5 +91,26 @@ export interface ElementExpectations {
 
   toHaveProperty?: PropertyIdentifier
   notToHaveProperty?: PropertyIdentifier
+
+  toHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+  notToHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+
+  toHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+  notToHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
+
+  toHaveState?: StateIdentifier
+  notToHaveState?: StateIdentifier
+
+  toHaveChild?: TypeIdentifier
+  notToHaveChild?: TypeIdentifier
+
+  toBeOnlyChild?: boolean
+  notToBeOnlyChild?: boolean
+
+  toHaveParent?: any
+  notToHaveParent?: any
+
+  toHaveDirectParent?: any
+  notToHaveDirectParent?: any
 
 }

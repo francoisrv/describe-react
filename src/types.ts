@@ -1,7 +1,6 @@
 import ReactTestRenderer from 'react-test-renderer'
-import AssertType from './entities/AssertType'
-import OneOf from './entities/OneOf'
-import { OneProps } from './components/One'
+import One, { OneProps } from './components/One'
+import Assert from './entities/Assert'
 
 // ////////////////////////////////////////////////////////////
 // TESTS
@@ -33,22 +32,23 @@ export interface ContextInterface {
 // IDENTIFIERS
 // ////////////////////////////////////////////////////////////
 
-export type Idenitifier<T> =
+export type Of<T> = 
 | T
-| T[]
+| Assert<T>
+
+export type Idenitifier<T> =
+| Of<T>
+| React.ReactElement<OneProps<T | Assert<T>>, typeof One>
 
 export type UnitTypeIdentifier =
 | string
 | React.ComponentType<any>
 
-export type TypeIdentifier = 
-| UnitTypeIdentifier
-| AssertType
-| OneOf<UnitTypeIdentifier>
-// | React.ReactElement<OneProps<UnitTypeIdentifier| OneOf<UnitTypeIdentifier>>>
-| React.ReactElement<{ foo: true }>
+export type TypeIdentifier = Idenitifier<UnitTypeIdentifier>
 
-export type TextIdentifier = string | RegExp
+export type UnitTextIdentifier = string | RegExp
+
+export type TextIdentifier = Idenitifier<UnitTextIdentifier>
 
 export interface PropertyObjectIdentifier {
   name?: string | RegExp

@@ -2,10 +2,10 @@ import React from 'react'
 import { startCase, omit } from 'lodash'
 import colors from 'colors'
 import Context from '../context'
-import { SubSection, ElementExpectations, ItProps } from '../types'
+import { SubSection, ElementExpectations, ItProps, Of, UnitTypeIdentifier } from '../types'
 import printType from '../print'
 import { getNumberWithOrdinal, isReactElementComponentOf } from '../utils'
-import AssertType from '../entities/AssertType'
+import AssertType from '../entities/Assert'
 import One from './One'
 
 interface ExpectAnatomy {
@@ -91,14 +91,15 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
         } else if(isReactElementComponentOf(identifier, One)) {
           label += ' which either '
           label += identifier.props.of
-            .map((t: string | React.ComponentType<any>) => {
+            .map((t: Of<UnitTypeIdentifier>) => {
               if (typeof t === 'string' || typeof t === 'function') {
                 return `is <${ colors.bold.underline(printType(t)) }>`
               }
-              if (typeof t === 'function') {
-                return 
+              if (t.label) {
+                return `which satisfies assertion "${ colors.bold.underline(t.label) }"`
+              } else {
+                return `which satisfies assertion ${ colors.bold.underline(t.assert.name || t.assert.toString()) }`
               }
-              return ''
             })
             .join(colors.italic(' or '))
         } else {

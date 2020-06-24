@@ -19,11 +19,21 @@ export function convertToTests(ctx: ContextInterface) {
   }
   makeDescriber(ctx.describer)(ctx.describer.label, () => {
     for (const section of ctx.sections) {
-      makeDescriber(section)(section.label, () => {
-        for (const subSection of section.sections) {
-          makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())
-        }
-      })
+      if (section.customLabel) {
+        makeDescriber(section)(section.customLabel, () => {
+          describe(section.label, () => {
+            for (const subSection of section.sections) {
+              makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())
+            }
+          })
+        })
+      } else {
+        makeDescriber(section)(section.label, () => {
+          for (const subSection of section.sections) {
+            makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())
+          }
+        })
+      }
     }
   })
 }
@@ -41,24 +51,7 @@ export default function run(Tests: React.ComponentType<any>) {
       <Tests />
     </Context.Provider>
   )
-  console.log({context})
+  // console.log({context})
   // @ts-ignore
-  convertToTests({
-    describer: {
-      label: 'Hello',
-    },
-    sections: [
-      {
-        label: 'Cool',
-        sections: [
-          {
-            label: 'Messi',
-            fn() {
-              console.log('hey')
-            }
-          }
-        ]
-      }
-    ]
-  })
+  convertToTests(context)
 }

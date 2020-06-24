@@ -312,13 +312,13 @@ function Foo() {
 #### Is one of types
 
 ```jsx
-<Expect element toHaveOneOfTheseTypes={[ 'div', Foo ]} />
+<Expect element toIncludeType={[ 'div', Foo ]} />
 ```
 
 #### Is not one of types
 
 ```jsx
-<Expect element notToHaveOneOfTheseTypes={[ 'div', Foo ]} />
+<Expect element notToIncludeType={[ 'div', Foo ]} />
 ```
 
 ### Text expectation
@@ -362,13 +362,13 @@ function Foo() {
 #### Matches a range of text
 
 ```jsx
-<Expect element toHaveOneOfTheseTexts={[ 'hello', /hello/i ]} />
+<Expect element toIncludeText={[ 'hello', /hello/i ]} />
 ```
 
 #### Does not match a range of text
 
 ```jsx
-<Expect element notToHaveOneOfTheseTexts={[ 'hello', /hello/i ]} />
+<Expect element notToIncludeText={[ 'hello', /hello/i ]} />
 ```
 
 ### Properties expectation

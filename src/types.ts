@@ -5,6 +5,7 @@ import Property, { PropertyProps } from './components/Property'
 import State, { StateProps } from './components/State'
 import IsTrue from './entities/IsTrue'
 import Type, { TypeProps } from './components/Type'
+import Element, { ElementProps } from './components/Element'
 
 // ////////////////////////////////////////////////////////////
 // TESTS
@@ -40,7 +41,7 @@ export type UnitChildSelector =
 | boolean
 | string
 | React.ComponentType<any>
-| React.ReactElement<TypeProps, typeof Type>
+| React.ReactElement<ElementProps, typeof Element>
 
 export type ChildSelector =
 | UnitChildSelector

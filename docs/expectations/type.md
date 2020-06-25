@@ -47,9 +47,9 @@ PASS
 
 ```
 
-## Has one of types
+## Using &lt;Is />
 
-You can expect the type to be one of
+You can fine grain the selection using [Is](components/Is)
 
 ```jsx
 <Describe label="Has one of types">
@@ -58,7 +58,7 @@ You can expect the type to be one of
   </Render>
 
   <Expect
-    root element toHaveType={ <One of={[ 'div', 'section' ]} /> }
+    root element toHaveType={ <Is one of={[ 'div', 'section' ]} /> }
   />
 </Describe>
 ```

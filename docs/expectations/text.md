@@ -58,73 +58,18 @@ You can also use a regular expression to match a text
 </Describe>
 ```
 
-## Has verified text
+## Using &lt;Is />
 
-In case you want more advanced control, you could use the [isTrue](functions/isTrue) function which will throw if the function does not return true.
+You can fine grain the selection using [Is](components/Is)
 
 ```jsx
-<Describe label="matches text">
+<Describe label="Has one of types">
   <Render>
-    <div>hello</div>
+    <div />
   </Render>
 
   <Expect
-    root element
-    toHaveText={
-      isTrue(
-        text => text.length > 2,
-        'Text should be more than 2 characters long'
-      )
-    }
-  />
-</Describe>
-```
-
-## Has asserted text
-
-You could use the [assert](functions/assert) function which is executed. You could place your own assertions inside the body of the function
-
-```jsx
-<Describe label="matches text">
-  <Render>
-    <div>hello</div>
-  </Render>
-
-  <Expect
-    root element
-    toHaveText={
-      assert(
-        text => { expect(text).toHaveLength(15) },
-        'Expect text to be 15 characters long'
-      )
-    }
-  />
-</Describe>
-```
-
-## Has text which is one of
-
-You could use the [One](components/One) component to match one of the list. It accepts any conditions accepted by `toHaveText` except `<One of />`
-
-```jsx
-<Describe label="matches text">
-  <Render>
-    <div>hello</div>
-  </Render>
-
-  <Expect
-    root element
-    toHaveText={
-      <One
-        of={[
-          'hello',
-          'bye',
-          /foo/,
-          isTrue(fn),
-          assert(fn)
-        ]}
-      />
-    }
+    root element toHaveText={ <Is one of={[ 'hello', 'goodbye' ]} /> }
   />
 </Describe>
 ```

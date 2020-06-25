@@ -1,9 +1,14 @@
 import { TypeIdentifier, PropertyIdentifier, StateIdentifier } from "../types";
+import React from "react";
 
 export interface ElementProps {
   type: TypeIdentifier
   property: PropertyIdentifier
   state: StateIdentifier
-  parent: string
-  
+}
+
+export default function Element(props: ElementProps)  {
+  return (
+    <div />
+  )
 }

@@ -71,32 +71,24 @@ describe('Print expect', () => {
     describe('Child identifier', () => {
       const tests: Test[] = [
         {
-          props: { child: 'div' },
-          result: 'first child having type div'
+          props: { only: true, child: 'div' },
+          result: 'only child with type div'
         },
         {
           props: { child: Describe },
-          result: 'first child having type Describe'
+          result: 'first child with type Describe'
         },
+      ]
+      for (const t of tests) {
+        describeTest(t)
+      }
+    })
+
+    describe('Child of', () => {
+      const tests: Test[] = [
         {
-          props: { child: <Type is="div" /> },
-          result: 'first child having type div'
-        },
-        {
-          props: { child: <Type isNot="div" /> },
-          result: 'first child not having type div'
-        },
-        {
-          props: { child: <Type isOneOf={[ 'div', Describe ]} /> },
-          result: 'first child having type which is one of div or Describe'
-        },
-        {
-          props: { child: <Type isNotOneOf={[ 'div', Describe ]} /> },
-          result: 'first child having type which is not div nor Describe'
-        },
-        {
-          props: { child: <Element type={ <Not><Type is="div" /></Not> } /> },
-          result: 'first child having type which is not div nor Describe'
+          props: { child: true, of: 'div' },
+          result: 'first child of parent element div'
         },
       ]
       for (const t of tests) {

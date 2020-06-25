@@ -13,6 +13,7 @@ export interface PrintSelectorProps {
   every?:         true
   first?:         true
   last?:          true
+  of?:            amy
   only?:          true
   range?:         [number, number]
   root?:          true
@@ -42,19 +43,23 @@ export default function printSelector(props: PrintSelectorProps) {
         typeof props.child === 'string' ||
         typeof props.child === 'function'
       ) {
-        bits.push(`having type ${ printType(props.child) }`)
+        bits.push(`with type ${ printType(props.child) }`)
       } else if (typeof props.child === 'boolean') {
 
       } else if (isReactElementComponentOf(props.child, Type)) {
         if (props.child.props.is) {
-          bits.push(`having type ${ printType(props.child.props.is) }`)
+          bits.push(`with type ${ printType(props.child.props.is) }`)
         } else if (props.child.props.isNot) {
-          bits.push(`not having type ${ printType(props.child.props.isNot) }`)
+          bits.push(`not with type ${ printType(props.child.props.isNot) }`)
         } else if (props.child.props.isOneOf) {
-          bits.push(`having type which is one of ${ props.child.props.isOneOf.map(printType).join(' or ') }`)
+          bits.push(`with type which is one of ${ props.child.props.isOneOf.map(printType).join(' or ') }`)
         } else if (props.child.props.isNotOneOf) {
-          bits.push(`having type which is not ${ props.child.props.isNotOneOf.map(printType).join(' nor ') }`)
+          bits.push(`with type which is not ${ props.child.props.isNotOneOf.map(printType).join(' nor ') }`)
         }
+      }
+
+      if (props.of) {
+        bits.push('of parent element div')
       }
     }
   }

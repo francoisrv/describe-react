@@ -76,119 +76,23 @@ Expect target to not have properties at all
 <Expect root element notToHaveProperties />
 ```
 
-## has property &lt;Property />
+## Using &lt;Is />
 
-You can use the `<Property />` component to fine grain your selection
-
-```jsx
-<Expect
-  root element
-  toHaveProperty={ <Property name="disabled" value={ false } /> }
-/>
-```
-
-### assert and isTrue
-
-This is especially useful when used in conjunction with the properties `assert` and `isTrue`:
+You can fine grain the selection using [Is](components/Is) inside the object
 
 ```jsx
-<Describe label="assert and isTrue property">
+<Describe label="Has one of types">
   <Render>
-    <input value={ 27 } />
+    <div />
   </Render>
 
   <Expect
     root element
-    toHaveProperty={
-      <Property name="value"
-        isTrue={ prop => prop === 27 }
-      />
-    }
-  />
-
-  <Expect
-    root element
-    toHaveProperty={
-      <Property name="value"
-        assert={ prop => { expect(prop).toEqual(27) } }
-      />
-    }
+    toHaveProperty={{
+      type: <Is not="email" />
+    }}
   />
 </Describe>
-```
-
-Both functions will receive the following arguments:
-
-- `prop` The value of the property identified by name
-- `name` The name of the property
-- `props` All the properties of the targeted element
-- `elem` The [react-test-renderer](https://reactjs.org/docs/test-renderer.html) instance of the targeted element
-- `localState` The local state of the tests
-
-### properties usage
-
-You can use the `<Property />` in the following fashions:
-
-#### without props
-
-Using `<Property />` without props is redundant but will work and will resolve to true:
-
-```jsx
-<Expect element toHaveProperty={ <Property /> } />
-// is the same than:
-<Expect element toHaveProperty />
-
-<Expect element notToHaveProperty={ <Property /> } />
-// is the same than:
-<Expect element notToHaveProperty />
-```
-
-#### with only name
-
-Using `<Property />` with only the `name` property is redundant but will work:
-
-```jsx
-<Expect element toHaveProperty={ <Property name="disabled" /> } />
-// is the same than:
-<Expect element toHaveProperty="disabled" />
-```
-
-#### without name
-
-You can omit the `name` property. In this case, it will check all properties for a match:
-
-```jsx
-<Expect
-  element
-  toHaveProperty={ <Property value={ false } /> }
-  label="Must have one property which value is false, regardless of its name"
-/>
-```
-
-If you use only `assert` or `isTrue`, then it will also check all properties for a match
-
-## has property which is one of
-
-You can use `<One of />` to find a property. The values admitted are:
-
-- string
-- regular expression
-- object
-- &lt;Property />
-
-```jsx
-<Expect
-  element
-  toHaveProperty={
-    <One
-      of={[
-        'disabled',
-        { required: true },
-        <Property name="value" assert={ val => val > 100 } />,
-      ]}
-    />>
-  }
-/>
 ```
 
 ## to have properties
@@ -224,7 +128,7 @@ You can check for more than one property. In this case, use an array of which ea
 </Describe>
 ```
 
-`toHaveProperty` can also accept a `isTrue` or `assert` function
+`toHaveProperties` can also accept a [Is](components/Is)
 
 ```jsx
 <Describe label="has properties">
@@ -241,7 +145,11 @@ You can check for more than one property. In this case, use an array of which ea
   <Expect
     root element
     toHaveProperties={
-      isTrue(props => props.required && props.type === 'number')
+      <Is
+        true={
+          props => props.required && props.type === 'number'
+        }
+      />
     }
   />
 </Describe>

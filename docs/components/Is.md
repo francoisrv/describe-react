@@ -3,6 +3,7 @@
 ## Simple checks
 
 ```jsx
+<Is anything />
 <Is true />
 <Is false />
 <Is null />

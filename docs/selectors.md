@@ -153,3 +153,23 @@ You can specify the child's element
   />
 </Describe>
 ```
+
+## Children
+
+You can target all children
+
+```jsx
+<Expect children toHaveType="div" />
+// Is the same than
+<Expect all children toHaveType="div" />
+```
+
+### Range children
+
+```jsx
+<Expect first={ 2 } children toHaveType="div" />
+<Expect last={ 5 } children toHaveType="div" />
+<Expect children range={[ 5, 15 ]} toHaveType="div" />
+```
+
+`children` accept the same values as `child` 

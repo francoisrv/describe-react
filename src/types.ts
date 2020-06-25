@@ -3,6 +3,7 @@ import One, { OneProps } from './components/One'
 import Assert from './entities/Assert'
 import Property, { PropertyProps } from './components/Property'
 import State, { StateProps } from './components/State'
+import IsTrue from './entities/IsTrue'
 
 // ////////////////////////////////////////////////////////////
 // TESTS
@@ -42,15 +43,30 @@ export type Idenitifier<T> =
 | Of<T>
 | React.ReactElement<OneProps<T | Assert<T>>, typeof One>
 
+// TYPE IDENTIFIER
+// ////////////////////////////////////////////////////////////
+
 export type UnitTypeIdentifier =
 | string
 | React.ComponentType<any>
 
-export type TypeIdentifier = Idenitifier<UnitTypeIdentifier>
+export type TypeIdentifier =
+| UnitTypeIdentifier
+| React.ReactElement<OneProps<UnitTypeIdentifier>, typeof One>
 
-export type UnitTextIdentifier = string | RegExp
+// TEXT IDENTIFIER
+// ////////////////////////////////////////////////////////////
 
-export type TextIdentifier = Idenitifier<UnitTextIdentifier>
+export type UnitTextIdentifier =
+| string
+| RegExp
+| IsTrue<string>
+| Assert<string>
+
+export type TextIdentifier =
+| UnitTextIdentifier
+| boolean
+| React.ReactElement<OneProps<UnitTextIdentifier>, typeof One>
 
 export type UnitPropertyIdentifier =
 | string

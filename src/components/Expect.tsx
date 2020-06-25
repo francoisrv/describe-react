@@ -3,11 +3,12 @@ import { startCase, omit } from 'lodash'
 import colors from 'colors'
 import Context from '../context'
 import { SubSection, ElementExpectations, ItProps, Of, UnitTypeIdentifier } from '../types'
-import { printType, printHasText, printHasType, printHasProperty, printHasProperties, printHasState } from '../print'
 import { getNumberWithOrdinal, isReactElementComponentOf } from '../utils'
 import AssertType from '../entities/Assert'
 import One from './One'
 import Assert from '../entities/Assert'
+import printHasType from '../print/printHasType'
+import printHasText from '../print/printHasText'
 
 interface ExpectAnatomy {
   label: string
@@ -29,6 +30,7 @@ interface ExpectProps extends ElementExpectations, Omit<ItProps, 'label'> {
 function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
   const bits: string[] = []
   const sections: SubSection[] = []
+  let label = ''
   const nextProps = omit(props, [
     'element',
     'elements',
@@ -41,7 +43,8 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
     'label',
     'only',
     'skip',
-    'timeout'
+    'timeout',
+    'child'
   ])
 
   if (props.element === true) {
@@ -67,8 +70,6 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
   }
 
   for (const prop in nextProps) {
-    let label = startCase(prop).toLowerCase()
-      .replace(/^not /, colors.italic('not '))
     const identifier = nextProps[prop]
 
     switch (prop) {
@@ -79,31 +80,31 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
 
       case 'toHaveType':
       case 'notToHaveType': {
-        label += ` ${  printHasType(identifier, prop === 'notToHaveType') }`
+        label = printHasType(identifier, prop === 'notToHaveType')
       } break
 
       case 'toHaveText':
       case 'notToHaveText': {
-        label += ` ${ printHasText(identifier, prop === 'notToHaveText') }`
+        label = printHasText(identifier, prop === 'notToHaveText')
       } break
 
-      case 'toHaveProperty':
-      case 'notToHaveProperty': {
-        if (Array.isArray(identifier)) {
-          label = label.replace(/property/, 'properties')
-        }
-        label += ` ${ printHasProperty(identifier, prop === 'notToHaveProperty') }`
-      } break
+      // case 'toHaveProperty':
+      // case 'notToHaveProperty': {
+      //   if (Array.isArray(identifier)) {
+      //     label = label.replace(/property/, 'properties')
+      //   }
+      //   label += ` ${ printHasProperty(identifier, prop === 'notToHaveProperty') }`
+      // } break
 
-      case 'toHaveProperties':
-      case 'notToHaveProperties': {
-        label += ` ${ printHasProperties(identifier, prop === 'notToHaveProperties') }`
-      } break
+      // case 'toHaveProperties':
+      // case 'notToHaveProperties': {
+      //   label += ` ${ printHasProperties(identifier, prop === 'notToHaveProperties') }`
+      // } break
 
-      case 'toHaveState':
-      case 'notToHaveState': {
-        label += ` ${ printHasState(identifier, prop === 'notToHaveState') }`
-      } break
+      // case 'toHaveState':
+      // case 'notToHaveState': {
+      //   label += ` ${ printHasState(identifier, prop === 'notToHaveState') }`
+      // } break
 
     }
 

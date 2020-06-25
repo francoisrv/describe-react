@@ -6,88 +6,11 @@ import { isReactElementComponentOf } from './utils'
 import One, { OneProps } from './components/One'
 import Property, { PropertyProps } from './components/Property'
 
-export function printType(type: UnitTypeIdentifier) {
-  if (typeof type === 'string') {
-    return type
-  }
-  if (type.name) {
-    return type.name
-  }
-}
 
-export function printLogicOperator(str: string) {
-  return colors.italic(str)
-}
 
-export function printHighlight(str: string) {
-  return colors.bold.underline(str)
-}
 
-export function printAssertion(assertion: Assert<any>) {
-  if (assertion.label) {
-    return assertion.label
-  }
-  if (assertion.assert.name) {
-    return assertion.assert.name
-  }
-  return assertion.assert.toString()
-}
 
-export function printOrNor(not = false) {
-  return not ? 'nor' : 'or'
-}
 
-export function printHasText(identifier: TextIdentifier, not = false) {
-  const bits: string[] = []
-  if (typeof identifier === 'string') {
-    bits.push(
-      'which equals',
-      printHighlight(identifier.toString())
-    )
-  } else if (identifier instanceof RegExp) {
-    bits.push(`which matches ${ printHighlight(identifier.toString()) }`)
-  } else if (identifier instanceof Assert) {
-    bits.push(`which statisfies assertion ${ printHighlight(printAssertion(identifier)) }`)
-  } else if(isReactElementComponentOf(identifier, One)) {
-    const ofs = identifier.props.of.map(p => printHasText(p, not).replace(/^which /, ''))
-    bits.push(
-      'which',
-      ofs.join(printLogicOperator(` ${ printOrNor(not)} `))
-    )
-  }
-  return bits.join(' ')
-}
-
-export function printHasType(identifier: TypeIdentifier, not = false) {
-  const bits: string[] = []
-  if (typeof identifier === 'string') {
-    bits.push(
-      'which is',
-      `< ${ printHighlight(identifier.toString()) } >`
-    )
-  } else if (typeof identifier === 'function') {
-    if (identifier.name) {
-      bits.push(
-        'which is component',
-        `< ${ printHighlight(identifier.name) } >`
-      )
-    } else {
-      bits.push(
-        'which is component',
-        `< ${ printHighlight(identifier.toString()) } >`
-      )
-    }
-  } else if (identifier instanceof Assert) {
-    bits.push(`which statisfies assertion ${ printHighlight(printAssertion(identifier)) }`)
-  } else if(isReactElementComponentOf(identifier, One)) {
-    const ofs = identifier.props.of.map(p => printHasType(p, not).replace(/^which /, ''))
-    bits.push(
-      'which',
-      ofs.join(printLogicOperator(` ${ printOrNor(not)} `))
-    )
-  }
-  return bits.join(' ')
-}
 
 export function printHasProperty(identifier: PropertyIdentifier, not = false) {
   const bits: string[] = []

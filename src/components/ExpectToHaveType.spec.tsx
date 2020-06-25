@@ -34,13 +34,6 @@ run(() => (
 
     <Expect
       root element
-      toHaveType={ assert(lambda, 'is a valid type') }
-      notToHaveType={ assert(lambda, 'is a valid type') }
-      label={ `type identifier is an ${ colors.bold('assertion') }` }
-    />
-
-    <Expect
-      root element
       toHaveType={ <One<Of<UnitTypeIdentifier>> of={[ 'div', Duda, assert(lambda, 'is a valid type') ]} /> }
       notToHaveType={ <One<Of<UnitTypeIdentifier>> of={[ 'div', Duda, assert(lambda, 'is a valid type') ]} /> }
       label={ `type identifier is ${ colors.bold('one of') }` }

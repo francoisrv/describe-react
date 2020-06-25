@@ -29,7 +29,22 @@ function Foo() {
     element notToHaveType="table"
     label="Expect root element's type NOT to be a div"
   />
-</Describer>
+</Describe>
+```
+
+```
+PASS
+  Expect to have type
+    Expect root element's type to be a div
+      Expect root element
+        ✓ to have type which is < div > (1 ms)
+    Expect first child's type to be a Foo
+      Expect first child
+        ✓ to have type which is component < Foo >
+    Expect root element's type NOT to be a div
+      Expect root element
+        ✓ not to have type which is < table >
+
 ```
 
 ## Has one of types
@@ -37,8 +52,20 @@ function Foo() {
 You can expect the type to be one of
 
 ```jsx
-<Expect
-  element toHaveType={ <One of={[ 'div', Foo ]} /> }
-  label="Expect root element's type to be either a div or a Foo"
-/>
+<Describe label="Has one of types">
+  <Render>
+    <div />
+  </Render>
+
+  <Expect
+    root element toHaveType={ <One of={[ 'div', 'section' ]} /> }
+  />
+</Describe>
+```
+
+```
+PASS
+  Has one of types
+    Expect element
+      ✓ to have type which to have type which is < div > or to have type which is < section > (1 ms)
 ```

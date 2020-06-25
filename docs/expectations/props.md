@@ -10,7 +10,7 @@ You can expect a target to have a specific type of properties using the followin
 - `toHaveExactProperties`
 - `notToHaveExactProperties`
 
-## has property which name equals string
+## has property which a specific name
 
 ```jsx
 <Describe label="has property name">
@@ -44,6 +44,12 @@ You can pass an object to be matched
 <Expect root element toHaveProperty={{ type: 'number' }} />
 ```
 
+Note that you could pass more than one entry to your object, and it will work but in this case we recommend using `toHaveProperties` instead since it is more correct.
+
+```jsx
+<Expect root element toHaveProperties={{ type: 'number', value: 10 }} />
+```
+
 ## has properties which equals exactly object
 
 You can pass an object which equals exactly the properties
@@ -62,7 +68,7 @@ Expect target to have at least one property
 
 ## does not have properties
 
-Expect target to not have properties
+Expect target to not have properties at all
 
 ```jsx
 <Expect root element toHaveProperties={ false } />
@@ -70,92 +76,179 @@ Expect target to not have properties
 <Expect root element notToHaveProperties />
 ```
 
-## has property which matches description
+## has property &lt;Property />
 
-Expect target to have at least one property satisfying a boolean constraint
+You can use the `<Property />` component to fine grain your selection
 
 ```jsx
 <Expect
   root element
-  toHaveProperty={ <Property name="disabled" is={ false } /> }
+  toHaveProperty={ <Property name="disabled" value={ false } /> }
 />
 ```
 
-### Descriptions
+### assert and isTrue
 
-#### is / isNot
+This is especially useful when used in conjunction with the properties `assert` and `isTrue`:
 
 ```jsx
-<Describe label="has property which is / is not">
+<Describe label="assert and isTrue property">
   <Render>
-    <div>
-      <input type="number" />
-      <img alt="logo" />
-    </div>
+    <input value={ 27 } />
   </Render>
 
   <Expect
-    child="img"
-    toHaveProperty={ <Property name="alt" is="logo" /> }
-  />
-
-  <Expect
-    child="input"
-    toHaveProperty={ <Property name="type" isNot="text" /> }
-  />
-
-  <Expect
-    child="input"
+    root element
     toHaveProperty={
-      <Property
-        name="type"
-        isNot={ <One of={[ 'text', 'date', 'email' ]} /> }
+      <Property name="value"
+        isTrue={ prop => prop === 27 }
+      />
+    }
+  />
+
+  <Expect
+    root element
+    toHaveProperty={
+      <Property name="value"
+        assert={ prop => { expect(prop).toEqual(27) } }
       />
     }
   />
 </Describe>
 ```
 
-#### number equality
+Both functions will receive the following arguments:
+
+- `prop` The value of the property identified by name
+- `name` The name of the property
+- `props` All the properties of the targeted element
+- `elem` The [react-test-renderer](https://reactjs.org/docs/test-renderer.html) instance of the targeted element
+- `localState` The local state of the tests
+
+### properties usage
+
+You can use the `<Property />` in the following fashions:
+
+#### without props
+
+Using `<Property />` without props is redundant but will work and will resolve to true:
 
 ```jsx
-<Property isLesserThan={ 0 } />
-<Property isLesserThanOrEqual={ 0 } />
-<Property isGreaterThan={ 0 } />
-<Property isGreaterThanOrEqual={ 0 } />
+<Expect element toHaveProperty={ <Property /> } />
+// is the same than:
+<Expect element toHaveProperty />
+
+<Expect element notToHaveProperty={ <Property /> } />
+// is the same than:
+<Expect element notToHaveProperty />
 ```
 
-#### is type of
+#### with only name
 
-Returns `typeof value`
+Using `<Property />` with only the `name` property is redundant but will work:
 
 ```jsx
-<Property isTypeOf="string" />
-<Property isNotTypeOf="function" />
-<Property isTypeOf={ <One of={[ 'object', 'function' ]} /> } />
+<Expect element toHaveProperty={ <Property name="disabled" /> } />
+// is the same than:
+<Expect element toHaveProperty="disabled" />
 ```
 
-#### is an instance of
+#### without name
 
-Returns `value instanceof`
+You can omit the `name` property. In this case, it will check all properties for a match:
 
 ```jsx
-<Property isInstanceOf={ Date } />
-<Property isNotInstanceOf={ RegExp } />
+<Expect
+  element
+  toHaveProperty={ <Property value={ false } /> }
+  label="Must have one property which value is false, regardless of its name"
+/>
 ```
 
-### array contains
+If you use only `assert` or `isTrue`, then it will also check all properties for a match
 
-You can use interchangeably `has`, `contains` and `includes`
+## has property which is one of
+
+You can use `<One of />` to find a property. The values admitted are:
+
+- string
+- regular expression
+- object
+- &lt;Property />
 
 ```jsx
-<Render>
-  <Foo
-    tracks={[1, 2, 3]}
+<Expect
+  element
+  toHaveProperty={
+    <One
+      of={[
+        'disabled',
+        { required: true },
+        <Property name="value" assert={ val => val > 100 } />,
+      ]}
+    />>
+  }
+/>
+```
+
+## to have properties
+
+You can check for more than one property. In this case, use an array of which each item could be applied to `toHaveProperty`. It will throw if not **all** the conditions are being satisfied
+
+```jsx
+<Describe label="has properties">
+  <Render>
+    <input
+      type="number"
+      required
+      value={ 27 }
+      title="Counter"
+      tabIndex={ 1 }
+    />
+  </Render>
+
+  <Expect
+    root element
+    toHaveProperties={[
+      'required',
+      { type: 'number' },
+      <Property name="value" value={ 27 } />,
+      <One
+        of={[
+          { title: 'foo' },
+          { tabIndex: 1 },
+        ]}
+      />
+    ]}
   />
-</Render>
-
-<Property name="tracks" has={ 1 } />
-<Property name="tracks" hasNot={ 5 } />
-<Property name="tracks" containsNot={ <One of={[ 5, 15, 20 ]} /> } />
+</Describe>
 ```
+
+`toHaveProperty` can also accept a `isTrue` or `assert` function
+
+```jsx
+<Describe label="has properties">
+  <Render>
+    <input
+      type="number"
+      required
+      value={ 27 }
+      title="Counter"
+      tabIndex={ 1 }
+    />
+  </Render>
+
+  <Expect
+    root element
+    toHaveProperties={
+      isTrue(props => props.required && props.type === 'number')
+    }
+  />
+</Describe>
+```
+
+Both functions will receive the following arguments:
+
+- `props` All the properties of the targeted element
+- `elem` The [react-test-renderer](https://reactjs.org/docs/test-renderer.html) instance of the targeted element
+- `localState` The local state of the tests

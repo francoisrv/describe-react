@@ -17,5 +17,10 @@
   - [Type](expectations/type.md)
   - [Text](expectations/text.md)
   - [Props](expectations/props.md)
-  - [State](cover.md)
+  - [State](expectations/state.md)
   - [Element](cover.md)
+
+- Functions
+
+  - [run](functions/run.md)
+  - [isTrue](functions/isTrue.md)

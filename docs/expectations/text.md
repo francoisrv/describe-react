@@ -104,7 +104,7 @@ You could use the [assert](functions/assert) function which is executed. You cou
 
 ## Has text which is one of
 
-You could use the [One](components/one) component to match one of the list
+You could use the [One](components/One) component to match one of the list. It accepts any conditions accepted by `toHaveText` except `<One of />`
 
 ```jsx
 <Describe label="matches text">

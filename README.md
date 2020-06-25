@@ -19,8 +19,7 @@ function Specs() {
         root element
         toHaveType="span"
         toHaveText="Hello"
-        toHaveProperty={ <Property name="id" value="foo" /> }
-        notToHaveProperty="className"
+        toHaveProperty={{ id: 'foo' }}
       />
     </Describe>
   )
@@ -39,5 +38,4 @@ Quick usage
     ✓ to be a <span>
     ✓ to have text "Hello"
     ✓ to have a property which name is "id" AND which value is "foo"
-    ✓ NOT to have a property which name is "className" (2 ms)
 ```

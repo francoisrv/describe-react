@@ -1,6 +1,7 @@
 import colors from 'colors'
 import Assert from '../entities/Assert'
 import IsTrue from '../entities/IsTrue'
+import { Dictionary } from 'lodash'
 
 export function printType(type: string | React.ComponentType<any>) {
   if (typeof type === 'string') {
@@ -43,4 +44,31 @@ export function printIsTrue(assertion: IsTrue<any>) {
 
 export function printOrNor(not = false) {
   return not ? 'nor' : 'or'
+}
+
+export function printProps(object: Dictionary<any>) {
+  const props: string[] = []
+  for (const key in object) {
+    if (typeof object[key] === 'string') {
+      props.push(`${ key }="${ object[key] }"`)
+    } else if (object[key] === true) {
+      props.push(`${ key }`)
+    } else if (typeof object[key] === 'function') {
+      props.push(`${ key }={ ${ printType(object[key]) } }`)
+    } else if (
+      typeof object[key] === 'object' &&
+      'key' in object[key] &&
+      'ref' in object[key] &&
+      'props' in object[key] &&
+      '_owner' in object[key] &&
+      '_store' in object[key]
+    ) {
+      props.push(`${ key }={ <${ object[key].type.name } ${ printProps(object[key].props) } /> }`)
+    } else if (typeof object[key] === 'object') {
+      props.push(`${ key }={ ${ JSON.stringify(object[key]) } }`)
+    } else {
+      props.push(`${ key }={ ${ object[key] } }`)
+    }
+  }
+  return props.join(' ')
 }

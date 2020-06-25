@@ -4,6 +4,7 @@ import Assert from './entities/Assert'
 import Property, { PropertyProps } from './components/Property'
 import State, { StateProps } from './components/State'
 import IsTrue from './entities/IsTrue'
+import Type, { TypeProps } from './components/Type'
 
 // ////////////////////////////////////////////////////////////
 // TESTS
@@ -30,6 +31,19 @@ export interface ContextInterface {
   sections: Section[]
   getSource: () => ReactTestRenderer.ReactTestRenderer
 }
+
+// ////////////////////////////////////////////////////////////
+// SELECTORS
+// ////////////////////////////////////////////////////////////
+
+export type UnitChildSelector =
+| boolean
+| string
+| React.ComponentType<any>
+| React.ReactElement<TypeProps, typeof Type>
+
+export type ChildSelector =
+| UnitChildSelector
 
 // ////////////////////////////////////////////////////////////
 // IDENTIFIERS

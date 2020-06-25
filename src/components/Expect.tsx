@@ -9,31 +9,28 @@ import One from './One'
 import Assert from '../entities/Assert'
 import printHasType from '../print/printHasType'
 import printHasText from '../print/printHasText'
+import printSelector, { PrintSelectorProps } from '../print/printSelector'
 
 interface ExpectAnatomy {
   label: string
   sections: SubSection[]
 }
 
-interface ExpectProps extends ElementExpectations, Omit<ItProps, 'label'> {
-  element?: true
-  root?: true
-  first?: true
-  last?: true
-  at?: number
-  elements?: true
-  some?: true
-  range?: [number, number]
+interface ExpectProps
+  extends
+    ElementExpectations,
+    PrintSelectorProps,
+    Omit<ItProps, 'label'>
+{
   label?: string
 }
 
 function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
-  const bits: string[] = []
   const sections: SubSection[] = []
-  let label = ''
+  const describeLabel = printSelector(props)
   const nextProps = omit(props, [
     'element',
-    'elements',
+    'children',
     'root',
     'first',
     'last',
@@ -47,29 +44,9 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
     'child'
   ])
 
-  if (props.element === true) {
-    if (props.root) {
-    } else if (props.first) {
-      bits.push('first')
-    } else if (props.last) {
-      bits.push('last')
-    } else if (props.at) {
-      bits.push(getNumberWithOrdinal(props.at + 1))
-    } else {
-      bits.push('root')
-    }
-    bits.push('element')
-  } else if ('elements' in props) {
-    if (props.some) {
-      bits.push('some')
-    }
-    bits.push('elements')
-    if (props.range) {
-      bits.push(`from ${ props.range[0] } to ${ props.range[1] }`)
-    }
-  }
-
   for (const prop in nextProps) {
+    let testLabel = ''
+
     const identifier = nextProps[prop]
 
     switch (prop) {
@@ -80,12 +57,12 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
 
       case 'toHaveType':
       case 'notToHaveType': {
-        label = printHasType(identifier, prop === 'notToHaveType')
+        testLabel = printHasType(identifier, prop === 'notToHaveType')
       } break
 
       case 'toHaveText':
       case 'notToHaveText': {
-        label = printHasText(identifier, prop === 'notToHaveText')
+        testLabel = printHasText(identifier, prop === 'notToHaveText')
       } break
 
       // case 'toHaveProperty':
@@ -109,13 +86,13 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
     }
 
     sections.push({
-      label,
+      label: testLabel,
       fn: () => {}
     })
   }
 
   return {
-    label: bits.join(' '),
+    label: describeLabel,
     sections
   }
 }

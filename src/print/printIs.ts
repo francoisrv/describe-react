@@ -1,7 +1,9 @@
 import { IsProps } from '../components/Is'
-import { printType } from './common'
+import { printType, printHighlight } from './common'
 
-export default function printIs<T, F extends (...args: any[]) => any>(props: IsProps<T, F>) {
+const defaultUnion = ', '
+
+export default function printIs<T, F extends (...args: any[]) => any>(props: IsProps<T, F>, formatter?: ((t: any) => string), union?: string) {
   if (props.anything) {
     return 'is anything'
   }
@@ -75,18 +77,21 @@ export default function printIs<T, F extends (...args: any[]) => any>(props: IsP
     return `is exactly ${ JSON.stringify(props.exactly) }`
   }
   if (props.of) {
+    const items = formatter ? props.of.map(formatter) : props.of.map(o => JSON.stringify(o))
+    const value = items.join(union || defaultUnion)
     if (props.not) {
-      return `is not one of ${ JSON.stringify(props.of) }`
+      return `is not one of ${ value }`
     }
-    return `is one of ${ JSON.stringify(props.of) }`
+    return `is one of ${ value }`
   }
   if (typeof props.true === 'function') {
-    return `returns ${ props.not ? 'not ' : ''}true to the function ${ printType(props.true) }`
+    return `returns ${ props.not ? 'not ' : ''}true to the function ${ printHighlight(printType(props.true)) }`
   }
   if (props.valid) {
     return `satisfies ${ props.not ? 'not ' : ''}assertion ${ printType(props.valid) }`
   }
   if ('not' in props) {
-    return `is not ${ JSON.stringify(props.not) }`
+    const value = formatter ? formatter(props.not) : JSON.stringify(props.not)
+    return `is not ${ value }`
   }
 }

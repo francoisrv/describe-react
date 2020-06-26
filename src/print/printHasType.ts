@@ -1,8 +1,10 @@
-import { TypeIdentifier, Of, UnitTypeIdentifier } from '../types'
-import { printHighlight, printLogicOperator, printOrNor } from './common'
-import { isReactElementComponentOf } from '../utils'
-import One, { OneProps } from '../components/One'
 import { compact } from 'lodash'
+
+import { TypeIdentifier, UnitTypeIdentifier, TypeIdentifierIsFn } from '../types'
+import { printHighlight, printLogicOperator, printOrNor, printType } from './common'
+import { isReactElementComponentOf } from '../utils'
+import { IsProps, Is } from '../components/Is'
+import printIs from './printIs'
 
 export default function printHasType(identifier: TypeIdentifier, not = false) {
   const bits: string[] = [
@@ -26,12 +28,15 @@ export default function printHasType(identifier: TypeIdentifier, not = false) {
         `< ${ printHighlight(identifier.toString()) } >`
       )
     }
-  } else if(isReactElementComponentOf(identifier, One)) {
-    const { props} = identifier as React.ReactElement<OneProps<Of<UnitTypeIdentifier>>>
-    const ofs = identifier.props.of.map(p => printHasType(p, not).replace(/^which /, ''))
+  } else if(isReactElementComponentOf(identifier, Is)) {
+    const { props} = identifier as React.ReactElement<IsProps<UnitTypeIdentifier, TypeIdentifierIsFn>>
     bits.push(
       'which',
-      ofs.join(printLogicOperator(` ${ printOrNor(not)} `))
+      printIs(
+        props,
+        f => `< ${ printHighlight(printType(f)) } >`,
+        printLogicOperator(props.not ? ' nor ' : ' or ')
+      )
     )
   }
   return compact(bits).join(' ')

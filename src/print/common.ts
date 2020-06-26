@@ -1,7 +1,6 @@
 import colors from 'colors'
-import Assert from '../entities/Assert'
-import IsTrue from '../entities/IsTrue'
-import { Dictionary } from 'lodash'
+import { Dictionary, isEmpty } from 'lodash'
+import ReactTestRender from 'react-test-renderer'
 
 export function printType(type: string | React.ComponentType<any>) {
   if (typeof type === 'string') {
@@ -20,27 +19,6 @@ export function printLogicOperator(str: string) {
 export function printHighlight(str: string) {
   return colors.bold.underline(str)
 }
-
-export function printAssertion(assertion: Assert<any>) {
-  if (assertion.label) {
-    return assertion.label
-  }
-  if (assertion.assert.name) {
-    return assertion.assert.name
-  }
-  return assertion.assert.toString()
-}
-
-export function printIsTrue(assertion: IsTrue<any>) {
-  if (assertion.label) {
-    return assertion.label
-  }
-  if (assertion.fn.name) {
-    return assertion.fn.name
-  }
-  return assertion.fn.toString()
-}
-
 
 export function printOrNor(not = false) {
   return not ? 'nor' : 'or'
@@ -71,4 +49,8 @@ export function printProps(object: Dictionary<any>) {
     }
   }
   return props.join(' ')
+}
+
+export function printElement(elem: ReactTestRender.ReactTestInstance) {
+  return `<${ printHighlight(printType(elem.type)) }${ isEmpty(elem.props) ? '' : ' ' }${ printProps(elem.props) } />`
 }

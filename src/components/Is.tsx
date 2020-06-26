@@ -1,3 +1,5 @@
+import React from 'react'
+
 export interface IsProps<T, F extends (...args: any[]) => any> {
   a?:             true
   an?:            true
@@ -20,4 +22,8 @@ export interface IsProps<T, F extends (...args: any[]) => any> {
   true?:          true | ((...args: Parameters<F>) => boolean)
   undefined?:     true
   valid?:         ((...args: Parameters<F>) => boolean)
+}
+
+export function Is<T, F extends (...args: any[]) => any>(props: IsProps<T, F>) {
+  return <div />
 }

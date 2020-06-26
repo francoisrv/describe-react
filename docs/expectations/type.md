@@ -51,6 +51,16 @@ PASS
 
 You can fine grain the selection using [Is](components/Is)
 
+The following parameters are accepted:
+
+- `Is not`
+- `Is one of`
+- `Is not one of`
+- `Is true`
+- `Is not true`
+- `Is valid`
+- `Is not valid`
+
 ```jsx
 <Describe label="Has one of types">
   <Render>
@@ -58,14 +68,39 @@ You can fine grain the selection using [Is](components/Is)
   </Render>
 
   <Expect
-    root element toHaveType={ <Is one of={[ 'div', 'section' ]} /> }
+    root element
+    toHaveType={ <Is not="span" /> }
+  />
+
+  <Expect
+    root element
+    toHaveType={ <Is one of={[ 'div', 'section' ]} /> }
+  />
+
+  <Expect
+    root element
+    toHaveType={ <Is not one of={[ 'span', 'section' ]} /> }
+  />
+
+  <Expect
+    root element
+    toHaveType={ <Is not one of={[ 'span', 'section' ]} /> }
   />
 </Describe>
 ```
 
-```
-PASS
-  Has one of types
-    Expect element
-      ✓ to have type which to have type which is < div > or to have type which is < section > (1 ms)
+When using the functions `true` or `valid`, they are being called with the following arguments:
+
+- `type` The element type
+- `elem` the [react test renderer](https://reactjs.org/docs/test-renderer.html) element
+- `localState` The tests' local state
+
+```jsx
+<Expect
+  root element
+  toHaveType={
+    <Is true={(type, elem) => !elem.children.length && type === 'div' } />
+  }
+  label="Root element is a div and has no child"
+/>
 ```

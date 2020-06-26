@@ -1,12 +1,8 @@
 import React from 'react'
-import { startCase, omit } from 'lodash'
+import { omit } from 'lodash'
 import colors from 'colors'
 import Context from '../context'
-import { SubSection, ElementExpectations, ItProps, Of, UnitTypeIdentifier } from '../types'
-import { getNumberWithOrdinal, isReactElementComponentOf } from '../utils'
-import AssertType from '../entities/Assert'
-import One from './One'
-import Assert from '../entities/Assert'
+import { SubSection, ElementExpectations, ItProps, UnitTypeIdentifier } from '../types'
 import printHasType from '../print/printHasType'
 import printHasText from '../print/printHasText'
 import printSelector, { PrintSelectorProps } from '../print/printSelector'
@@ -19,10 +15,11 @@ interface ExpectAnatomy {
 interface ExpectProps
   extends
     ElementExpectations,
-    PrintSelectorProps,
-    Omit<ItProps, 'label'>
+    PrintSelectorProps
 {
   label?: string
+  skip?: boolean
+  timeout?: number
 }
 
 function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
@@ -87,7 +84,9 @@ function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
 
     sections.push({
       label: testLabel,
-      fn: () => {}
+      fn: () => {
+        
+      }
     })
   }
 

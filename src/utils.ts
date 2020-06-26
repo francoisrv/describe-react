@@ -1,3 +1,5 @@
+import ReactTestRenderer from 'react-test-renderer'
+
 export function getNumberWithOrdinal(n: number) {
   var s = ["th", "st", "nd", "rd"],
       v = n % 100;
@@ -12,6 +14,8 @@ export function isReactElementComponentOf(element: React.ReactElement<any>, comp
   )
 }
 
-export function expectElement() {
-  
+export function findAllNodes(elem: ReactTestRenderer.ReactTestInstance): ReactTestRenderer.ReactTestInstance[] {
+  const nodes = elem.findAll(() => true, { deep: true })
+  nodes.shift()
+  return nodes
 }

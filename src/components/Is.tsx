@@ -21,7 +21,7 @@ export interface IsProps<T, F extends (...args: any[]) => any> {
   string?:        true
   true?:          true | ((...args: Parameters<F>) => boolean)
   undefined?:     true
-  valid?:         ((...args: Parameters<F>) => boolean)
+  valid?:         ((...args: Parameters<F>) => void)
 }
 
 export function Is<T, F extends (...args: any[]) => any>(props: IsProps<T, F>) {

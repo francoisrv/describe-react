@@ -22,7 +22,7 @@ export default function findElements(
 ): ReactTestRender.ReactTestInstance[] {
   let found: ReactTestRender.ReactTestInstance[] = [...elements]
   for (const prop in props) {
-    switch (props) {
+    switch (prop) {
       case 'type': {
         found = found.filter(
           node => predicate(() => hasType(node, props.type))

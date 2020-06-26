@@ -1,4 +1,5 @@
 - [Quick start](quick-start.md)
+- [Examples](examples.md)
 - Components
 
   - [Describe](components/Describe.md)

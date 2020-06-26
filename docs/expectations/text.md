@@ -65,11 +65,46 @@ You can fine grain the selection using [Is](components/Is)
 ```jsx
 <Describe label="Has one of types">
   <Render>
-    <div />
+    <div>hello</div>
   </Render>
 
   <Expect
-    root element toHaveText={ <Is one of={[ 'hello', 'goodbye' ]} /> }
+    root element
+    toHaveText={ <Is one of={[ 'hello', 'goodbye' ]} /> }
+  />
+
+  <Expect
+    root element
+    toHaveText={ <Is not one of={[ /morning/, 'goodbye' ]} /> }
+  />
+</Describe>
+```
+
+IIf you use the `true` or `valid` functions, they will be called for these arguments:
+
+- `text` the text of the node
+- `elem` the [react test renderer](https://reactjs.org/docs/test-renderer.html) element
+- `localState` The tests' local state
+
+```jsx
+<Describe label="Has one of types">
+  <Render>
+    <button disabled>
+      off
+    </button>
+  </Render>
+
+  <Expect
+    root element
+    toHaveType={
+      <Is true={ (text, elem) => {
+        if (elem.props.disabled) {
+          return text === 'off'
+        }
+        return text === 'on'
+      } } />
+    }
+    label="Has text 'off' if element is disabled - 'on' otherwise"
   />
 </Describe>
 ```

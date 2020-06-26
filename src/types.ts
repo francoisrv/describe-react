@@ -70,10 +70,16 @@ export type UnitTextIdentifier =
 | string
 | RegExp
 
+export type TextIdentifierIsFn =
+(t: UnitTextIdentifier) => void
+
 export type TextIdentifier =
 | UnitTextIdentifier
 | boolean
-| IsTrue<UnitTextIdentifier>
+| React.ReactElement<IsProps<UnitTextIdentifier, TextIdentifierIsFn>, typeof Is>
+
+// PROPERTY IDENTIFIER
+// ////////////////////////////////////////////////////////////
 
 export type UnitPropertyIdentifier =
 | string

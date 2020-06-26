@@ -69,11 +69,6 @@ The following parameters are accepted:
 
   <Expect
     root element
-    toHaveType={ <Is not="span" /> }
-  />
-
-  <Expect
-    root element
     toHaveType={ <Is one of={[ 'div', 'section' ]} /> }
   />
 

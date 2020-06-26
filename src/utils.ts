@@ -20,7 +20,7 @@ export function findAllNodes(elem: ReactTestRenderer.ReactTestInstance): ReactTe
   return nodes
 }
 
-export function getText(elem: SelectedElement): string | null {
+export function getText(elem: ReactTestRenderer.ReactTestInstance): string | null {
   if (typeof elem === 'string') {
     return null
   }

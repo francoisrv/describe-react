@@ -1,4 +1,3 @@
-import { PrintSelectorProps } from './print/printSelector'
 import ReactTestRender from 'react-test-renderer'
 import { TypeIdentifier } from './types'
 import hasType from './assertions/hasType'

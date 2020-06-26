@@ -1,17 +1,60 @@
 import ReactTestRender from 'react-test-renderer'
-import findElements from './findElements'
+import findElements, { FindElementProps } from './findElements'
+import { findAllNodes } from './utils'
+import React from 'react'
+import { Is } from './components/Is'
+
+function makeTest(
+  props: FindElementProps,
+  elem: React.ReactElement<any>,
+  length: number
+) {
+  it(JSON.stringify(props), () => {
+    const test = ReactTestRender.create(elem)
+    const elements = findElements(
+      props,
+      findAllNodes(test.root)
+    )
+    console.log(elements.map(e => e.type))
+    expect(elements).toHaveLength(length)
+    test.unmount()
+  })
+}
 
 describe('Find elements', () => {
-  it('Find elements by type', () => {
-    const elements = findElements(
-      { type: 'div' },
-      ReactTestRender.create(
+  describe('Find elements by type', () => {
+    // makeTest(
+    //   { type: 'div' },
+    //   (
+    //     <section>
+    //       <div />
+    //       <div />
+    //       <div />
+    //     </section>
+    //   ),
+    //   3
+    // )
+    makeTest(
+      { type: Is },
+      (
         <section>
-          <div />
-          <div />
-          <div />
+          <Is />
+          <Is />
+          <Is />
         </section>
-      ).root.children
+      ),
+      3
     )
+    // makeTest(
+    //   { type: <Is not="span" /> },
+    //   (
+    //     <section>
+    //       <div />
+    //       <div />
+    //       <div />
+    //     </section>
+    //   ),
+    //   3
+    // )
   })
 })

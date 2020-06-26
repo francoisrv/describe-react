@@ -51,6 +51,6 @@ export function printProps(object: Dictionary<any>) {
   return props.join(' ')
 }
 
-export function printElement(elem: ReactTestRender.ReactTestInstance) {
+export function printElement(elem: ReactTestRender.ReactTestInstance | React.ReactElement<any>) {
   return `<${ printHighlight(printType(elem.type)) }${ isEmpty(elem.props) ? '' : ' ' }${ printProps(elem.props) } />`
 }

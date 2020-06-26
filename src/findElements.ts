@@ -1,9 +1,19 @@
 import { PrintSelectorProps } from './print/printSelector'
 import ReactTestRender from 'react-test-renderer'
 import { TypeIdentifier } from './types'
+import hasType from './assertions/hasType'
 
 interface FindElementProps {
   type?: TypeIdentifier
+}
+
+function predicate(fn: Function) {
+  try {
+    fn()
+    return true
+  } catch (error) {
+    return false
+  }
 }
 
 export default function findElements(
@@ -14,7 +24,9 @@ export default function findElements(
   for (const prop in props) {
     switch (props) {
       case 'type': {
-        // found = 
+        found = found.filter(
+          node => predicate(() => hasType(node, props.type))
+        )
       } break
     }
   }

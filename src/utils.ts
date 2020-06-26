@@ -11,3 +11,7 @@ export function isReactElementComponentOf(element: React.ReactElement<any>, comp
     element.type === component
   )
 }
+
+export function expectElement() {
+  
+}

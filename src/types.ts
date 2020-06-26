@@ -1,11 +1,10 @@
 import ReactTestRenderer from 'react-test-renderer'
 import One, { OneProps } from './components/One'
-import Assert from './entities/Assert'
 import Property, { PropertyProps } from './components/Property'
 import State, { StateProps } from './components/State'
-import IsTrue from './entities/IsTrue'
-import Type, { TypeProps } from './components/Type'
 import Element, { ElementProps } from './components/Element'
+import { IsProps, Is } from './components/Is'
+import { is } from './is'
 
 // ////////////////////////////////////////////////////////////
 // TESTS
@@ -50,14 +49,6 @@ export type ChildSelector =
 // IDENTIFIERS
 // ////////////////////////////////////////////////////////////
 
-export type Of<T> = 
-| T
-| Assert<T>
-
-export type Idenitifier<T> =
-| Of<T>
-| React.ReactElement<OneProps<T | Assert<T>>, typeof One>
-
 // TYPE IDENTIFIER
 // ////////////////////////////////////////////////////////////
 
@@ -65,9 +56,12 @@ export type UnitTypeIdentifier =
 | string
 | React.ComponentType<any>
 
+export type TypeIdentifierIsFn =
+(t: UnitTypeIdentifier) => void
+
 export type TypeIdentifier =
 | UnitTypeIdentifier
-| React.ReactElement<OneProps<UnitTypeIdentifier>, typeof One>
+| React.ReactElement<IsProps<UnitTypeIdentifier, TypeIdentifierIsFn>, typeof Is>
 
 // TEXT IDENTIFIER
 // ////////////////////////////////////////////////////////////
@@ -75,13 +69,11 @@ export type TypeIdentifier =
 export type UnitTextIdentifier =
 | string
 | RegExp
-| IsTrue<string>
-| Assert<string>
 
 export type TextIdentifier =
 | UnitTextIdentifier
 | boolean
-| React.ReactElement<OneProps<UnitTextIdentifier>, typeof One>
+| IsTrue<UnitTextIdentifier>
 
 export type UnitPropertyIdentifier =
 | string

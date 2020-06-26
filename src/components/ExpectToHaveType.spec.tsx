@@ -4,9 +4,7 @@ import run from '../run'
 import Describe from './Describe'
 import Render from './Render'
 import Expect from './Expect'
-import One from './One'
-import { Of, UnitTypeIdentifier } from '../types'
-import { assert } from '../entities/Assert'
+import { Is } from './Is'
 
 const Duda = () => <span />
 
@@ -34,9 +32,9 @@ run(() => (
 
     <Expect
       root element
-      toHaveType={ <One<Of<UnitTypeIdentifier>> of={[ 'div', Duda, assert(lambda, 'is a valid type') ]} /> }
-      notToHaveType={ <One<Of<UnitTypeIdentifier>> of={[ 'div', Duda, assert(lambda, 'is a valid type') ]} /> }
-      label={ `type identifier is ${ colors.bold('one of') }` }
+      toHaveType={ <Is not="span" /> }
+      notToHaveType={ <Is not="span" /> }
+      label={ `type identifier is ${ colors.bold('<Is not />') }` }
     />
   </Describe>
 ))

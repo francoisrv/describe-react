@@ -19,3 +19,17 @@ export function findAllNodes(elem: ReactTestRenderer.ReactTestInstance): ReactTe
   nodes.shift()
   return nodes
 }
+
+export function getText(elem: SelectedElement): string | null {
+  if (typeof elem === 'string') {
+    return null
+  }
+  if (!elem.children.length) {
+    return null
+  }
+  const textNodes: string[] = elem.children.filter(c => typeof c === 'string') as string[]
+  if (!textNodes.length) {
+    return null
+  }
+  return textNodes.join(' ')
+}

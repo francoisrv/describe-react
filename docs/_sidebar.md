@@ -1,5 +1,8 @@
 - [Quick start](quick-start.md)
 - [Examples](examples.md)
+- [Selectors](selectors.md)
+- [Write your own test components](customize.md)
+
 - Components
 
   - [Describe](components/Describe.md)
@@ -24,5 +27,3 @@
   - [Child](expectations/child.md)
   - [Parent](expectations/parent.md)
   - [Sibling](expectations/sibling.md)
-
-- [Selectors](selectors.md)

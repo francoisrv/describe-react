@@ -1,6 +1,6 @@
 import { IsProps } from '../components/Is'
 import { printType, printHighlight, printLogicOperator, printGeneric } from './common'
-import { isArray, isFunction, compact } from 'lodash'
+import { isArray, isFunction, compact, isBoolean } from 'lodash'
 
 export default function printIs<T, F extends (...args: any[]) => any>(props: IsProps<T, F>) {
   const bits: string[] = ['is']

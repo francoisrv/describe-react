@@ -4,6 +4,7 @@ import ReactTestRender from 'react-test-renderer'
 import printHasProperty from "./printHasProperty"
 import React from "react"
 import { Is } from "../components/Is"
+import { PropertyIdentifier } from "../types"
 
 type Print =
 | string

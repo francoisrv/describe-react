@@ -97,7 +97,14 @@ You can fine grain the selection using [Is](components/Is) inside the object
 
 ## to have properties
 
-You can check for more than one property. In this case, use an array of which each item could be applied to `toHaveProperty`. It will throw if not **all** the conditions are being satisfied
+You can check for more than one property. In this case, use an array of one of:
+
+- `string` at least one property has this string as a name
+- `regular expression` at least one property has a name which matches this regular expression
+- `object` a plain object or an object with `<Is />` values
+- `<Is />` an Is assertion to be satisfied by at least one property value
+
+**All items in array must assert**
 
 ```jsx
 <Describe label="has properties">
@@ -116,14 +123,15 @@ You can check for more than one property. In this case, use an array of which ea
     toHaveProperties={[
       'required',
       { type: 'number' },
-      <Property name="value" value={ 27 } />,
-      <One
-        of={[
-          { title: 'foo' },
-          { tabIndex: 1 },
-        ]}
-      />
+      { value: <Is number /> },
+      <Is null />
     ]}
+    label={ `
+      - has a property which name is required
+      - has a porperty which name is type and which value equals to "number"
+      - has a property which name is value and which value is a number
+      - has a property which value is null
+    ` }
   />
 </Describe>
 ```

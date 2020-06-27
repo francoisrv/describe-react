@@ -61,7 +61,7 @@ export function printGeneric(g: any) {
     return 'undefined'
   }
   if (isString(g)) {
-    return truncate(g, { length: TRUNCATE })
+    return truncate(`"${g}"`, { length: TRUNCATE })
   }
   if (isFunction(g)) {
     if (g.name) {
@@ -82,11 +82,13 @@ export function printGeneric(g: any) {
     if (isReactElement(g as React.ReactElement<any>)) {
       return truncate(printElement(g), { length: TRUNCATE })
     }
-    const obj: any = {}
+    let str = '{ '
     for (const key in g) {
-      obj[key] = printGeneric(g[key])
+      str += `${ colors.underline(key) }: ${ printGeneric(g[key]) }, `
     }
-    return truncate(JSON.stringify(obj), { length: TRUNCATE })
+    str = str.replace(/, $/, '')
+    str += ' }'
+    return truncate(str, { length: TRUNCATE })
   }
   return truncate(JSON.stringify(g), { length: TRUNCATE })
 }

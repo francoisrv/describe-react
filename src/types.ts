@@ -101,16 +101,22 @@ export type PropertyIdentifier =
 // PROPERTIES IDENTIFIER
 // ////////////////////////////////////////////////////////////
 
+export type PropertiesIdentifierIsFn =
+(t: UnitPropertyIdentifier) => void
+
 export type UnitPropertiesIdentifier = Array<
   | string
   | RegExp
-  | React.ReactElement<OneProps<string | RegExp>, typeof One>
-  | React.ReactElement<PropertyProps, typeof Property>
+  | PropertyObjectIdentifier
+  | React.ReactElement<IsProps<UnitPropertyIdentifier, PropertiesIdentifierIsFn>, typeof Is>
 >
 
 export type PropertiesIdentifier = 
 | UnitPropertiesIdentifier
-| Assert<UnitPropertiesIdentifier>
+| React.ReactElement<IsProps<UnitPropertyIdentifier, PropertiesIdentifierIsFn>, typeof Is>
+
+// STATE IDENTIFIER
+// ////////////////////////////////////////////////////////////
 
 export type UnitStateIdentifier =
 | string

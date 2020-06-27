@@ -9,7 +9,12 @@ export function getNumberWithOrdinal(n: number) {
 export function isReactElement(element: React.ReactElement<any>) {
   return (
     typeof element === 'object' &&
-    'type' in element
+    'type' in element &&
+    'key' in element &&
+    '$$typeof' in element &&
+    'ref' in element &&
+    '_owner' in element &&
+    '_store' in element
   )
 }
 

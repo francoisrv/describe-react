@@ -88,7 +88,8 @@ const tests: Dictionary<Test[]> = {
         { highlight: 'foo'  },
         ' which value is equal to ',
         { highlight: '47' },
-        { operator: ' and with name '},
+        { operator: ' and '},
+        'with name ',
         { highlight: 'bar'  },
         ' which value is not null'
       ]
@@ -157,6 +158,21 @@ const tests: Dictionary<Test[]> = {
         { highlight: 'foo'  },
         ' which value is equal to ',
         { highlight: '47' }
+      ]
+    },
+    {
+      expectation: 'noToHaveProperty={ ...key: Is }',
+      identifier: { foo: <Is equal to={ 47 } />, bar: <Is not null /> } ,
+      printed: [
+        { operator: 'not' },
+        ' to have some properties with name ',
+        { highlight: 'foo'  },
+        ' which value is equal to ',
+        { highlight: '47' },
+        { operator: ' and '},
+        'with name ',
+        { highlight: 'bar'  },
+        ' which value is not null'
       ]
     },
   ]

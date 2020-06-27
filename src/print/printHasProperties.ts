@@ -62,6 +62,7 @@ export default function printHasProperties(
   } else if (isReactElementComponentOf(identifier, Is)) {
     const { props} = identifier as React.ReactElement<IsProps<UnitPropertiesIdentifier, PropertiesIdentifierIsFn>>
     bits.push(
+      extra === 'exact' && 'exact',
       'properties which',
       printIs(props).replace(/^is /, 'are ')
     )

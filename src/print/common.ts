@@ -1,15 +1,14 @@
 import colors from 'colors'
-import { Dictionary, isEmpty } from 'lodash'
+import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined } from 'lodash'
 import ReactTestRender from 'react-test-renderer'
+import { isReactElement, isReactElementComponentOf } from '../utils'
+import { Is } from '../components/Is'
+import printIs from './printIs'
+
+export const TRUNCATE = 100
 
 export function printType(type: string | React.ComponentType<any>) {
-  if (typeof type === 'string') {
-    return type
-  }
-  if (type.name) {
-    return type.name
-  }
-  return type.toString()
+  return printGeneric(type)
 }
 
 export function printLogicOperator(str: string) {
@@ -26,7 +25,8 @@ export function printOrNor(not = false) {
 
 export function printProps(object: Dictionary<any>) {
   const props: string[] = []
-  for (const key in object) {
+  const realProps = omit(object, ['children'])
+  for (const key in realProps) {
     if (typeof object[key] === 'string') {
       props.push(`${ key }="${ object[key] }"`)
     } else if (object[key] === true) {
@@ -52,5 +52,41 @@ export function printProps(object: Dictionary<any>) {
 }
 
 export function printElement(elem: ReactTestRender.ReactTestInstance | React.ReactElement<any>) {
-  return `<${ printHighlight(printType(elem.type)) }${ isEmpty(elem.props) ? '' : ' ' }${ printProps(elem.props) } />`
+  const type = printHighlight(printType(elem.type))
+  return `<${ type }${ isEmpty(omit(elem.props, ['children'])) ? '' : ' ' }${ printProps(elem.props) } />`
+}
+
+export function printGeneric(g: any) {
+  if (isUndefined(g)) {
+    return 'undefined'
+  }
+  if (isString(g)) {
+    return truncate(g, { length: TRUNCATE })
+  }
+  if (isFunction(g)) {
+    if (g.name) {
+      return g.name
+    }
+    return truncate(g.toString(), { length: TRUNCATE })
+  }
+  if (isRegExp(g) || isDate(g) || isError(g)) {
+    return truncate(g.toString(), { length: TRUNCATE })
+  }
+  if (isArray(g)) {
+    return truncate(`[${ g.map(printGeneric).join(', ') }]`, { length: TRUNCATE })
+  }
+  if (isObject(g)){
+    if (isReactElementComponentOf(g as React.ReactElement<any>, Is)) {
+      return printIs((g as React.ReactElement<any>).props)
+    }
+    if (isReactElement(g as React.ReactElement<any>)) {
+      return truncate(printElement(g), { length: TRUNCATE })
+    }
+    const obj: any = {}
+    for (const key in g) {
+      obj[key] = printGeneric(g[key])
+    }
+    return truncate(JSON.stringify(obj), { length: TRUNCATE })
+  }
+  return truncate(JSON.stringify(g), { length: TRUNCATE })
 }

@@ -1,4 +1,5 @@
 import printIs from './printIs'
+import { printLogicOperator, printHighlight } from './common'
 
 const foo = (v: any) => v > 4
 
@@ -106,42 +107,50 @@ describe('Print Is', () => {
     })
   })
   describe('Equality checks', () => {
-    it('is exactly', () => {
-      expect(printIs({ exactly: 22 }))
-      .toEqual('is exactly 22')
+    describe('Any', () => {
+      it('is exactly', () => {
+        expect(printIs({ equal: true, to: 22 }))
+        .toEqual(`is equal to ${ printHighlight('22') }`)
+      })
+      it('is not', () => {
+        expect(printIs({ not: 22 }))
+        .toEqual(`is not ${ printHighlight('22') }`)
+      })
+      it('is one of', () => {
+        expect(printIs({ one: true, of: [2, 24] }))
+        .toEqual(`is one of ${ printHighlight('2') }${ printLogicOperator(' or ') }${ printHighlight('24') }`)
+      })
+      it('is not one of', () => {
+        expect(printIs({ not: true, one: true, of: [2, 24] }))
+        .toEqual(`is not one of ${ printHighlight('2') }${ printLogicOperator(' nor ') }${ printHighlight('24') }`)
+      })
     })
-    it('is not', () => {
-      expect(printIs({ not: 22 }))
-      .toEqual('is not 22')
-    })
-    it('is one of', () => {
-      expect(printIs({ one: true, of: [2, 24] }))
-      .toEqual('is one of [2,24]')
-    })
-    it('is not one of', () => {
-      expect(printIs({ not: true, one: true, of: [2, 24] }))
-      .toEqual('is not one of [2,24]')
+    describe('Dates', () => {
+      it('is lesser than', () => {
+        expect(printIs({ lesser: true, than: new Date('2010-01-01') }))
+        .toEqual(`is lesser than ${ printHighlight('Fri Jan 01 2010 01:00:00 GMT+0100 (Central European Standard Time)') }`)
+      })
     })
   })
   describe('Functions', () => {
     it('it returns true', () => {
       expect(printIs({ true: foo }))
-      .toEqual('returns true to the function foo')
+      .toEqual(`returns true to the function ${ printHighlight('foo') }`)
     })
 
     it('it returns not true', () => {
       expect(printIs({ not: true, true: foo }))
-      .toEqual('returns not true to the function foo')
+      .toEqual(`does not return true to the function ${ printHighlight('foo') }`)
     })
 
     it('it satisfies assertion', () => {
       expect(printIs({ valid: foo }))
-      .toEqual('satisfies assertion foo')
+      .toEqual(`satisfies the assertion ${ printHighlight('foo') }`)
     })
 
     it('it satisfies not assertion', () => {
       expect(printIs({ not: true, valid: foo }))
-      .toEqual('satisfies not assertion foo')
+      .toEqual(`does not satisfy the assertion ${ printHighlight('foo') }`)
     })
   })
 })

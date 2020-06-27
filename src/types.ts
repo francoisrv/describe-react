@@ -84,11 +84,22 @@ export type TextIdentifier =
 export type UnitPropertyIdentifier =
 | string
 | RegExp
-| React.ReactElement<PropertyProps, typeof Property>
+| PropertyObjectIdentifier
+
+export type PropertyIdentifierIsFn =
+(t: UnitPropertyIdentifier) => void
+
+export type PropertyObjectIdentifier = {
+  [name: string]: any
+}
 
 export type PropertyIdentifier = 
-| Idenitifier<UnitPropertyIdentifier>
-| Array<Idenitifier<UnitPropertyIdentifier>>
+| UnitPropertyIdentifier
+| boolean
+| React.ReactElement<IsProps<UnitPropertyIdentifier, PropertyIdentifierIsFn>, typeof Is>
+
+// PROPERTIES IDENTIFIER
+// ////////////////////////////////////////////////////////////
 
 export type UnitPropertiesIdentifier = Array<
   | string

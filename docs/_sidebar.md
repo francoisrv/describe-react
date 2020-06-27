@@ -16,6 +16,7 @@
 
 - Expectations
 
+  - [General](expectations/assertions.md)
   - [Type](expectations/type.md)
   - [Text](expectations/text.md)
   - [Props](expectations/props.md)
@@ -23,6 +24,5 @@
   - [Child](expectations/child.md)
   - [Parent](expectations/parent.md)
   - [Sibling](expectations/sibling.md)
-  - [Assertions](expectations/assertions.md)
 
 - [Selectors](selectors.md)

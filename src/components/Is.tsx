@@ -7,18 +7,24 @@ export interface IsProps<T, F extends (...args: any[]) => any> {
   array?:         true
   boolean?:       true
   date?:          true
+  equal?:         true
   error?:         true
   exactly?:       T
   expression?:    true
   false?:         true
+  greater?:       true
+  lesser?:        true
   not?:           true | T
   null?:          true
   number?:        true
   object?:        true
   of?:            T[]
   one?:           true
+  or?:            true
   regular?:       true
   string?:        true
+  than?:          true | number | Date
+  to?:            any
   true?:          true | ((...args: Parameters<F>) => boolean)
   undefined?:     true
   valid?:         ((...args: Parameters<F>) => void)

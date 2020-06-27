@@ -42,11 +42,46 @@
 
 ## Equality
 
+### Any
+
 ```jsx
-<Is exactly={ 1 } />
+<Is equal to={ 1 } />
 <Is not={ 1 } />
 <Is one of={[ 1, 2, 3 ]} />
 <Is not one of={[ 1, 2, 3 ]} />
+```
+
+## Dates and numbers
+
+```jsx
+<Is lesser than={ 100 } />
+<Is lesser than or equal to={ 100 } />
+<Is greater than={ 100 } />
+<Is greater than or equal to={ 100 } />
+<Is between={[ 0, 100 ]} />
+<Is not between={[ 0, 100 ]} />
+```
+
+## Regular expressions
+
+```jsx
+<Is matching={ /abc/ } />
+<Is not matching={ /abc/ } />
+```
+
+## Arrays
+
+```jsx
+<Is having={ 1 } />
+<Is not having={ 1 } />
+<Is having length={ 4 } />
+<Is not having length={ 4 } />
+<Is having length lesser than={ 100 } />
+<Is having length lesser than or equal to={ 100 } />
+<Is having length greater than={ 100 } />
+<Is having length greater than or equal to={ 100 } />
+<Is having length between={[ 0, 100 ]} />
+<Is not having length between={[ 0, 100 ]} />
 ```
 
 ## Functions

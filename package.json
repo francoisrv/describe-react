@@ -26,12 +26,14 @@
     "@types/lodash": "^4.14.155",
     "@types/react": "^16.9.38",
     "@types/react-test-renderer": "^16.9.2",
+    "@types/strip-color": "^0.1.0",
     "colors": "^1.4.0",
     "docsify-cli": "^4.4.1",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "strip-color": "^0.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.0",

@@ -1,18 +1,10 @@
 import ReactTestRender from 'react-test-renderer'
 import { TypeIdentifier } from './types'
 import hasType from './assertions/hasType'
+import { predicate } from './utils'
 
 export interface FindElementProps {
   type?: TypeIdentifier
-}
-
-function predicate(fn: Function) {
-  try {
-    fn()
-    return true
-  } catch (error) {
-    return false
-  }
 }
 
 export default function findElements(

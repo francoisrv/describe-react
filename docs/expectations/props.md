@@ -10,6 +10,24 @@ You can expect a target to have a specific type of properties using the followin
 - `toHaveExactProperties`
 - `notToHaveExactProperties`
 
+## has any property
+
+Expect target to have at least one property
+
+```jsx
+<Expect root element toHaveProperties />
+```
+
+## does not have properties
+
+Expect target to not have properties at all
+
+```jsx
+<Expect root element toHaveProperties={ false } />
+// Or
+<Expect root element notToHaveProperties />
+```
+
 ## has property which a specific name
 
 ```jsx
@@ -56,24 +74,6 @@ You can pass an object which equals exactly the properties
 
 ```jsx
 <Expect root element toHaveExactProperties={{ type: 'number', required: true, disabled: true }} />
-```
-
-## has any property
-
-Expect target to have at least one property
-
-```jsx
-<Expect root element toHaveProperties />
-```
-
-## does not have properties
-
-Expect target to not have properties at all
-
-```jsx
-<Expect root element toHaveProperties={ false } />
-// Or
-<Expect root element notToHaveProperties />
 ```
 
 ## Using &lt;Is />

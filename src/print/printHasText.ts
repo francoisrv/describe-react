@@ -2,9 +2,10 @@ import { TextIdentifier, UnitTextIdentifier, TextIdentifierIsFn } from '../types
 import { printHighlight, printLogicOperator, printOrNor } from './common'
 import { isReactElementComponentOf } from '../utils'
 import One, { OneProps } from '../components/One'
-import { compact } from 'lodash'
+import { compact, isBoolean, isString, isRegExp } from 'lodash'
 import { Is, IsProps } from '../components/Is'
 import printIs from './printIs'
+import printTextIdentifier from './printTextIdentifier'
 
 export default function printHasText(identifier: TextIdentifier, not = false) {
   const bits: string[] = [
@@ -12,28 +13,17 @@ export default function printHasText(identifier: TextIdentifier, not = false) {
     !not && identifier === false && printLogicOperator('not'),
     'to have text'
   ]
-  if (typeof identifier === 'boolean') {
-    //
-  
-  } else if (typeof identifier === 'string') {
-    bits.push(
-      'which equals',
-      printHighlight(identifier.toString())
-    )
+  const text = printTextIdentifier(identifier, not)
+  if (isBoolean(identifier)) {
+    bits.push()
+  } else if (isString(identifier)) {
+    bits.push('which equals', printHighlight(text))
   
   } else if (identifier instanceof RegExp) {
-    bits.push(`which matches ${ printHighlight(identifier.toString()) }`)
+    bits.push('which matches', printHighlight(text))
   
   } else if(isReactElementComponentOf(identifier, Is)) {
-    const { props} = identifier as React.ReactElement<IsProps<UnitTextIdentifier, TextIdentifierIsFn>>
-    bits.push(
-      'which',
-      printIs(
-        props,
-        printHighlight,
-        printLogicOperator(props.not ? ' nor ' : ' or ')
-      )
-    )
+    bits.push('which', text)
   }
   return compact(bits).join(' ')
 }

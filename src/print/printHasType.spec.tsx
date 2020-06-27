@@ -29,53 +29,46 @@ const tests: Dictionary<Test[]> = {
       expectation: 'toHaveType="div"',
       identifier: 'div',
       printed: [
-        'to have type which is < ',
+        'to have type which is ',
         { highlight: 'div' },
-        ' >'
       ]
     },
     {
       expectation: 'toHaveType={ Describe }',
       identifier: Describe,
       printed: [
-        'to have type which is component < ',
+        'to have type which is component ',
         { highlight: 'Describe' },
-        ' >'
       ]
     },
     {
       expectation: 'toHaveType={ <Is not="div" /> }',
       identifier: <Is not="div" />,
       printed: [
-        'to have type which is not < ',
+        'to have type which is not ',
         { highlight: 'div' },
-        ' >'
       ]
     },
     {
       expectation: 'toHaveType={ <Is one of={[ "div", Describe ]} /> }',
       identifier: <Is one of={[ 'div', Describe ]} />,
       printed: [
-        'to have type which is one of < ',
+        'to have type which is one of ',
         { highlight: 'div' },
-        ' >',
         { operator: ' or ' },
-        '< ',
+        '',
         { highlight: 'Describe' },
-        ' >'
       ]
     },
     {
       expectation: 'toHaveType={ <Is not one of={[ "div", Describe ]} /> }',
       identifier: <Is not one of={[ 'div', Describe ]} />,
       printed: [
-        'to have type which is not one of < ',
+        'to have type which is not one of ',
         { highlight: 'div' },
-        ' >',
         { operator: ' nor ' },
-        '< ',
+        '',
         { highlight: 'Describe' },
-        ' >'
       ]
     },
     {
@@ -93,9 +86,8 @@ const tests: Dictionary<Test[]> = {
       identifier: 'div',
       printed: [
         { operator: 'not' },
-        ' to have type which is < ',
+        ' to have type which is ',
         { highlight: 'div' },
-        ' >'
       ]
     },
     {
@@ -103,9 +95,8 @@ const tests: Dictionary<Test[]> = {
       identifier: Describe,
       printed: [
         { operator: 'not' },
-        ' to have type which is component < ',
+        ' to have type which is component ',
         { highlight: 'Describe' },
-        ' >'
       ]
     },
     {
@@ -113,9 +104,8 @@ const tests: Dictionary<Test[]> = {
       identifier: <Is not="div" />,
       printed: [
         { operator: 'not' },
-        ' to have type which is not < ',
+        ' to have type which is not ',
         { highlight: 'div' },
-        ' >'
       ]
     },
     {
@@ -123,13 +113,11 @@ const tests: Dictionary<Test[]> = {
       identifier: <Is one of={[ 'div', Describe ]} />,
       printed: [
         { operator: 'not' },
-        ' to have type which is one of < ',
+        ' to have type which is one of ',
         { highlight: 'div' },
-        ' >',
         { operator: ' or ' },
-        '< ',
+        '',
         { highlight: 'Describe' },
-        ' >'
       ]
     },
     {
@@ -137,13 +125,11 @@ const tests: Dictionary<Test[]> = {
       identifier: <Is not one of={[ 'div', Describe ]} />,
       printed: [
         { operator: 'not' },
-        ' to have type which is not one of < ',
+        ' to have type which is not one of ',
         { highlight: 'div' },
-        ' >',
         { operator: ' nor ' },
-        '< ',
+        '',
         { highlight: 'Describe' },
-        ' >'
       ]
     },
     {

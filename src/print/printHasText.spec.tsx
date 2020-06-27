@@ -4,7 +4,6 @@ import ReactTestRender from 'react-test-renderer'
 import { printHighlight, printLogicOperator } from './common'
 import { Dictionary } from 'lodash'
 import { TextIdentifier } from '../types'
-import Describe from '../components/Describe'
 import { Is } from '../components/Is'
 import printHasText from './printHasText'
 
@@ -24,6 +23,10 @@ function isText(text: string, elem: ReactTestRender.ReactTestInstance) {
     return text === 'off'
   }
   return text === 'on'
+}
+
+function validate() {
+  
 }
 
 const tests: Dictionary<Test[]> = {
@@ -99,8 +102,34 @@ const tests: Dictionary<Test[]> = {
       expectation: "toHaveText={ <Is not true={ isText } /> }",
       identifier: <Is not true={ isText } />,
       printed: [
-        'to have text which returns not true to the function ',
+        'to have text which does not return true to the function ',
         { highlight: 'isText' },
+      ]
+    },
+    {
+      expectation: "toHaveText={ <Is valid={ validate } /> }",
+      identifier: <Is valid={ validate } />,
+      printed: [
+        'to have text which satisfies the assertion ',
+        { highlight: 'validate' },
+      ]
+    },
+    {
+      expectation: "toHaveText={ <Is not valid={ validate } /> }",
+      identifier: <Is not valid={ validate } />,
+      printed: [
+        'to have text which does not satisfy the assertion ',
+        { highlight: 'validate' },
+      ]
+    },
+    {
+      expectation: "toHaveText={ <Is one of={[ 'foo', <Is not=\"bar\" /> ]} /> }",
+      identifier: <Is one of={[ 'foo', <Is not="bar" /> ]} />,
+      printed: [
+        'to have text which is one of ',
+        { highlight: 'foo' },
+        { operator: ' or ' },
+        { highlight: `is not ${ printHighlight('bar') }` }
       ]
     },
   ],
@@ -167,6 +196,35 @@ const tests: Dictionary<Test[]> = {
         { operator: 'not' },
         ' to have text which returns true to the function ',
         { highlight: 'isText' },
+      ]
+    },
+    {
+      expectation: "notToHaveText={ <Is valid={ validate } /> }",
+      identifier: <Is valid={ validate } />,
+      printed: [
+        { operator: 'not' },
+        ' to have text which satisfies the assertion ',
+        { highlight: 'validate' },
+      ]
+    },
+    {
+      expectation: "notToHaveText={ <Is not valid={ validate } /> }",
+      identifier: <Is not valid={ validate } />,
+      printed: [
+        { operator: 'not' },
+        ' to have text which does not satisfy the assertion ',
+        { highlight: 'validate' },
+      ]
+    },
+    {
+      expectation: "notToHaveText={ <Is one of={[ 'foo', <Is not=\"bar\" /> ]} /> }",
+      identifier: <Is one of={[ 'foo', <Is not="bar" /> ]} />,
+      printed: [
+        { operator: 'not' },
+        ' to have text which is one of ',
+        { highlight: 'foo' },
+        { operator: ' or ' },
+        { highlight: `is not ${ printHighlight('bar') }` }
       ]
     },
   ]

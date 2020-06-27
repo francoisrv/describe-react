@@ -1,17 +1,27 @@
-# Composite assertions
+# General assertions
 
 ```jsx
 <Describe label="Parent expectation">
   <Render>
-    <table>
-      <tbody>
-        <tr>
-          <td />
-        </tr>
-      </tbody>
-    </table>
+    <span className="foo">Hello</span>
   </Render>
 
-  <Expect child="td" toPass={ elem => {} } />
+  <Expect
+    root element
+    toBeTrue={ elem => {
+      elem.type === 'span' &&
+      elem.props.className === 'foo' &&
+      elem.children === ['Hello']
+    } }
+  />
+  
+  <Expect
+    root element
+    toBeValid={ elem => {
+      expect(elem).toHaveProperty('type', 'span')
+      expect(elem.props).toHaveProperty('className', 'foo')
+      expect(elem.children).toEqual(['Hello'])
+    } }
+  />
 </Describe>
 ```

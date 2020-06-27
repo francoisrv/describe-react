@@ -6,10 +6,16 @@ export function getNumberWithOrdinal(n: number) {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-export function isReactElementComponentOf(element: React.ReactElement<any>, component: React.ComponentType<any>) {
+export function isReactElement(element: React.ReactElement<any>) {
   return (
     typeof element === 'object' &&
-    'type' in element &&
+    'type' in element
+  )
+}
+
+export function isReactElementComponentOf(element: React.ReactElement<any>, component: React.ComponentType<any>) {
+  return (
+    isReactElement(element) &&
     element.type === component
   )
 }
@@ -32,4 +38,13 @@ export function getText(elem: ReactTestRenderer.ReactTestInstance): string | nul
     return null
   }
   return textNodes.join(' ')
+}
+
+export function predicate(fn: Function) {
+  try {
+    fn()
+    return true
+  } catch (error) {
+    return false
+  }
 }

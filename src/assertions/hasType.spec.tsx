@@ -59,13 +59,6 @@ describe('Has type', () => {
   )
 
   makeTest(
-    '<Is not="span" />',
-    <div />,
-    <Is not="span" />,
-    <Is not="div" />
-  )
-
-  makeTest(
     '<Is one of={[ "span", "div" ]} />',
     <div />,
     <Is one of={[ 'span', 'div' ]} />,

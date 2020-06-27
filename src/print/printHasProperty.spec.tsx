@@ -80,6 +80,19 @@ const tests: Dictionary<Test[]> = {
         { highlight: '47' }
       ]
     },
+    {
+      expectation: 'toHaveProperty={ ...key: Is }',
+      identifier: { foo: <Is equal to={ 47 } />, bar: <Is not null /> } ,
+      printed: [
+        'to have some properties with name ',
+        { highlight: 'foo'  },
+        ' which value is equal to ',
+        { highlight: '47' },
+        { operator: ' and with name '},
+        { highlight: 'bar'  },
+        ' which value is not null'
+      ]
+    },
   ],
   not: [
     {
@@ -133,6 +146,17 @@ const tests: Dictionary<Test[]> = {
         { highlight: 'bar'  },
         ' which value equals ',
         { highlight: '[1, 2, null, undefined]' },
+      ]
+    },
+    {
+      expectation: 'noToHaveProperty={ key: Is }',
+      identifier: { foo: <Is equal to={ 47 } /> } ,
+      printed: [
+        { operator: 'not' },
+        ' to have property with name ',
+        { highlight: 'foo'  },
+        ' which value is equal to ',
+        { highlight: '47' }
       ]
     },
   ]

@@ -8,19 +8,38 @@ Write your react tests in JSX
 import React from 'react'
 import run, { Describe, Expect, Property, Render } from 'describe-react'
 
+function App() {
+  return (
+    <div>
+
+    </div>
+  )
+}
+
 function Specs() {
   return (
     <Describe label="Quick usage">
       <Render>
         <span id="foo">Hello</span>
       </Render>
-      
-      <Expect
-        root element
-        toHaveType="span"
-        toHaveText="Hello"
-        toHaveProperty={{ id: 'foo' }}
-      />
+
+      <Expect>
+        <To have type="span" />
+        <To have text="hello" />
+        <To have property="id" which is="foo" />
+      </Expect>
+
+      <Expect>
+        <Has type="span" />
+
+        <To have type="span" />
+        <To have text="hello" />
+        <To have property="id" which is="foo" />
+      </Expect>
+
+      <Trigger event="click">
+        <Is a="button" />
+      </Trigger>
     </Describe>
   )
 }

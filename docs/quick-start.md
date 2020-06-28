@@ -40,7 +40,10 @@ run(() => (
       <App />
     </Render>
 
-    <Expect root element toHaveText="Hello world" />
+    <Expect>
+      <Has type="div" />
+      <To have text="Hello world!" />
+    </Expect>
   </Describe>
 ))
 ```

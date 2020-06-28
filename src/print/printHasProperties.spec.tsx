@@ -7,6 +7,7 @@ import { PropertiesIdentifier } from "../types"
 import printHasProperties, { ExtraProperties } from "./printHasProperties"
 import colors from 'colors'
 import stripColors from 'strip-color'
+import Expect from "../components/Expect"
 
 type Print =
 | string

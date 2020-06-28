@@ -8,43 +8,36 @@ Write your react tests in JSX
 import React from 'react'
 import run, { Describe, Expect, Property, Render } from 'describe-react'
 
-function App() {
-  return (
-    <div>
+run(() => (
+  <Describe label="Quick usage">
+    <Render>
+      <ul>
+        <li>1</li>
+        <li className="selected">2</li>
+        <li>
+          <b>3</b>
+        </li>
+      </ul>
+    </Render>
 
-    </div>
-  )
-}
+    <Expect
+      root element
+      to have={3} direct children
+    />
 
-function Specs() {
-  return (
-    <Describe label="Quick usage">
-      <Render>
-        <span id="foo">Hello</span>
-      </Render>
+    <Expect
+      first child
+      to have text="1"
+    />
 
-      <Expect>
-        <To have type="span" />
-        <To have text="hello" />
-        <To have property="id" which is="foo" />
-      </Expect>
-
-      <Expect>
-        <Has type="span" />
-
-        <To have type="span" />
-        <To have text="hello" />
-        <To have property="id" which is="foo" />
-      </Expect>
-
-      <Trigger event="click">
-        <Is a="button" />
-      </Trigger>
-    </Describe>
-  )
-}
-
-run(Specs)
+    <Expect
+      next sibling of
+      child with property="className" which is="selected" 
+      to have type="b"
+      to have text="3"
+    />
+  </Describe>
+))
 ```
 
 ```bash

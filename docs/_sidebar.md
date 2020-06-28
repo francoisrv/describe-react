@@ -1,7 +1,29 @@
 - [Quick start](quick-start.md)
+- [Usage](usage.md)
+- [Targeting elements](target.md)
 - [Examples](examples.md)
 - [Selectors](selectors.md)
 - [Write your own test components](customize.md)
+
+- Selectors
+
+  - [Type](expectations/type.md)
+  - [Text](expectations/text.md)
+  - [Props](expectations/props.md)
+  - [State](expectations/state.md)
+  - [Child](expectations/child.md)
+  - [Parent](expectations/parent.md)
+  - [Sibling](expectations/sibling.md)
+
+- Expectations
+
+  - [Type](expectations/type.md)
+  - [Text](expectations/text.md)
+  - [Props](expectations/props.md)
+  - [State](expectations/state.md)
+  - [Child](expectations/child.md)
+  - [Parent](expectations/parent.md)
+  - [Sibling](expectations/sibling.md)
 
 - Components
 
@@ -19,7 +41,6 @@
 
 - Expectations
 
-  - [General](expectations/assertions.md)
   - [Type](expectations/type.md)
   - [Text](expectations/text.md)
   - [Props](expectations/props.md)

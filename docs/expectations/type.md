@@ -3,99 +3,132 @@ Type expectations
 
 ## Has type
 
-You can expect the target to have a specific type by using either `toHaveType` or `notToHaveType` properties.
+You can expect the target to have a specific type by using one of these equivalent methods:
 
 ```jsx
-function Foo() {
-  return <span />
-}
+<Expect>
+  <To be a="span" />
+</Expect>
 
-<Describe label="Expect to have type">
-  <Render>
-    <div>
-      <Foo />
-    </div>
-  </Render>
+<Expect>
+  <To have type="span" />
+</Expect>
 
-  <Expect
-    element toHaveType="div"
-    label="Expect root element's type to be a div"
-  />
-  <Expect 
-    child toHaveType={ Foo }
-    label="Expect first child's type to be a Foo"
-  />
-  <Expect
-    element notToHaveType="table"
-    label="Expect root element's type NOT to be a div"
-  />
-</Describe>
+<Expect to be a="span" />
+
+<Expect to have type="span" />
 ```
 
-```
-PASS
-  Expect to have type
-    Expect root element's type to be a div
-      Expect root element
-        ✓ to have type which is < div > (1 ms)
-    Expect first child's type to be a Foo
-      Expect first child
-        ✓ to have type which is component < Foo >
-    Expect root element's type NOT to be a div
-      Expect root element
-        ✓ not to have type which is < table >
+Different ways of writing this:
 
-```
+- to be a="span"
+- to have type="span"
+- to have type which is="span"
+- to have type which is a="span"
 
-## Using &lt;Is />
+## Does not have type
 
-You can fine grain the selection using [Is](components/Is)
-
-The following parameters are accepted:
-
-- `Is not`
-- `Is one of`
-- `Is not one of`
-- `Is true`
-- `Is not true`
-- `Is valid`
-- `Is not valid`
+You can expect the target not to have a specific type by using one of these equivalent methods:
 
 ```jsx
-<Describe label="Has one of types">
-  <Render>
-    <div />
-  </Render>
+<Expect>
+  <To NOT be a="span" />
+</Expect>
 
-  <Expect
-    root element
-    toHaveType={ <Is one of={[ 'div', 'section' ]} /> }
-  />
+<Expect>
+  <To NOT have type="span" />
+</Expect>
 
-  <Expect
-    root element
-    toHaveType={ <Is not one of={[ 'span', 'section' ]} /> }
-  />
+<Expect NOT to be a="span" />
 
-  <Expect
-    root element
-    toHaveType={ <Is not one of={[ 'span', 'section' ]} /> }
-  />
-</Describe>
+<Expect NOT to have type="span" />
 ```
 
-When using the functions `true` or `valid`, they are being called with the following arguments:
+Different ways of writing this:
 
-- `type` The element type
-- `elem` the [react test renderer](https://reactjs.org/docs/test-renderer.html) element
-- `localState` The tests' local state
+- to be a="span"
+- to have type="span"
+- to have type which is="span"
+- to have type which is a="span"
+
+## Has one of the types
+
+You can expect the target to have one of specific types by using one of these equivalent methods:
 
 ```jsx
-<Expect
-  root element
-  toHaveType={
-    <Is true={(type, elem) => !elem.children.length && type === 'div' } />
-  }
-  label="Root element is a div and has no child"
-/>
+<Expect>
+  <To be one of={[ 'span', 'div' ]} />
+</Expect>
+
+<Expect>
+  <Or>
+    <To be a="span" />
+    <To be a="div" />
+  </Or>
+</Expect>
+
+<Expect>
+  <To have type which is one of={[ 'span', 'div' ]} />
+</Expect>
+
+<Expect>
+  <Or>
+    <To have type="span" />
+    <To have type="div" />
+  </Or>
+</Expect>
+
+<Expect to be one of={[ 'span', 'div' ]} />
+
+<Expect to have type which is one of={[ 'span', 'div' ]}  />
+```
+
+## Has none of the types
+
+You can expect the target to have none of specific types by using one of these equivalent methods:
+
+```jsx
+<Expect>
+  <To not be one of={[ 'span', 'div' ]} />
+</Expect>
+
+<Expect>
+  <To be none of={[ 'span', 'div' ]} />
+</Expect>
+
+<Expect>
+  <Or>
+    <To not be a="span" />
+    <To not be a="div" />
+  </Or>
+</Expect>
+
+<Expect>
+  <To not have type which is one of={[ 'span', 'div' ]} />
+</Expect>
+
+<Expect>
+  <To have type which is not one of={[ 'span', 'div' ]} />
+</Expect>
+
+<Expect>
+  <To have type which is none of={[ 'span', 'div' ]} />
+</Expect>
+
+<Expect>
+  <Or>
+    <To not have type="span" />
+    <To not have type="div" />
+  </Or>
+</Expect>
+
+<Expect not to be one of={[ 'span', 'div' ]} />
+
+<Expect to be none of={[ 'span', 'div' ]} />
+
+<Expect not to have type which is one of={[ 'span', 'div' ]}  />
+
+<Expect to have type which is not one of={[ 'span', 'div' ]}  />
+
+<Expect to have type which is none of={[ 'span', 'div' ]}  />
 ```

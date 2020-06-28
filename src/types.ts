@@ -128,26 +128,14 @@ export type StateIdentifier =
 | UnitStateIdentifier
 
 export interface ElementExpectations {
-  notToBeOnlyChild?: boolean
-  notToHaveChild?: TypeIdentifier
-  notToHaveDirectParent?: any
-  notToHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-  notToHaveParent?: any
-  notToHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-  notToHaveProperty?: PropertyIdentifier
-  notToHaveState?: StateIdentifier
-  notToHaveText?: TextIdentifier
-  notToHaveType?: TypeIdentifier
-  toBeOnlyChild?: boolean
-  toHaveChild?: TypeIdentifier
-  toHaveDirectParent?: any
-  toHaveExactProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-  toHaveParent?: any
-  toHaveProperties?: Array<Idenitifier<UnitPropertyIdentifier>>
-  toHaveProperty?: PropertyIdentifier
-  toHaveState?: StateIdentifier
-  toHaveText?: TextIdentifier
-  toHaveType?: TypeIdentifier
-  toHaveSibling?: any
-  toHaveSiblings?: any
+  to?: true
+  be?: true
+  a?: boolean | UnitTypeIdentifier
+  an?: boolean | UnitTypeIdentifier
+  not?: any
+  NOT?: any
+  have?: any
+  type?: UnitTypeIdentifier | boolean
+  which?: boolean
+  is?: boolean | UnitTypeIdentifier
 }

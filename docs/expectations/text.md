@@ -1,43 +1,68 @@
 Text
 ===
 
-You can expect a target to have or not a specific text using the attributes `toHaveText` or `notToHaveText`
-
 ## Has text
 
-Will check if target has text or not
+You can check if the target has text at all using one these equivalent methods:
 
 ```jsx
-<Describe label="has text">
-  <Render>
-    <div>
-      <span>hello</span>
-      <span />
-    </div>
-  </Render>
+<Expect>
+  <To have text />
+</Expect>
 
-  <Expect first child toHaveText />
-  <Expect last child notToHaveText />
-</Describe>
+<Expect to have text />
+```
+
+## Does not have text
+
+You can check if the target does not have text at all using one these equivalent methods:
+
+```jsx
+<Expect>
+  <To not have text />
+</Expect>
+
+<Expect>
+  <To have text={ false } />
+</Expect>
+
+<Expect not to have text />
+
+<Expect to have text={ false } />
 ```
 
 Since both these attributes accept boolean, `toHaveText={ false }` is equivalent to `notToHaveText`, and `notToHaveText={ false }` is equivalent to `toHaveText`.
 
 ## Has exact text
 
-Checks if target has exact text
+You can check if the target has exact text using one these equivalent methods:
 
 ```jsx
-<Describe label="has exact text">
-  <Render>
-    <div>the brown fox jumps over the lazy dog</div>
-  </Render>
+<Expect>
+  <To have text="abc" />
+</Expect>
 
-  <Expect root element
-    toHaveText="the brown fox jumps over the lazy dog"
-    notToHaveText="brown fox jump"
-  />
-</Describe>
+<Expect to have text="abc" />
+```
+
+## Does not have exact text
+
+You can check if the target does not have exact text using one these equivalent methods:
+
+```jsx
+<Expect>
+  <To NOT have text="abc" />
+</Expect>
+
+<Expect>
+  <To NOT have text="abc" />
+</Expect>
+
+<Expect>
+  <To not have text="abc" />
+</Expect>
+
+<Expect not to have text="abc" />
 ```
 
 ## Matches text

@@ -53,3 +53,7 @@ export function predicate(fn: Function) {
     return false
   }
 }
+
+export function getSelector() {
+
+}

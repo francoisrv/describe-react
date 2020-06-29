@@ -20,22 +20,26 @@ run(() => (
       </ul>
     </Render>
 
-    <Expect
-      root element
-      to have={3} direct children
-    />
+    <Expect root element>
+      <To have={ 3 } direct children />
+    </Expect>
+
+    <Expect all direct children>
+      <To have type="li" />
+    </Expect>
+
+    <Expect first child>
+      <To have text="1" />
+    </Expect>
 
     <Expect
-      first child
-      to have text="1"
-    />
-
-    <Expect
-      next sibling of
-      child with property="className" which is="selected" 
-      to have type="b"
-      to have text="3"
-    />
+      next sibling of={
+        <Element with property="className" which equals="selected" />
+      }
+    >
+      <To have type="b" />
+      <To have text="3" />
+    </Expect>
   </Describe>
 ))
 ```

@@ -1,170 +1,42 @@
 Property
 ====
-
-You can expect a target to have a specific type of properties using the following attributes:
-
-- `toHaveProperty`
-- `notToHaveProperty`
-- `toHaveProperties`
-- `notToHaveProperties`
-- `toHaveExactProperties`
-- `notToHaveExactProperties`
-
-## has any property
-
-Expect target to have at least one property
+You can expect the target to have specific properties 
 
 ```jsx
-<Expect root element toHaveProperties />
+<To have properties />
+<NOT to have properties />
+<To have property="foo" />
+<NOT to have property="foo" />
+<To have property="foo" which equals="bar" />
+<To have property="foo" which is not null />
+<To have properties={{ foo: 'bar', enabled: <Is true /> }} />
+<To have the following properties>
+  <Has one property with name="foo" which equals="bar" />
+  <Has one property with name="disabled" which is true />
+</To >
+<To have exactly the following properties in that order>
+  <Has one property with name="foo" which equals="bar" />
+  <Has one property with name="disabled" which is true />
+</To >
 ```
+
+## has properties
+
+- To have properties
+- To have some properties
 
 ## does not have properties
 
-Expect target to not have properties at all
+- NOT to have properties
+- To have no properties
 
-```jsx
-<Expect root element toHaveProperties={ false } />
-// Or
-<Expect root element notToHaveProperties />
-```
+## has a property with a specific name
 
-## has property which a specific name
+- To have (a) property="foo"
+- To have (a) property named="foo"
+- To have (a) property with name="foo"
 
-```jsx
-<Describe label="has property name">
-  <Render>
-    <input disabled type="number" required />
-  </Render>
+## has a property with a specific name and value
 
-  <Expect
-    root element toHaveProperty="disabled"
-  />
-
-  <Expect
-    root element notToHaveProperty="id"
-  />
-</Describe>
-```
-
-## has property which name matches regular expression
-
-You can use a regular expression to match a property name:
-
-```jsx
-<Expect root element toHaveProperty={ /disabled/ } />
-```
-
-## has property which has object
-
-You can pass an object to be matched
-
-```jsx
-<Expect root element toHaveProperty={{ type: 'number' }} />
-```
-
-Note that you could pass more than one entry to your object, and it will work but in this case we recommend using `toHaveProperties` instead since it is more correct.
-
-```jsx
-<Expect root element toHaveProperties={{ type: 'number', value: 10 }} />
-```
-
-## has properties which equals exactly object
-
-You can pass an object which equals exactly the properties
-
-```jsx
-<Expect root element toHaveExactProperties={{ type: 'number', required: true, disabled: true }} />
-```
-
-## Using &lt;Is />
-
-You can fine grain the selection using [Is](components/Is) inside the object
-
-```jsx
-<Describe label="Has one of types">
-  <Render>
-    <div />
-  </Render>
-
-  <Expect
-    root element
-    toHaveProperty={{
-      type: <Is not="email" />
-    }}
-  />
-</Describe>
-```
-
-## to have properties
-
-You can check for more than one property. In this case, use an array of one of:
-
-- `string` at least one property has this string as a name
-- `regular expression` at least one property has a name which matches this regular expression
-- `object` a plain object or an object with `<Is />` values
-- `<Is />` an Is assertion to be satisfied by at least one property value
-
-**All items in array must assert**
-
-```jsx
-<Describe label="has properties">
-  <Render>
-    <input
-      type="number"
-      required
-      value={ 27 }
-      title="Counter"
-      tabIndex={ 1 }
-    />
-  </Render>
-
-  <Expect
-    root element
-    toHaveProperties={[
-      'required',
-      { type: 'number' },
-      { value: <Is number /> },
-      <Is null />
-    ]}
-    label={ `
-      - has a property which name is required
-      - has a porperty which name is type and which value equals to "number"
-      - has a property which name is value and which value is a number
-      - has a property which value is null
-    ` }
-  />
-</Describe>
-```
-
-`toHaveProperties` can also accept a [Is](components/Is)
-
-```jsx
-<Describe label="has properties">
-  <Render>
-    <input
-      type="number"
-      required
-      value={ 27 }
-      title="Counter"
-      tabIndex={ 1 }
-    />
-  </Render>
-
-  <Expect
-    root element
-    toHaveProperties={
-      <Is
-        true={
-          props => props.required && props.type === 'number'
-        }
-      />
-    }
-  />
-</Describe>
-```
-
-Both functions will receive the following arguments:
-
-- `props` All the properties of the targeted element
-- `elem` The [react-test-renderer](https://reactjs.org/docs/test-renderer.html) instance of the targeted element
-- `localState` The local state of the tests
+- To have (a) property="foo" which equals="bar"
+- To have (a) property="foo" which is not null

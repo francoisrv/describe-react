@@ -5,19 +5,8 @@ import { printType } from './common'
 import Type from '../components/Type'
 
 export interface PrintSelectorProps {
-  any?:           boolean
-  at?:            number
-  child?:         ChildSelector
-  children?:      true
   element?:       true
-  every?:         true
-  first?:         true
-  last?:          true
-  of?:            amy
-  only?:          true
-  range?:         [number, number]
-  root?:          true
-  some?:          true
+  elements?:      true
 }
 
 export default function printSelector(props: PrintSelectorProps) {

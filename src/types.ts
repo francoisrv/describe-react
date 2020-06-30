@@ -32,6 +32,12 @@ export interface ContextInterface {
   getSource: () => ReactTestRenderer.ReactTestRenderer
 }
 
+export interface TestModifier {
+  _label?: string
+  _skip?: boolean
+  _timeout?: number
+}
+
 // ////////////////////////////////////////////////////////////
 // SELECTORS
 // ////////////////////////////////////////////////////////////

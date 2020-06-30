@@ -20,25 +20,14 @@ run(() => (
       </ul>
     </Render>
 
-    <Expect root element>
-      <To have={ 3 } direct children />
-    </Expect>
-
-    <Expect all direct children>
-      <To have type="li" />
-    </Expect>
-
-    <Expect first child>
+    <Expect element which={ <Has type="button" /> }>
       <To have text="1" />
     </Expect>
 
-    <Expect
-      next sibling of={
-        <Element with property="className" which equals="selected" />
-      }
-    >
-      <To have type="b" />
-      <To have text="3" />
+    <Trigger event="click" to element which={ <Has type="button" /> } />
+
+    <Expect element which={ <Has type="button" /> }>
+      <To have text="1" />
     </Expect>
   </Describe>
 ))

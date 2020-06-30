@@ -2,25 +2,44 @@ import React from 'react'
 import { omit } from 'lodash'
 import colors from 'colors'
 import Context from '../context'
-import { SubSection, ElementExpectations, ItProps, UnitTypeIdentifier } from '../types'
+import { SubSection, ElementExpectations, ItProps, UnitTypeIdentifier, TestModifier } from '../types'
 import printHasType from '../print/printHasType'
 import printHasText from '../print/printHasText'
 import printSelector, { PrintSelectorProps } from '../print/printSelector'
+import { HasProps } from './Has'
 
 interface ExpectAnatomy {
   label: string
   sections: SubSection[]
 }
 
-interface ExpectProps
-  extends
-    ElementExpectations,
-    PrintSelectorProps
-{
-  label?: string
-  skip?: boolean
-  timeout?: number
-}
+type WhichProps =
+| React.ReactElement<HasProps>
+
+export type ExpectElementProps =
+| { element: boolean } & { which?: WhichProps }
+| { root: boolean, element: boolean }
+| { single: boolean, element: boolean }
+| { first: boolean, element: boolean }
+| { last: boolean, element: boolean }
+| { only: boolean, element: boolean }
+| { element: boolean, number: number }
+| { element: boolean, at: number }
+
+
+export type ExpectElementsProps =
+| { elements: boolean }
+| { all: boolean, elements: boolean }
+| { some: boolean, elements: boolean }
+| { first: number, elements: boolean }
+| { last: number, elements: boolean }
+| { at: boolean, least: number, elements: boolean }
+| { no: boolean, more: boolean, than: number, elements: boolean }
+| { elements: boolean, between: number, and: number }
+
+export type ElemProps =
+& TestModifier
+& (ExpectElementProps | ExpectElementProps)
 
 function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
   const sections: SubSection[] = []

@@ -7,7 +7,9 @@ describe('Pick elements', () => {
   describe('Prepick', () => {
     it('element', () => {
       const { root } = ReactTestRenderer.create(
-        <div />
+        <div>
+          <span />
+        </div>
       )
       const props = { element: true }
       const picked = pickElements(root, props)
@@ -244,7 +246,192 @@ describe('Pick elements', () => {
             const picked = pickElements(root, props)
             expect(picked).toBeUndefined()
           })
+          it('element which={ <Has type which is one of={[ "span", "section" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div />
+            )
+            const props = { element: true, which: <Has type which is one of={[  'span', 'section' ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has type which is not one of={[ "span", "div" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div />
+            )
+            const props = { element: true, which: <Has type which is not one of={[ 'span', 'div' ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
         })
+      })
+      describe('Text', () => {
+        describe('Passing', () => {
+          it('element which={ <Has text /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has no text /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div />
+            )
+            const props = { element: true, which: <Has no text /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text="abc" /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text="abc" /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text which matches="abc" /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text which matches={ /abc/ } /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text which is not="def" /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text which is not="def" /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text which does not match={ /def/ } /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text which does not match={ /def/ } /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text which is one of={[ "abc", "def" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text which is one of={[ 'abc', 'def' ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text which matches one of={[ /abc/, /def/" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text which matches one of={[ /abc/, /def/ ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text which is not one of={[ "def", "ghi" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text which is not one of={[ 'def', 'ghi' ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+          it('element which={ <Has text which does not match one of={[ "def", "ghi" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>abc</div>
+            )
+            const props = { element: true, which: <Has text which does not match one of={[ /def/, /ghi/ ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toHaveProperty('type', 'div')
+          })
+        })
+        describe('Failing', () => {
+          it('element which={ <Has text /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div />
+            )
+            const props = { element: true, which: <Has text /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has no text /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>foo</div>
+            )
+            const props = { element: true, which: <Has no text /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text="abc" /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>def</div>
+            )
+            const props = { element: true, which: <Has text="abc" /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text which matches="abc" /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>def</div>
+            )
+            const props = { element: true, which: <Has text which matches={ /abc/ } /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text which is not="def" /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>def</div>
+            )
+            const props = { element: true, which: <Has text which is not="def" /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text which does not match={ /def/ } /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>def</div>
+            )
+            const props = { element: true, which: <Has text which does not match={ /def/ } /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text which is one of={[ "abc", "def" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>ghi</div>
+            )
+            const props = { element: true, which: <Has text which is one of={[ 'abc', 'def' ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text which matches one of={[ /abc/, /def/" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>ghi</div>
+            )
+            const props = { element: true, which: <Has text which matches one of={[ /abc/, /def/ ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text which is not one of={[ "def", "ghi" ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>def</div>
+            )
+            const props = { element: true, which: <Has text which is not one of={[ 'def', 'ghi' ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+          it('element which={ <Has text which does not match one of={[ /def/, /ghi/ ]} /> }', () => {
+            const { root } = ReactTestRenderer.create(
+              <div>def</div>
+            )
+            const props = { element: true, which: <Has text which does not match one of={[ /def/, /ghi/ ]} /> }
+            const picked = pickElements(root, props)
+            expect(picked).toBeUndefined()
+          })
+        })
+      })
+      describe('Properties', () => {
+        
       })
     })
     it('root element', () => {

@@ -1,46 +1,61 @@
-# Parent expectations
+# Parent
 
-Expect target to have a specific parent
+Use it either as a selector or an expectation:
+
+As a selector:
 
 ```jsx
-<Describe label="Parent expectation">
-  <Render>
-    <table>
-      <tbody>
-        <tr />
-      </tbody>
-    </table>
-  </Render>
+<Expect element which={ <Has parent which={ <Has type="div" /> } />}>
+  // ....
+</Expect>
 
-  <Expect child="tr" toHaveParent="tbody" />
-</Describe>
+<Expect elements which={ <Have parent which={ <Has type="div" /> } />}>
+  // ....
+</Expect>
 ```
 
-The value can be either a component, a `<Is />` or an `<Element />`
-
-You can use one of these properties:
-
-- `toHaveParent`
-- `notToHaveParent`
-- `toHaveDirectParent`
-- `notToHaveDirectParent`
-- `toHaveNonDirectParent`
-- `notToHaveNonDirectParent`
-
-You can also use an array where the first element is the parent descriptor and the second is the genealogy level
+As an expectation
 
 ```jsx
-<Describe label="Parent expectation">
-  <Render>
-    <table>
-      <tbody>
-        <tr>
-          <td />
-        </tr>
-      </tbody>
-    </table>
-  </Render>
+<Expect element>
+  <To have parent which={ <Has type="div" /> } />
+</Expect>
+```
 
-  <Expect child="td" toHaveParent={[ 'tbody', { genealogy: 2 } ]} />
-</Describe>
+## Negation
+
+You can negate the effect by using `not` or `NOT`
+
+## Child position
+
+By default, the first child is scanned when using `child`. You can change that:
+
+```jsx
+<Has no child />
+<Has first child />
+<Has last child />
+<Has only child />
+<Has child number={5} />
+```
+
+## Children range
+
+By default, all the children are scanned when using `children`. You can change that:
+
+```jsx
+<Has no children />
+<Has some children />
+<Has exactly={ 5 } children />
+<Has at least={ 5 } children />
+<Has no more than={ 5 } children />
+<Has between={ 5 } and={ 10 } children />
+```
+
+## Direct children
+
+By default all children, even the nested one are selected. You can use `direct` so select only direct children
+
+```jsx
+<Has last direct child />
+<Has exactly={ 5 } direct children />
 ```

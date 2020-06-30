@@ -1,42 +1,71 @@
-Property
-====
-You can expect the target to have specific properties 
+# Have property
+
+Use it either as a selector or an expectation:
+
+As a selector:
 
 ```jsx
-<To have properties />
-<NOT to have properties />
-<To have property="foo" />
-<NOT to have property="foo" />
-<To have property="foo" which equals="bar" />
-<To have property="foo" which is not null />
-<To have properties={{ foo: 'bar', enabled: <Is true /> }} />
-<To have the following properties>
-  <Has one property with name="foo" which equals="bar" />
-  <Has one property with name="disabled" which is true />
-</To >
-<To have exactly the following properties in that order>
-  <Has one property with name="foo" which equals="bar" />
-  <Has one property with name="disabled" which is true />
-</To >
+<Expect element which={ <Has property="type" />}>
+  // ....
+</Expect>
+
+<Expect elements which={ <Have property="type" />}>
+  // ....
+</Expect>
 ```
 
-## has properties
+As an expectation
 
-- To have properties
-- To have some properties
+```jsx
+<Expect element>
+  <To have property="type" />
+</Expect>
+```
 
-## does not have properties
+## Usage
 
-- NOT to have properties
-- To have no properties
+Check if the target has any props at all
 
-## has a property with a specific name
+```jsx
+<Has properties />
+```
 
-- To have (a) property="foo"
-- To have (a) property named="foo"
-- To have (a) property with name="foo"
+## Negation
 
-## has a property with a specific name and value
+You can negate the effect by using `not` or `NOT`
 
-- To have (a) property="foo" which equals="bar"
-- To have (a) property="foo" which is not null
+```jsx
+<Has not properties />
+```
+
+## Property name
+
+You can check for a property by name
+
+```jsx
+<Has property="type" />
+```
+
+You can use a condition
+
+```jsx
+const isEitherRequiredOrDisabled = <Is either={[ 'required', 'disabled' ]} />
+
+<Has property={{ which: isEitherRequiredOrDisabled }} />
+```
+
+## Property value
+
+You can check for a property by value via [which condition](which)
+
+```jsx
+<Has property which={ <Is exactly="abc" /> } />
+```
+
+## Property name and value
+
+You can check for a property by name and value
+
+```jsx
+<Has property="disabled" which={ <Is true /> } />
+```

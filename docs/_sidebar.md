@@ -7,13 +7,13 @@
 - Assertion
 
   - Have
-    - [Have Type](expectations/type.md)
-    - [Have Text](expectations/text.md)
-    - [Have Props](expectations/props.md)
-    - [Have State](expectations/state.md)
-    - [Have Child](expectations/child.md)
-    - [Have Parent](expectations/parent.md)
-    - [Have Sibling](expectations/sibling.md)
+    - [Type](expectations/type.md)
+    - [Text](expectations/text.md)
+    - [Props](expectations/props.md)
+    - [State](expectations/state.md)
+    - [Children](expectations/child.md)
+    - [Parent](expectations/parent.md)
+    - [Sibling](expectations/sibling.md)
   - [Be](expectations/be.md)
 
 - Components

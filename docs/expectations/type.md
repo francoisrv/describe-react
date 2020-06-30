@@ -1,24 +1,51 @@
-Type expectations
-===
+# Have type
 
-You can expect the target to have a specific type 
+Use it either as a selector or an expectation:
 
-You can use this inside a which selector:
+As a selector:
 
 ```jsx
 <Expect element which={ <Has type="span" />}>
+  // ....
+</Expect>
 
+<Expect elements which={ <Have type="span" />}>
+  // ....
 </Expect>
 ```
 
-Or inside an expectation declaration
+As an expectation
 
 ```jsx
-<Expect all elements which={ <Are direct children to root element /> }>
+<Expect element>
   <To have type="span" />
-  <To have type which is not="div" />
-  <To have type which is one of={[ 'span', 'div' ]} />
-  <To have type which is not one of={[ 'div', 'section' ]} />
-  <To have text which returns true to={ type => type === 'span' } />
 </Expect>
+```
+
+## Usage
+
+Use the name of the component type. It could be either a string for HTML built-in elements or a component function / class
+
+```jsx
+<Has type="span" />
+<Has type={ MyComponent } />
+```
+
+## Negation
+
+You can negate the effect by using `not` or `NOT`
+
+```jsx
+<Has not type="span" />
+<Has NOT type="span" />
+```
+
+## Type which
+
+You could use a [which condition](which) too
+
+Example:
+
+```jsx
+<Has type which={ <Is either={[ 'span', 'div' ]} /> } />
 ```

@@ -1,20 +1,71 @@
-State
-====
-You can expect the target to have specific state 
+# Have state
 
-## has a state
+Use it either as a selector or an expectation:
 
-Check if the element has a state defined
+As a selector:
 
-- `To have (a) state`
+```jsx
+<Expect element which={ <Has state="counter" />}>
+  // ....
+</Expect>
 
-## does not have a state
+<Expect elements which={ <Have state="counter" />}>
+  // ....
+</Expect>
+```
 
-Check if the element does not have a state defined
-- `NOT to have (a) state`
+As an expectation
 
-## has a state with name
+```jsx
+<Expect element>
+  <To have state="counter" />
+</Expect>
+```
 
-Check if the element has a state with this name
+## Usage
 
-- `To have state="..."`
+Check if the target has any state at all
+
+```jsx
+<Has state />
+```
+
+## Negation
+
+You can negate the effect by using `not` or `NOT`
+
+```jsx
+<Has not state />
+```
+
+## State name
+
+You can check for a state by name
+
+```jsx
+<Has state="counter" />
+```
+
+You can use a condition
+
+```jsx
+const isACounter = <Is either={[ 'clickCounter', 'visitCounter' ]} />
+
+<Has state={{ which: isACounter }} />
+```
+
+## State value
+
+You can check for a state by value via [which condition](which)
+
+```jsx
+<Has state which={ <Is exactly={0} /> } />
+```
+
+## State name and value
+
+You can check for a state by name and value
+
+```jsx
+<Has state="counter" which={ <Is a number /> } />
+```

@@ -1,60 +1,69 @@
-# Child expectation
+# Children
 
-## Occurrences
+Use it either as a selector or an expectation:
 
-### has children
+As a selector:
 
-- To have children
+```jsx
+<Expect element which={ <Has children />}>
+  // ....
+</Expect>
 
-### does not have children
+<Expect elements which={ <Have children />}>
+  // ....
+</Expect>
+```
 
-- NOT to have children
+As an expectation
 
-### has at least one child
+```jsx
+<Expect element>
+  <To have children />
+</Expect>
+```
 
-- To have one child
-- To have exactly one child
-- To have only child
-- To have a single child
-- To have at least one child
-- To have no more than one child
+## Usage
 
-### has exactly n children
+Check if the target has any state at all
 
-- to have={ 5 } children
-- to have exactly={ 5 } children
-- NOT to have exactly={ 4 } children
+```jsx
+<Has child />
+```
 
-### has at least n children
+## Negation
 
-- to have at least={ 5 } children
+You can negate the effect by using `not` or `NOT`
 
-### has no more than n children
+## Child position
 
-- to have no more than={ 5 } children
+By default, the first child is scanned when using `child`. You can change that:
 
-### has between n and n2 children
+```jsx
+<Has no child />
+<Has first child />
+<Has last child />
+<Has only child />
+<Has child number={5} />
+```
 
-- to have between={ 4 } and={ 8 } children
+## Children range
 
-## Which
+By default, all the children are scanned when using `children`. You can change that:
 
-- to have children which...
-- to have child which...
+```jsx
+<Has no children />
+<Has some children />
+<Has exactly={ 5 } children />
+<Has at least={ 5 } children />
+<Has no more than={ 5 } children />
+<Has between={ 5 } and={ 10 } children />
+```
 
-### Complex sorting
+## Direct children
 
-- to have children which={[ `<Have type="span" />`, `<Have text />` ]}
+By default all children, even the nested one are selected. You can use `direct` so select only direct children
 
-### Simple sorting
-
-- to have children which have type="span"
-
-### Filter
-
-- to have all children which have type="span"
-- to have some children which have type="span"
-- to have exactly={ 5 } children which have type="span"
-- to have at least={ 5 } children which have type="span"
-- to have no more={ 5 } children which have type="span"
-
+```jsx
+<Has last direct child />
+<Has exactly={ 5 } direct children />
+```

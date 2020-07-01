@@ -9,8 +9,14 @@ import { printGeneric, printElement, printProps } from "./print/common";
 export default function has(
   value: any,
   props: HasProps
-) {
+): void {
   if ('type' in props) {
+    if (isArray(value)) {
+      for (const v of value) {
+        has(v, props)
+      }
+      return
+    }
     if (!isReactTestRendererInstance(value)) {
       throw new DescribeReactError(`Expected value to examine type from to be a React element\nReceived: `)
     }

@@ -47,6 +47,7 @@ You could use a [which condition](which) too
 Values accepted.
 
 ```jsx
+<Has type which={ <Is exactly="span" /> } />
 <Has type which={ <Is not="span" /> } />
 <Has type which={ <Is either={[ 'span', 'div' ]} /> } />
 <Has type which={ <Is neither={[ 'span', 'div' ]} /> } />

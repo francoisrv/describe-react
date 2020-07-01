@@ -117,11 +117,3 @@ Expect between n and n2 matching elements
 <Expect between={5} and={10} elements>...</Expect>
 ```
 
-### even and odd
-
-Expect even or odd matching elements
-
-```jsx
-<Expect odd elements to have text>...</Expect>
-<Expect odd elements to have text>...</Expect>
-```

@@ -1,7 +1,7 @@
 import React from 'react'
 import { omit, isArray, isString } from 'lodash'
 import Context from '../context'
-import { SubSection, TestModifier } from '../types'
+import { SubSection, TestModifier, SingleOrMany } from '../types'
 import { HasProps } from './Has'
 import { printProps, printType } from '../print/common'
 import { isReactElementComponentOf } from '../utils'
@@ -14,19 +14,24 @@ import has from '../has'
 type WhichProps =
 | React.ReactElement<HasProps>
 
+type ElementWhich = SingleOrMany<
+  | React.ReactElement<HasProps>
+>
+
 export type ExpectElementProps =
-| { element: boolean } & { which?: WhichProps }
+| { element: boolean, which?: ElementWhich }
 | { root: boolean, element: boolean }
-| { single: boolean, element: boolean }
-| { first: boolean, element: boolean }
-| { last: boolean, element: boolean }
-| { only: boolean, element: boolean }
-| { element: boolean, number: number }
-| { element: boolean, at: number }
+| { single: boolean, element: boolean, which?: ElementWhich }
+| { first: boolean, element: boolean, which?: ElementWhich }
+| { last: boolean, element: boolean, which?: ElementWhich }
+| { only: boolean, element: boolean, which?: ElementWhich }
+| { element: boolean, number: number, which?: ElementWhich }
+| { element: boolean, at: number, which?: ElementWhich }
 
 
 export type ExpectElementsProps =
 | { elements: boolean }
+| { exactly: number, elements: boolean }
 | { all: boolean, elements: boolean }
 | { some: boolean, elements: boolean }
 | { first: number, elements: boolean }
@@ -37,7 +42,7 @@ export type ExpectElementsProps =
 
 export type ExpectProps =
 & TestModifier
-& (ExpectElementProps | ExpectElementProps)
+& (ExpectElementProps | ExpectElementsProps)
 
 const Expect: React.FC<ExpectProps> = props => {
   return (
@@ -45,7 +50,7 @@ const Expect: React.FC<ExpectProps> = props => {
       { ctx => {
         const children = isArray(props.children) ? props.children : [props.children]
         ctx.sections.push({
-          label: `Expect ${ printProps(omit(props, ['children'])) }`,
+          label: `Expect ${ printProps(omit(props, ['children', '_skip', '_only', '_label', '_timeout'])) }`,
           skip: !!props._skip,
           only: !!props._only,
           timeout: props._timeout,
@@ -59,11 +64,11 @@ const Expect: React.FC<ExpectProps> = props => {
                 if (!root || isString(root)) {
                   throw new DescribeReactError('Nothing was rendered')
                 }
-                const found = prepickElements(root, props)
+                const found = pickElements(root, props)
                 if (isReactElementComponentOf(elem, To)) {
                   if ('have' in elem.props) {
                     const haveProps = omit(elem.props, ['have'])
-                    has(root, haveProps)
+                    has(found, haveProps)
                   }
                 }
               }

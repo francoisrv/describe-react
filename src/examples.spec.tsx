@@ -4,17 +4,197 @@ import React from "react"
 import Render from "./components/Render"
 import Expect from "./components/Expect"
 import To from "./components/To"
+import Is from "./components/Is"
+import Has from "./components/Has"
+import Have from "./components/Have"
 
 describe('Examples', () => {
   run(() => (
-    <Describe label="Test">
+    <Describe label="Root element">
       <Render>
         <div />
       </Render>
 
       <Expect root element>
         <To have type="div" />
+        <To have type which={ <Is exactly="div" /> } />
+        <To have type which={ <Is not="span" /> } />
+        <To have type which={ <Is either={[ 'span', 'div' ]} /> } />
+        <To have type which={ <Is neither={[ 'span', 'table' ]} /> } />
+        <To not have text />
+        <To have no properties />
+        <To have no state />
+        <To have no children />
+        <To have no parent />
+        <To have no siblings />
       </Expect>
+
+    </Describe>
+  ))
+
+  run(() => (
+    <Describe label="Targeting element">
+      <Render>
+        <table>
+          <tr>
+            <td>
+              <span />
+            </td>
+          </tr>
+        </table>
+      </Render>
+
+      <Expect first element>
+        <To have type="table" />
+      </Expect>
+
+      <Expect last element>
+        <To have type="span" />
+      </Expect>
+
+      <Expect element number={2}>
+        <To have type="tr" />
+      </Expect>
+
+      <Expect element at={2}>
+        <To have type="td" />
+      </Expect>
+    </Describe>
+  ))
+
+  run(() => (
+    <Describe label="Targeting element which">
+      <Render>
+        <table>
+          <tr>
+            <td>
+              <span />
+            </td>
+            <td>
+              <h1>hello</h1>
+              <span>bye</span>
+            </td>
+          </tr>
+        </table>
+      </Render>
+
+      <Expect element which={[ <Has type="h1" />, <Has parent="td" /> ]}>
+        <To have only child which={ <Has type="span" /> } />
+      </Expect>
+
+      <Expect first element which={ <Has type="td" /> }>
+        <To have only child which={ <Has type="span" /> } />
+      </Expect>
+
+      <Expect last element which={ <Has type="span" /> }>
+        <To have text="bye" />
+      </Expect>
+
+      <Expect element number={2} which={ <Has type="span" /> } _only>
+        <To have text="bye" />
+      </Expect>
+
+      <Expect element at={0} which={ <Has type="span" /> }>
+        <To not have text />
+      </Expect>
+    </Describe>
+  ))
+
+  run(() => (
+    <Describe label="Targeting elements">
+      <Render>
+        <ul className="foo">
+          <li className="foo">1</li>
+          <li className="bar">2</li>
+          <li className="bar">3</li>
+        </ul>
+      </Render>
+
+      <Expect elements>
+        <To have type which={ <Is either={[ 'ul', 'li' ]} /> } />
+      </Expect>
+
+      <Expect all elements>
+        <To have type which={ <Is either={[ 'ul', 'li' ]} /> } />
+      </Expect>
+
+      <Expect some elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+      <Expect first={2} elements>
+        <To have property="className" which={ <Is exactly="foo" /> } />
+      </Expect>
+
+      <Expect last={2} elements>
+        <To have property="className" which={ <Is exactly="bar" /> } />
+      </Expect>
+
+      <Expect at least={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+      <Expect no more than={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+      <Expect exactly={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+      <Expect between={0} and={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+    </Describe>
+  ))
+
+  run(() => (
+    <Describe label="Targeting elements which">
+      <Render>
+        <ul className="foo">
+          <li className="foo">1</li>
+          <li className="bar">2</li>
+          <li className="bar">3</li>
+        </ul>
+      </Render>
+
+      <Expect elements which={ <Have type="li" /> }>
+        <To have type which={ <Is either={[ 'ul', 'li' ]} /> } />
+      </Expect>
+
+      <Expect all elements which={ <Have property="className" /> }>
+        <To have type which={ <Is either={[ 'ul', 'li' ]} /> } />
+      </Expect>
+
+      <Expect some elements which={ <Have text /> }>
+        <To have length={3} />
+      </Expect>
+
+      <Expect first={2} elements>
+        <To have property="className" which={ <Is exactly="foo" /> } />
+      </Expect>
+
+      <Expect last={2} elements>
+        <To have property="className" which={ <Is exactly="bar" /> } />
+      </Expect>
+
+      <Expect at least={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+      <Expect no more than={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+      <Expect exactly={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
+      <Expect between={0} and={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
     </Describe>
   ))
 })

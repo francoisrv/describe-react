@@ -1,6 +1,6 @@
 import { ExpectElementProps, ExpectElementsProps } from "./components/Expect"
 import ReactTestRenderer from 'react-test-renderer'
-import { isEqual, last, omit } from "lodash"
+import { isEqual, last, omit, first } from "lodash"
 import { isReactElementComponentOf, predicate } from "./utils"
 import Has from "./components/Has"
 import has from "./has"
@@ -30,17 +30,19 @@ export function prepickElements(
     if (
       hasExactProps({ element: true }) ||
       hasExactProps({ root: true, element: true }) ||
-      ('single' in propsWithoutWhich && hasExactProps({ single: true, element: true })) ||
-      ('only' in propsWithoutWhich && hasExactProps({ only: true, element: true })) ||
-      ('first' in propsWithoutWhich && hasExactProps({ first: true, element: true }))
+      hasExactProps({ only: true, element: true }) ||
+      hasExactProps({ first: true, element: true })
     ) {
       return root
     } else if (hasExactProps({ last: true, element: true })) {
+      const all = findAll()
       return last(findAll())
     } else if ('number' in propsWithoutWhich && hasExactProps({ element: true, number: propsWithoutWhich.number })) {
       return findAll()[propsWithoutWhich.number - 1]
     } else if ('at' in propsWithoutWhich && hasExactProps({ element: true, at: propsWithoutWhich.at })) {
       return findAll()[propsWithoutWhich.at]
+    } else {
+      return root
     }
 
     return undefined

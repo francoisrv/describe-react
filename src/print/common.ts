@@ -1,5 +1,5 @@
 import colors from 'colors'
-import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined } from 'lodash'
+import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean } from 'lodash'
 import ReactTestRender from 'react-test-renderer'
 import { isReactElement, isReactElementComponentOf } from '../utils'
 import { Is } from '../components/Is'
@@ -25,9 +25,13 @@ export function printOrNor(not = false) {
 
 export function printProps(object: Dictionary<any>) {
   const props: string[] = []
-  const realProps = omit(object, ['children'])
-  for (const key in realProps) {
-    if (isString(object[key])) {
+  for (const key in object) {
+    if (key === 'children') {
+      if (isBoolean(object.children)) {
+        props.push(key)
+      }
+      continue
+    } else if (isString(object[key])) {
       props.push(`${ key }="${ object[key] }"`)
     } else if (object[key] === true) {
       props.push(`${ key }`)
@@ -44,6 +48,8 @@ export function printProps(object: Dictionary<any>) {
       props.push(`${ key }={ <${ object[key].type.name } ${ printProps(object[key].props) } /> }`)
     } else if (isRegExp(object[key])) {
       props.push(`${ key }={ ${ object[key].toString() } }`)
+    } else if (isArray(object[key])) {
+      props.push(`${ key }={ ${ printGeneric(object[key]) } }`)
     } else if (isObject(object[key])) {
       props.push(`${ key }={ ${ JSON.stringify(object[key]) } }`)
     } else {

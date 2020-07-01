@@ -6,6 +6,10 @@ export function getNumberWithOrdinal(n: number) {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+export function isReactTestRendererInstance(value: any) {
+  return value._fiber
+}
+
 export function isReactElement(element: React.ReactElement<any>) {
   return (
     typeof element === 'object' &&
@@ -50,6 +54,7 @@ export function predicate(fn: Function) {
     fn()
     return true
   } catch (error) {
+    // console.log(error)
     return false
   }
 }

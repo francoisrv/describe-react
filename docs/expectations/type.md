@@ -44,8 +44,10 @@ You can negate the effect by using `not` or `NOT`
 
 You could use a [which condition](which) too
 
-Example:
+Values accepted.
 
 ```jsx
+<Has type which={ <Is not="span" /> } />
 <Has type which={ <Is either={[ 'span', 'div' ]} /> } />
+<Has type which={ <Is neither={[ 'span', 'div' ]} /> } />
 ```

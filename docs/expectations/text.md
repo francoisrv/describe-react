@@ -36,12 +36,6 @@ Check if the target has text "abc"
 <Has text="abc" />
 ```
 
-Check if the target has text matching /abc/
-
-```jsx
-<Has text={ abc } />
-```
-
 ## Negation
 
 You can negate the effect by using `not` or `NOT`
@@ -55,8 +49,28 @@ You can negate the effect by using `not` or `NOT`
 
 You could use a [which condition](which) too
 
-Example:
+Values expected:
+
+- is not=`string`
+- is either={`string[]`}
+- is neither={`string[]`}
+- is (not) an empty string
+- has (not) length={`number`}
+- has (not) length which={`<Is greater than=number />`}
+- has (not) length which={`<Is greater than or equals=number />`}
+- has (not) length which={`<Is lesser than=number />`}
+- has (not) length which={`<Is lesser than or equals=number />`}
+- is (not) matching={`RegExp`}
+- is (not) matching either={`RegExp[]`}
+- is (not) matching neither={`RegExp[]`}
+
 
 ```jsx
-<Has text which={ <Is either={[ 'abc', /def/ ]} /> } />
+<Has text which={ <Is not="abc" /> } />
+<Has
+  text which={[
+    <Is matching={ /foo/ } />,
+    <Is neither={[ 'foo1', 'foo2' ]} />
+  ]}
+>
 ```

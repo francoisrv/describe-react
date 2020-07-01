@@ -1,76 +1,36 @@
 import React from "react";
+import Is, { IsProps } from "./Is";
+import { UnitTypeIdentifier, UnitTextIdentifier } from "../types";
 
 export type HasTypeProps =
 | { type: string | React.ComponentType<any> }
 | {
   type: boolean,
-  which: boolean,
-  is: boolean,
-  not: string | React.ComponentType<any>
-}
-| {
-  type: boolean,
-  which: boolean,
-  is: boolean,
-  not?: boolean
-  one?: boolean
-  of?:
-   (string | React.ComponentType<any>)[]
+  which:
+  | React.ReactElement<IsProps<UnitTypeIdentifier>, typeof Is>
 }
 
 export type HasTextProps =
-| { text: string | boolean }
+| { text: string }
+| { not: boolean, text: boolean }
 | {
-  no: boolean
-  text: boolean
+  text: boolean,
+  which?:
+  | React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
 }
+
+export type HasLengthProps =
+| { not?: boolean, length: number }
 | {
-  text: boolean
-  which: boolean
-  is: boolean
-  not: string
+  length: boolean,
+  which?:
+  | React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
 }
-| {
-  text: boolean
-  which: boolean
-  is: boolean
-  not?: boolean
-  one?: boolean
-  of?:
-   (string)[]
-}
-| {
-    text: boolean
-    which: boolean
-    matches: RegExp
-  }
-| {
-    text: boolean
-    which: boolean
-    does: boolean
-    not: boolean
-    match: RegExp
-  }
-| {
-    text: boolean
-    which: boolean
-    matches: boolean
-    one: boolean
-    of: RegExp[]
-  }
-| {
-    text: boolean
-    which: boolean
-    does: boolean
-    not: boolean
-    match: boolean
-    one: boolean
-    of: RegExp[]
-  }
 
 export type HasProps =
 | HasTypeProps
 | HasTextProps
+| HasLengthProps
 
 export default function Has(props: HasProps) {
   return <div />

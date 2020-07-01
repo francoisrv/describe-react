@@ -27,11 +27,11 @@ export function printProps(object: Dictionary<any>) {
   const props: string[] = []
   const realProps = omit(object, ['children'])
   for (const key in realProps) {
-    if (typeof object[key] === 'string') {
+    if (isString(object[key])) {
       props.push(`${ key }="${ object[key] }"`)
     } else if (object[key] === true) {
       props.push(`${ key }`)
-    } else if (typeof object[key] === 'function') {
+    } else if (isFunction(object[key])) {
       props.push(`${ key }={ ${ printType(object[key]) } }`)
     } else if (
       typeof object[key] === 'object' &&
@@ -42,7 +42,9 @@ export function printProps(object: Dictionary<any>) {
       '_store' in object[key]
     ) {
       props.push(`${ key }={ <${ object[key].type.name } ${ printProps(object[key].props) } /> }`)
-    } else if (typeof object[key] === 'object') {
+    } else if (isRegExp(object[key])) {
+      props.push(`${ key }={ ${ object[key].toString() } }`)
+    } else if (isObject(object[key])) {
       props.push(`${ key }={ ${ JSON.stringify(object[key]) } }`)
     } else {
       props.push(`${ key }={ ${ object[key] } }`)

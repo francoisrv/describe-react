@@ -1,8 +1,13 @@
 import React from 'react'
 import Context from '../context'
-import { ItProps } from '../types'
 
-const Describe: React.FC<React.PropsWithChildren<ItProps>> = props => {
+export interface DescribeProps {
+  label: string
+  only?: boolean
+  skip?: boolean
+}
+
+const Describe: React.FC<React.PropsWithChildren<DescribeProps>> = props => {
   return (
     <Context.Consumer>
       { ctx => {

@@ -3,6 +3,7 @@ import React from 'react'
 import colors from 'colors'
 import { ItProps, ContextInterface } from './types'
 import Context from './context'
+import Render from './components/Render'
 
 function makeDescriber(opt: ItProps, fn: typeof describe | typeof it = describe) {
   let describer = fn
@@ -40,14 +41,14 @@ export function convertToTests(ctx: ContextInterface) {
 }
 
 export default function run(Tests: React.ComponentType<any>) {
+  let value: ReactTestRenderer.ReactTestRenderer
   const context = {
     describer: null,
     sections: [],
-    getSource: () => {
-      throw new Error('You are using master template')
-    }
+    getTestRenderer: () => value,
+    getRendered: () => value.root.findByType(Render).children[0]
   }
-  ReactTestRenderer.create(
+  value = ReactTestRenderer.create(
     <Context.Provider value={ context }>
       <Tests />
     </Context.Provider>

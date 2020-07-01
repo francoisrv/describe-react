@@ -1,17 +1,15 @@
 import React from 'react'
-import { omit } from 'lodash'
-import colors from 'colors'
+import { omit, isArray, isString } from 'lodash'
 import Context from '../context'
-import { SubSection, ElementExpectations, ItProps, UnitTypeIdentifier, TestModifier } from '../types'
-import printHasType from '../print/printHasType'
-import printHasText from '../print/printHasText'
-import printSelector, { PrintSelectorProps } from '../print/printSelector'
+import { SubSection, TestModifier } from '../types'
 import { HasProps } from './Has'
+import { printProps, printType } from '../print/common'
+import { isReactElementComponentOf } from '../utils'
+import To from './To'
+import pickElements, { prepickElements } from '../pickElements'
+import DescribeReactError from '../DescribeReactError'
+import has from '../has'
 
-interface ExpectAnatomy {
-  label: string
-  sections: SubSection[]
-}
 
 type WhichProps =
 | React.ReactElement<HasProps>
@@ -37,96 +35,40 @@ export type ExpectElementsProps =
 | { no: boolean, more: boolean, than: number, elements: boolean }
 | { elements: boolean, between: number, and: number }
 
-export type ElemProps =
+export type ExpectProps =
 & TestModifier
 & (ExpectElementProps | ExpectElementProps)
-
-function makeExpectAnatomy(props: ExpectProps): ExpectAnatomy {
-  const sections: SubSection[] = []
-  const describeLabel = printSelector(props)
-  const nextProps = omit(props, [
-    'element',
-    'children',
-    'root',
-    'first',
-    'last',
-    'at',
-    'some',
-    'range',
-    'label',
-    'only',
-    'skip',
-    'timeout',
-    'child'
-  ])
-
-  for (const prop in nextProps) {
-    let testLabel = ''
-
-    const identifier = nextProps[prop]
-
-    switch (prop) {
-
-      default: {
-        throw new Error(`Unknown assertion: ${ prop }`)
-      } 
-
-      case 'toHaveType':
-      case 'notToHaveType': {
-        testLabel = printHasType(identifier, prop === 'notToHaveType')
-      } break
-
-      case 'toHaveText':
-      case 'notToHaveText': {
-        testLabel = printHasText(identifier, prop === 'notToHaveText')
-      } break
-
-      // case 'toHaveProperty':
-      // case 'notToHaveProperty': {
-      //   if (Array.isArray(identifier)) {
-      //     label = label.replace(/property/, 'properties')
-      //   }
-      //   label += ` ${ printHasProperty(identifier, prop === 'notToHaveProperty') }`
-      // } break
-
-      // case 'toHaveProperties':
-      // case 'notToHaveProperties': {
-      //   label += ` ${ printHasProperties(identifier, prop === 'notToHaveProperties') }`
-      // } break
-
-      // case 'toHaveState':
-      // case 'notToHaveState': {
-      //   label += ` ${ printHasState(identifier, prop === 'notToHaveState') }`
-      // } break
-
-    }
-
-    sections.push({
-      label: testLabel,
-      fn: () => {
-        
-      }
-    })
-  }
-
-  return {
-    label: describeLabel,
-    sections
-  }
-}
 
 const Expect: React.FC<ExpectProps> = props => {
   return (
     <Context.Consumer>
       { ctx => {
-        const { label, sections } = makeExpectAnatomy(props)
+        const children = isArray(props.children) ? props.children : [props.children]
         ctx.sections.push({
-          label: `Expect ${ label }`,
-          sections,
-          skip: !!props.skip,
-          only: !!props.only,
-          timeout: props.timeout,
-          customLabel: props.label
+          label: `Expect ${ printProps(omit(props, ['children'])) }`,
+          skip: !!props._skip,
+          only: !!props._only,
+          timeout: props._timeout,
+          customLabel: props._label,
+          sections: children.map(child => {
+            const elem = child as React.ReactElement<any>
+            return {
+              label: `${ printType(elem.type) } ${ printProps(elem.props) }`,
+              fn: () => {
+                const root = ctx.getRendered()
+                if (!root || isString(root)) {
+                  throw new DescribeReactError('Nothing was rendered')
+                }
+                const found = prepickElements(root, props)
+                if (isReactElementComponentOf(elem, To)) {
+                  if ('have' in elem.props) {
+                    const haveProps = omit(elem.props, ['have'])
+                    has(root, haveProps)
+                  }
+                }
+              }
+            }
+          })
         })
         return <div />
       } }

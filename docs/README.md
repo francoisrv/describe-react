@@ -8,20 +8,27 @@ Write your react tests in JSX
 import React from 'react'
 import run, { Describe, Expect, Property, Render } from 'describe-react'
 
+// A component with hooks to test
+function Counter() {
+  const [counter, setCounter] = React.useState(0)
+  function increment() {
+    setCounter(counter + 1)
+  }
+  return (
+    <button onClick={ increment }>
+      { counter }
+    </button>
+  )
+}
+
 run(() => (
-  <Describe label="Quick usage">
+  <Describe label="Counter">
     <Render>
-      <ul>
-        <li>1</li>
-        <li className="selected">2</li>
-        <li>
-          <b>3</b>
-        </li>
-      </ul>
+      <Counter />
     </Render>
 
     <Expect element which={ <Has type="button" /> }>
-      <To have text="1" />
+      <To have text="0" />
     </Expect>
 
     <Trigger event="click" to element which={ <Has type="button" /> } />

@@ -29,12 +29,14 @@ export interface Section extends ItProps {
 export interface ContextInterface {
   describer: ItProps | null
   sections: Section[]
-  getSource: () => ReactTestRenderer.ReactTestRenderer
+  getTestRenderer: () => ReactTestRenderer.ReactTestRenderer
+  getRendered: () => ReactTestRenderer.ReactTestInstance | string | undefined
 }
 
 export interface TestModifier {
   _label?: string
   _skip?: boolean
+  _only?: boolean
   _timeout?: number
 }
 
@@ -62,12 +64,9 @@ export type UnitTypeIdentifier =
 | string
 | React.ComponentType<any>
 
-export type TypeIdentifierIsFn =
-(t: UnitTypeIdentifier) => void
-
 export type TypeIdentifier =
 | UnitTypeIdentifier
-| React.ReactElement<IsProps<UnitTypeIdentifier, TypeIdentifierIsFn>, typeof Is>
+| React.ReactElement<IsProps<UnitTypeIdentifier>, typeof Is>
 
 // TEXT IDENTIFIER
 // ////////////////////////////////////////////////////////////
@@ -76,13 +75,10 @@ export type UnitTextIdentifier =
 | string
 | RegExp
 
-export type TextIdentifierIsFn =
-(t: UnitTextIdentifier) => void
-
 export type TextIdentifier =
 | UnitTextIdentifier
 | boolean
-| React.ReactElement<IsProps<UnitTextIdentifier, TextIdentifierIsFn>, typeof Is>
+| React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
 
 // PROPERTY IDENTIFIER
 // ////////////////////////////////////////////////////////////
@@ -92,9 +88,6 @@ export type UnitPropertyIdentifier =
 | RegExp
 | PropertyObjectIdentifier
 
-export type PropertyIdentifierIsFn =
-(t: UnitPropertyIdentifier) => void
-
 export type PropertyObjectIdentifier = {
   [name: string]: any
 }
@@ -102,24 +95,21 @@ export type PropertyObjectIdentifier = {
 export type PropertyIdentifier = 
 | UnitPropertyIdentifier
 | boolean
-| React.ReactElement<IsProps<UnitPropertyIdentifier, PropertyIdentifierIsFn>, typeof Is>
+| React.ReactElement<IsProps<UnitPropertyIdentifier>, typeof Is>
 
 // PROPERTIES IDENTIFIER
 // ////////////////////////////////////////////////////////////
-
-export type PropertiesIdentifierIsFn =
-(t: UnitPropertyIdentifier) => void
 
 export type UnitPropertiesIdentifier = Array<
   | string
   | RegExp
   | PropertyObjectIdentifier
-  | React.ReactElement<IsProps<UnitPropertyIdentifier, PropertiesIdentifierIsFn>, typeof Is>
+  | React.ReactElement<IsProps<UnitPropertyIdentifier>, typeof Is>
 >
 
 export type PropertiesIdentifier = 
 | UnitPropertiesIdentifier
-| React.ReactElement<IsProps<UnitPropertyIdentifier, PropertiesIdentifierIsFn>, typeof Is>
+| React.ReactElement<IsProps<UnitPropertyIdentifier>, typeof Is>
 
 // STATE IDENTIFIER
 // ////////////////////////////////////////////////////////////

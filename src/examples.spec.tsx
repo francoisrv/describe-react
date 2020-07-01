@@ -90,7 +90,7 @@ describe('Examples', () => {
         <To have text="bye" />
       </Expect>
 
-      <Expect element number={2} which={ <Has type="span" /> } _only>
+      <Expect element number={2} which={ <Has type="span" /> }>
         <To have text="bye" />
       </Expect>
 

@@ -60,8 +60,7 @@ export function printProps(object: Dictionary<any>) {
 }
 
 export function printElement(elem: ReactTestRender.ReactTestInstance | React.ReactElement<any>) {
-  const type = printHighlight(printType(elem.type))
-  return `<${ type }${ isEmpty(omit(elem.props, ['children'])) ? '' : ' ' }${ printProps(elem.props) } />`
+  return `<${ printType(elem.type) }${ isEmpty(omit(elem.props, ['children'])) ? '' : ' ' }${ printProps(elem.props) } />`
 }
 
 export function printGeneric(g: any) {

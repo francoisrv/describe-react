@@ -4,6 +4,7 @@ import colors from 'colors'
 import { ItProps, ContextInterface } from './types'
 import Context from './context'
 import Render from './components/Render'
+import { before } from 'lodash'
 
 function makeDescriber(opt: ItProps, fn: typeof describe | typeof it = describe) {
   let describer = fn
@@ -24,6 +25,12 @@ export function convertToTests(ctx: ContextInterface) {
       if (section.customLabel) {
         makeDescriber(section)(colors.underline(section.customLabel), () => {
           describe(section.label, () => {
+            if (section.beforeAll) {
+              beforeAll(section.beforeAll)
+            }
+            if (section.afterAll) {
+              afterAll(section.afterAll)
+            }
             for (const subSection of section.sections) {
               makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())
             }
@@ -31,6 +38,12 @@ export function convertToTests(ctx: ContextInterface) {
         })
       } else {
         makeDescriber(section)(section.label, () => {
+          if (section.beforeAll) {
+            beforeAll(section.beforeAll)
+          }
+          if (section.afterAll) {
+            afterAll(section.afterAll)
+          }
           for (const subSection of section.sections) {
             makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())
           }

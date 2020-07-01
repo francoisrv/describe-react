@@ -1,16 +1,29 @@
 import { ExpectElementProps, ExpectElementsProps } from "./components/Expect"
 import ReactTestRenderer from 'react-test-renderer'
-import { isEqual, last, omit, first } from "lodash"
+import { isEqual, last, omit, first, isArray, isNumber } from "lodash"
 import { isReactElementComponentOf, predicate } from "./utils"
-import Has from "./components/Has"
+import Has, { HasProps } from "./components/Has"
 import has from "./has"
+import Is, { IsProps } from "./components/Is"
+import { is } from "./is"
+
+type WhichElement =
+| React.ReactElement<IsProps<any>>
+| React.ReactElement<HasProps>
+
+function which(value: any, element: WhichElement) {
+  if (isReactElementComponentOf(element, Is)) {
+    is(value, element.props)
+  } else if (isReactElementComponentOf(element, Has)) {
+    has(value, element.props)
+  }
+}
 
 export function prepickElements(
   root: ReactTestRenderer.ReactTestInstance,
   props: ExpectElementProps | ExpectElementsProps
 ) {
-  const propsWithoutWhich = omit(props, [
-    'which',
+  const cleanProps = omit(props, [
     'children',
     '_label',
     '_skip',
@@ -19,49 +32,48 @@ export function prepickElements(
   ])
 
   function hasExactProps(expected: ExpectElementProps | ExpectElementsProps) {
-    return isEqual(propsWithoutWhich, expected)
+    return isEqual(cleanProps, expected)
   }
 
   function findAll() {
     return root.findAll(() => true, { deep: true })
   }
 
-  if ('element' in propsWithoutWhich) {
-    if (
-      hasExactProps({ element: true }) ||
-      hasExactProps({ root: true, element: true }) ||
-      hasExactProps({ only: true, element: true }) ||
-      hasExactProps({ first: true, element: true })
-    ) {
-      return root
-    } else if (hasExactProps({ last: true, element: true })) {
-      const all = findAll()
-      return last(findAll())
-    } else if ('number' in propsWithoutWhich && hasExactProps({ element: true, number: propsWithoutWhich.number })) {
-      return findAll()[propsWithoutWhich.number - 1]
-    } else if ('at' in propsWithoutWhich && hasExactProps({ element: true, at: propsWithoutWhich.at })) {
-      return findAll()[propsWithoutWhich.at]
-    } else {
-      return root
+  let found = [...findAll()]
+
+  if ('element' in cleanProps) {
+    let single: ReactTestRenderer.ReactTestInstance | undefined
+
+    if (hasExactProps({ root: true, element: true })) {
+      single = found[0]
+    } else if ('which' in cleanProps) {
+      const whiches = isArray(cleanProps.which) ? cleanProps.which : [cleanProps.which]
+      for (const w of whiches) {
+        found = found.filter(elem => predicate(() => which(elem, w)))
+      }
+    }
+    
+    if (!single) {
+      if ('first' in props) {
+        single = found[0]
+      } else if ('last' in props) {
+        single = last(found)
+      } else if ('number' in props) {
+        single = found[props.number - 1]
+      } else if ('at' in props && isNumber(props.at)) {
+        single = found[props.at]
+      } else {
+        single = found[0]
+      }
     }
 
-    return undefined
-  } else if ('elements' in propsWithoutWhich) {
-    if (
-      hasExactProps({ elements: true }) ||
-      hasExactProps({ elements: true, all: true }) ||
-      hasExactProps({ elements: true, some: true }) ||
-      'least' in propsWithoutWhich && hasExactProps({ elements: true, at: true, least: propsWithoutWhich.least }) ||
-      'than' in propsWithoutWhich && hasExactProps({ elements: true, no: true, more: true, than: propsWithoutWhich.than }) ||
-      'and' in propsWithoutWhich && hasExactProps({ elements: true, between: propsWithoutWhich.between, and: propsWithoutWhich.and })
-    ) {
-      return findAll()
-    } else if ('first' in propsWithoutWhich && hasExactProps({ elements: true, first: propsWithoutWhich.first })) {
-      return findAll().slice(0, propsWithoutWhich.first)
-    } else if ('last' in propsWithoutWhich && hasExactProps({ elements: true, last: propsWithoutWhich.last })) {
-      return findAll().slice(0, propsWithoutWhich.last)
+    return single
+  } else if ('elements' in cleanProps) {
+    if ('which' in props) {
+
     }
-    return findAll()
+
+    return found
   }
 }
 

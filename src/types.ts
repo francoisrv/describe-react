@@ -30,6 +30,8 @@ export interface SubSection extends ItProps {
 export interface Section extends ItProps {
   customLabel?: string
   sections: SubSection[]
+  beforeAll?: Function
+  afterAll?: Function
 }
 
 export interface ContextInterface {

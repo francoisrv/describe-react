@@ -67,5 +67,25 @@ export default function has(
     } else {
       expect(value).toHaveLength(props.length as number)
     }
+  } else if ('property' in props) {
+    if (isArray(value)) {
+      for (const v of value) {
+        has(v, props)
+      }
+      return
+    }
+    if (isString(props.property)) {
+      if (!(props.property in value.props)) {
+        throw new DescribeReactError(`Expected element ${ printElement(value) } to have a property called ${ props.property }`)
+      }
+      if ('which' in props) {
+        const whiches = isArray(props.which) ? props.which : [props.which]
+        for (const which of whiches) {
+          if (isReactElementComponentOf(which, Is)) {
+            is(value.props[props.property], which.props)
+          }
+        }
+      }
+    }
   }
 }

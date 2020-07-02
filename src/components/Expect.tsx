@@ -119,6 +119,7 @@ const Expect: React.FC<ExpectProps> = props => {
             const label = `${ printType(elem.type) } ${ printProps(elem.props) }`
             return {
               label,
+              only: !!elem.props._only,
               fn: () => {
                 const root = ctx.getRendered()
                 if (!root || isString(root)) {

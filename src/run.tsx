@@ -1,6 +1,7 @@
 import ReactTestRenderer from 'react-test-renderer'
 import React from 'react'
 import colors from 'colors'
+
 import { ItProps, ContextInterface } from './types'
 import Context from './context'
 import Render from './components/Render'
@@ -8,9 +9,9 @@ import Render from './components/Render'
 function makeDescriber(opt: ItProps, fn: typeof describe | typeof it = describe) {
   let describer = fn
   if (opt.skip) {
-    describer = describe.skip
+    describer = fn.skip
   } else if (opt.only) {
-    describer = describe.only
+    describer = fn.only
   }
   return describer
 }

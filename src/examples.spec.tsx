@@ -2,8 +2,8 @@ import run from "./run"
 import Describe from "./components/Describe"
 import React from "react"
 import Render from "./components/Render"
-import Expect from "./components/Expect"
-import To from "./components/To"
+import Expect, { ExpectProps } from "./components/Expect"
+import To, { ToProps } from "./components/To"
 import Is from "./components/Is"
 import Has from "./components/Has"
 import Have from "./components/Have"
@@ -391,14 +391,8 @@ describe('Examples', () => {
         <To have children />
       </Expect>
 
-      <Expect elements which={ <Has type="tr" /> }>
-        <To have exactly={2} children />
-        <To have at least={2} children />
-        <To have at least={1} children />
-        <To have more than={1} children />
-        <To have no more than={2} children />
-        <To have between={1} and={2} children />
-        <To have not between={5} and={10} children />
+      <Expect elements which={ <Have type="tr" /> }>
+        <To have type="tr" />
       </Expect>
 
       <Expect element which={ <Has type="div" /> }>

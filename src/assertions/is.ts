@@ -1,7 +1,8 @@
-import { IsProps } from './components/Is'
-import { isString, isNumber, isBoolean, isObject, isArray, isDate, isError, isRegExp, isEmpty, isEqual } from 'lodash'
+import { isString, isNumber, isBoolean, isObject, isArray, isDate, isError, isRegExp, isEmpty } from 'lodash'
 
-export function is<T>(
+import { IsProps } from '../components/Is'
+
+export default function is<T>(
   value: any,
   props: IsProps<T>
 ) {

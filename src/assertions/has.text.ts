@@ -1,11 +1,12 @@
-import { ReactTestInstance } from "react-test-renderer";
-import { HasTextProps } from "./components/Has";
-import { isArray, isBoolean, isEmpty, isString, isRegExp } from "lodash";
-import { getText, isReactElementComponentOf, predicate } from "./utils";
-import Is from "./components/Is";
-import { is } from "./is";
-import DescribeReactError from "./DescribeReactError";
-import { printElement, printProps } from "./print/common";
+import { ReactTestInstance } from 'react-test-renderer'
+import { isArray, isBoolean, isEmpty, isString } from 'lodash'
+
+import { HasTextProps } from '../components/Has'
+import { getText, isReactElementComponentOf, predicate } from '../utils'
+import Is from '../components/Is'
+import is from './is'
+import DescribeReactError from '../DescribeReactError'
+import { printElement, printProps } from '../print'
 
 export default function hasText(
   elem: ReactTestInstance | ReactTestInstance[],

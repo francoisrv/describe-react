@@ -1,9 +1,10 @@
-import { HasProps } from "./components/Has";
-import hasProperties from "./has.properties";
-import hasType from "./has.type";
-import hasLength from "./has.length";
-import { isString } from "lodash";
-import hasText from "./has.text";
+import { isString } from 'lodash'
+
+import { HasProps } from '../components/Has'
+import hasProperties from './has.properties'
+import hasType from './has.type'
+import hasLength from './has.length'
+import hasText from './has.text'
 
 export default function has(
   value: any,

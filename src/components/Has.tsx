@@ -1,6 +1,6 @@
 import React from "react";
 import Is, { IsProps } from "./Is";
-import { UnitTypeIdentifier, UnitTextIdentifier, SingleOrMany } from "../types";
+import { TypeIdentifier, TextIdentifier, SingleOrMany } from "../types";
 
 export type HasTypeProps =
 | { not?: boolean, type: string | React.ComponentType<any> }
@@ -8,7 +8,7 @@ export type HasTypeProps =
   not?: boolean
   type: boolean
   which:
-  | React.ReactElement<IsProps<UnitTypeIdentifier>, typeof Is>
+  | React.ReactElement<IsProps<TypeIdentifier>, typeof Is>
 }
 
 export type HasTextProps =
@@ -17,7 +17,7 @@ export type HasTextProps =
 | {
   text: boolean,
   which?:
-  | React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
+  | React.ReactElement<IsProps<TextIdentifier>, typeof Is>
 }
 
 export type HasLengthProps =
@@ -25,7 +25,7 @@ export type HasLengthProps =
 | {
   length: boolean,
   which?:
-  | React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
+  | React.ReactElement<IsProps<TextIdentifier>, typeof Is>
 }
 
 export type HasPropsProps =
@@ -33,7 +33,7 @@ export type HasPropsProps =
 | {
     property: string | boolean
     which?:
-    | React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
+    | React.ReactElement<IsProps<TextIdentifier>, typeof Is>
   }
 
 export type HasStateProps =
@@ -46,7 +46,7 @@ export type HasChildrenProps =
   only: boolean
   child: true
   which?: SingleOrMany<
-    | React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
+    | React.ReactElement<IsProps<TextIdentifier>, typeof Is>
     | React.ReactElement<HasProps, typeof Has>
   >
 }

@@ -1,10 +1,12 @@
-import { ReactTestInstance } from "react-test-renderer";
-import { HasPropsProps } from "./components/Has";
-import { toPairs, isString, isEqual, isArray, isEmpty, filter } from "lodash";
-import DescribeReactError from "./DescribeReactError";
-import { printElement, printProps } from "./print/common";
-import which from "./which";
-import { predicate } from "./utils";
+import { ReactTestInstance } from 'react-test-renderer'
+import { toPairs, isString, isEqual, isArray, isEmpty, filter } from 'lodash'
+
+import DescribeReactError from '../DescribeReactError'
+import which from './which'
+
+import { HasPropsProps } from '../components/Has'
+import { predicate } from '../utils'
+import { printElement, printProps } from '../print'
 
 export default function hasProperties(elem: ReactTestInstance | ReactTestInstance[], props: HasPropsProps) {
   if (isArray(elem)) {

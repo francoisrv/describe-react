@@ -1,5 +1,5 @@
-import { printGeneric, printType } from "./common"
-import { Is } from "../components/Is"
+import { printGeneric, printType } from './print'
+import Is from './components/Is'
 
 describe('Common printers', () => {
   describe('Print generic', () => {

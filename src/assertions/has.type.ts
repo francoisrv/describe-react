@@ -1,10 +1,12 @@
-import { HasTypeProps } from "./components/Has";
-import { isArray } from "lodash";
-import { isReactTestRendererInstance, isReactElementComponentOf, predicate } from "./utils";
-import DescribeReactError from "./DescribeReactError";
-import Is from "./components/Is";
-import { is } from "./is";
-import { printElement, printProps } from "./print/common";
+import { isArray } from 'lodash'
+
+import DescribeReactError from '../DescribeReactError'
+import Is from '../components/Is'
+
+import { HasTypeProps } from '../components/Has'
+import is from './is'
+import { isReactTestRendererInstance, isReactElementComponentOf, predicate } from '../utils'
+import { printElement, printProps } from '../print'
 
 export default function hasType(
   elem: React.ReactElement<any>,

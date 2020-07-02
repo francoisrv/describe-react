@@ -1,11 +1,12 @@
-import { ExpectElementProps, ExpectElementsProps } from "./components/Expect"
 import ReactTestRenderer from 'react-test-renderer'
-import { isEqual, last, omit, first, isArray, isNumber } from "lodash"
-import { isReactElementComponentOf, predicate } from "./utils"
-import Has, { HasProps } from "./components/Has"
-import has from "./has"
-import Is, { IsProps } from "./components/Is"
-import { is } from "./is"
+import { isEqual, last, omit, first, isArray, isNumber } from 'lodash'
+
+import { ExpectElementProps, ExpectElementsProps } from '../components/Expect'
+import { isReactElementComponentOf, predicate } from '../utils'
+import Has, { HasProps } from '../components/Has'
+import has from '../assertions/has'
+import Is, { IsProps } from '../components/Is'
+import is from '../assertions/is'
 
 type WhichElement =
 | React.ReactElement<IsProps<any>>

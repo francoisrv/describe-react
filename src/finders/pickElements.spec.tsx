@@ -1,11 +1,11 @@
 import ReactTestRenderer from 'react-test-renderer'
 import React from 'react'
 import pickElements from './pickElements'
-import Has from './components/Has'
+import Has from '../components/Has'
 import { Dictionary } from 'lodash'
-import { ExpectElementProps, ExpectElementsProps } from './components/Expect'
-import { printProps } from './print/common'
-import Is from './components/Is'
+import { ExpectElementProps, ExpectElementsProps } from '../components/Expect'
+import { printProps } from '../print'
+import Is from '../components/Is'
 
 type Fn = 
 | undefined

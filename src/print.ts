@@ -1,9 +1,8 @@
 import colors from 'colors'
 import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean } from 'lodash'
 import ReactTestRender from 'react-test-renderer'
-import { isReactElement, isReactElementComponentOf } from '../utils'
-import { Is } from '../components/Is'
-import printIs from './printIs'
+
+import { isReactElement, isReactTestRendererInstance } from './utils'
 
 export const TRUNCATE = 100
 
@@ -83,11 +82,8 @@ export function printGeneric(g: any) {
     return truncate(`[${ g.map(printGeneric).join(', ') }]`, { length: TRUNCATE })
   }
   if (isObject(g)){
-    if (isReactElementComponentOf(g as React.ReactElement<any>, Is)) {
-      return printIs((g as React.ReactElement<any>).props)
-    }
-    if (isReactElement(g as React.ReactElement<any>)) {
-      return truncate(printElement(g), { length: TRUNCATE })
+    if (isReactElement(g) || isReactTestRendererInstance(g)) {
+      return printElement(g)
     }
     let str = '{ '
     for (const key in g) {

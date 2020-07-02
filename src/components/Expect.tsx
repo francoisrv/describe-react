@@ -1,19 +1,16 @@
 import React from 'react'
 import { omit, isArray, isString, isUndefined, map, isNumber } from 'lodash'
-import Context from '../context'
-import { SubSection, TestModifier, SingleOrMany } from '../types'
-import { HasProps } from './Has'
-import { printProps, printType, printElement } from '../print/common'
-import { isReactElementComponentOf } from '../utils'
-import To from './To'
-import pickElements, { prepickElements } from '../pickElements'
-import DescribeReactError from '../DescribeReactError'
-import has from '../has'
 import ReactTestRenderer from 'react-test-renderer'
 
-
-type WhichProps =
-| React.ReactElement<HasProps>
+import Context from '../context'
+import { TestModifier, SingleOrMany } from '../types'
+import { HasProps } from './Has'
+import { printProps, printType } from '../print'
+import { isReactElementComponentOf } from '../utils'
+import To from './To'
+import pickElements from '../finders/pickElements'
+import DescribeReactError from '../DescribeReactError'
+import has from '../assertions/has'
 
 type ElementWhich = SingleOrMany<
   | React.ReactElement<HasProps>

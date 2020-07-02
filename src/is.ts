@@ -157,6 +157,10 @@ export function is<T>(
     }
     expect(isTrue).toBe(!props.not)
   
+  } else if ('empty' in props) {
+
+    expect(isEmpty(value)).toBe(!('not' in props))
+
   } else if ('not' in props) {
     
     expect(value).not.toEqual(props.not)

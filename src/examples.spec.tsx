@@ -197,4 +197,128 @@ describe('Examples', () => {
 
     </Describe>
   ))
+
+  function Foo() {
+    return <div />
+  }
+
+  run(() => (
+    <Describe label="Type">
+      <Render>
+        <div>
+          <Foo />
+        </div>
+      </Render>
+
+      <Expect root element>
+        <To have type="div" />
+        <To not have type="span" />
+        <To have not type={ Foo } />
+        <To have type which={ <Is exactly="div" /> } />
+        <To have type which={ <Is not="span" /> } />
+        <To have type which={ <Is either={[ 'div', 'span', Foo ]} /> } />
+        <To have type which={ <Is neither={[ 'table', 'span', Foo ]} /> } />
+      </Expect>
+
+      <Expect element which={ <Has type={ Foo } /> }>
+        <To have type={ Foo } />
+      </Expect>
+    </Describe>
+  ))
+
+  run(() => (
+    <Describe label="Text">
+      <Render>
+        <div>
+          <span>abc</span>
+          <a>{''}</a>
+        </div>
+      </Render>
+
+      <Expect root element>
+        <To have not text />
+        <To have no text />
+        <To not have text="def" />
+        <To not have text which={ <Is matching={ /def/ } /> } />
+      </Expect>
+
+      <Expect element which={ <Has type="span" /> }>
+        <To have text />
+        <To have text="abc" />
+        <To have text which={ <Is matching={ /abc/ } /> } />
+        <To have text which={ <Has length /> } />
+        <To have text which={ <Has length={3} /> } />
+      </Expect>
+
+      <Expect element which={ <Has type="a" /> }>
+        <To have text which={ <Is empty /> } />
+      </Expect>
+    </Describe>
+  ))
+
+  run(() => (
+    <Describe label="Properties">
+      <Render>
+        <div id="foo">
+          <span />
+        </div>
+      </Render>
+
+      <Expect root element>
+        <To have properties />
+        <To have property="id" />
+        <To not have property="foo" />
+        <To have property="id" which={ <Is exactly="foo" /> } />
+        <To have not property="id" which={ <Is exactly="bar" /> } />
+        <To have not property="id2" which={ <Is exactly="foo" /> } />
+        <To have property which={ <Is exactly="foo" /> } />
+        <To have not property which={ <Is exactly="bar" /> } />
+      </Expect>
+
+      <Expect element which={ <Has type="span" /> }>
+        <To have no property />
+        <To have no properties />
+        <To have not property />
+        <To have not properties />
+        <To not have property="id" />
+        <To have no property="id" />
+      </Expect>
+    </Describe>
+  ))
+
+  run(() =>{
+    class Foo extends React.Component {
+      state = {
+        counter: 0
+      }
+      render() {
+        return <div />
+      }
+    }
+
+    class Bar extends React.Component {
+      render() {
+        return <div />
+      }
+    }
+
+    return  (
+      <Describe label="State">
+        <Render>
+          <div>
+            <Foo />
+            <Bar />
+          </div>
+        </Render>
+  
+        <Expect element which={ <Has type={ Foo } /> }>
+          <To have state />
+        </Expect>
+
+        <Expect element which={ <Has type={ Bar } /> }>
+          <To not have state />
+        </Expect>
+      </Describe>
+    )
+  })
 })

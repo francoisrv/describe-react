@@ -46,14 +46,6 @@ You can check for a property by name
 <Has property="type" />
 ```
 
-You can use a condition
-
-```jsx
-const isEitherRequiredOrDisabled = <Is either={[ 'required', 'disabled' ]} />
-
-<Has property={{ which: isEitherRequiredOrDisabled }} />
-```
-
 ## Property value
 
 You can check for a property by value via [which condition](which)

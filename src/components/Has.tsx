@@ -3,15 +3,16 @@ import Is, { IsProps } from "./Is";
 import { UnitTypeIdentifier, UnitTextIdentifier, SingleOrMany } from "../types";
 
 export type HasTypeProps =
-| { type: string | React.ComponentType<any> }
+| { not?: boolean, type: string | React.ComponentType<any> }
 | {
-  type: boolean,
+  not?: boolean
+  type: boolean
   which:
   | React.ReactElement<IsProps<UnitTypeIdentifier>, typeof Is>
 }
 
 export type HasTextProps =
-| { text: string }
+| { not?: boolean, text: string }
 | { not: boolean, text: boolean }
 | {
   text: boolean,
@@ -30,7 +31,7 @@ export type HasLengthProps =
 export type HasPropsProps =
 | { not?: boolean, no?: boolean, properties: true }
 | {
-    property: string,
+    property: string | boolean
     which?:
     | React.ReactElement<IsProps<UnitTextIdentifier>, typeof Is>
   }

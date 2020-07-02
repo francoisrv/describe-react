@@ -31,6 +31,7 @@ export type IsSpecialProps =
 | { not?: boolean, greater: boolean, than: boolean, or: boolean, equals: number }
 | { not?: boolean, lesser: boolean, than: number }
 | { not?: boolean, lesser: boolean, than: boolean, or: boolean, equals: number }
+| { not?: boolean, empty: boolean }
 
 export type IsProps<T> =
 | IsEquality<T>

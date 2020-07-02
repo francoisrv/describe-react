@@ -101,6 +101,44 @@ describe('Examples', () => {
   ))
 
   run(() => (
+    <Describe label="Targeting element type">
+      <Render>
+        <table>
+          <tr>
+            <td>
+              <span id="foo" />
+            </td>
+            <td>
+              <h1>hello</h1>
+              <span>bye</span>
+            </td>
+          </tr>
+        </table>
+      </Render>
+
+      <Expect element="h1">
+        <To have text="hello" />
+      </Expect>
+
+      <Expect first element="td">
+        <To have only child which={ <Has type="span" /> } />
+      </Expect>
+
+      <Expect last element="span">
+        <To have text="bye" />
+      </Expect>
+
+      <Expect element="span" number={2}>
+        <To have text="bye" />
+      </Expect>
+
+      <Expect element="span" at={0} which={ <Has property="id" /> }>
+        <To not have text />
+      </Expect>
+    </Describe>
+  ))
+
+  run(() => (
     <Describe label="Targeting elements">
       <Render>
         <ul className="foo">
@@ -171,27 +209,27 @@ describe('Examples', () => {
         <To have length={3} />
       </Expect>
 
-      <Expect first={2} elements>
-        <To have property="className" which={ <Is exactly="foo" /> } />
-      </Expect>
-
-      <Expect last={2} elements>
+      <Expect first={2} elements which={ <Have property="className" which={ <Is exactly="bar" /> } />} >
         <To have property="className" which={ <Is exactly="bar" /> } />
       </Expect>
 
-      <Expect at least={3} elements>
+      <Expect last={2} elements which={ <Have property="className" which={ <Is exactly="foo" /> } />} >
+        <To have property="className" which={ <Is exactly="foo" /> } />
+      </Expect>
+
+      <Expect at least={3} elements which={ <Have property="className" /> }>
         <To have type which={ <Is exactly="li" /> } />
       </Expect>
 
-      <Expect no more than={3} elements>
+      <Expect no more than={3} elements which={ <Have type="li" /> }>
         <To have type which={ <Is exactly="li" /> } />
       </Expect>
 
-      <Expect exactly={3} elements>
+      <Expect exactly={3} elements which={ <Have type="li" /> }>
         <To have type which={ <Is exactly="li" /> } />
       </Expect>
 
-      <Expect between={0} and={3} elements>
+      <Expect between={0} and={3} elements which={ <Have type="li" /> }>
         <To have type which={ <Is exactly="li" /> } />
       </Expect>
 
@@ -338,6 +376,14 @@ describe('Examples', () => {
               <td />
             </tr>
           </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div />
+              </td>
+              <td />
+            </tr>
+          </tbody>
         </table>
       </Render>
 
@@ -345,14 +391,14 @@ describe('Examples', () => {
         <To have children />
       </Expect>
 
-      <Expect element which={ <Has type="tr" /> }>
+      <Expect elements which={ <Has type="tr" /> }>
         <To have exactly={2} children />
         <To have at least={2} children />
         <To have at least={1} children />
         <To have more than={1} children />
         <To have no more than={2} children />
         <To have between={1} and={2} children />
-        <To have not between={1} and={3} children />
+        <To have not between={5} and={10} children />
       </Expect>
 
       <Expect element which={ <Has type="div" /> }>

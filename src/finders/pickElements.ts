@@ -1,5 +1,5 @@
 import ReactTestRenderer from 'react-test-renderer'
-import { isEqual, last, omit, first, isArray, isNumber } from 'lodash'
+import { isEqual, last, omit, first, isArray, isNumber, isString, isFunction } from 'lodash'
 
 import { ExpectElementProps, ExpectElementsProps } from '../components/Expect'
 import { isReactElementComponentOf, predicate } from '../utils'
@@ -47,10 +47,16 @@ export function prepickElements(
 
     if (hasExactProps({ root: true, element: true })) {
       single = found[0]
-    } else if ('which' in cleanProps) {
-      const whiches = isArray(cleanProps.which) ? cleanProps.which : [cleanProps.which]
-      for (const w of whiches) {
-        found = found.filter(elem => predicate(() => which(elem, w)))
+    } else {
+      if (isString(cleanProps.element) || isFunction(cleanProps.element)) {
+        found = found.filter(elem => predicate(() => has(elem, { type: cleanProps.element as string })))
+      }
+
+      if ('which' in cleanProps) {
+        const whiches = isArray(cleanProps.which) ? cleanProps.which : [cleanProps.which]
+        for (const w of whiches) {
+          found = found.filter(elem => predicate(() => which(elem, w)))
+        }
       }
     }
     

@@ -5,8 +5,9 @@ Write your react tests in JSX
 
 ```jsx
 // list.test.js
+
 import React from 'react'
-import run, { Describe, Expect, Property, Render } from 'describe-react'
+import run, { Describe, Expect, Render, Trigger } from 'describe-react'
 
 // A component with hooks to test
 function Counter() {
@@ -27,19 +28,15 @@ run(() => (
       <Counter />
     </Render>
     
-    <Expect element which={ <Has type="button" /> }>
+    <Expect element="button">
       <To have text="0" />
     </Expect>
 
-    <Trigger event="click" to element which={ <Has type="button" /> } />
+    <Trigger event="click" to element="button" />
 
-    <Expect element which={ <Has type="button" /> }>
+    <Expect element="button">
       <To have text="1" />
     </Expect>
-
-    <Is an object which={[
-      <Has an entry named="counter" which={ <Is exactly={0} /> } />
-    ]} />
   </Describe>
 ))
 ```

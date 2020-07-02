@@ -17,14 +17,28 @@ type ElementWhich = SingleOrMany<
 >
 
 export type ExpectElementProps =
-| { element: boolean, which?: ElementWhich }
-| { root: boolean, element: boolean }
-| { single: boolean, element: boolean, which?: ElementWhich }
-| { first: boolean, element: boolean, which?: ElementWhich }
-| { last: boolean, element: boolean, which?: ElementWhich }
-| { only: boolean, element: boolean, which?: ElementWhich }
-| { element: boolean, number: number, which?: ElementWhich }
-| { element: boolean, at: number, which?: ElementWhich }
+| {
+  element: boolean | string | React.ComponentType<any>,
+  which?: ElementWhich
+}
+| {
+  root: boolean,
+  element: boolean
+}
+| {
+  single: boolean
+  element: boolean | string | React.ComponentType<any>
+  which?: ElementWhich
+}
+| {
+  first: boolean
+  element: boolean | string | React.ComponentType<any>
+  which?: ElementWhich
+}
+| { last: boolean, element: boolean | string | React.ComponentType<any>, which?: ElementWhich }
+| { only: boolean, element: boolean | string | React.ComponentType<any>, which?: ElementWhich }
+| { element: boolean | string | React.ComponentType<any>, number: number, which?: ElementWhich }
+| { element: boolean | string | React.ComponentType<any>, at: number, which?: ElementWhich }
 
 
 export type ExpectElementsProps =
@@ -32,11 +46,11 @@ export type ExpectElementsProps =
 | { exactly: number, elements: boolean }
 | { all: boolean, elements: boolean }
 | { some: boolean, elements: boolean }
-| { first: number, elements: boolean }
-| { last: number, elements: boolean }
-| { at: boolean, least: number, elements: boolean }
-| { no: boolean, more: boolean, than: number, elements: boolean }
-| { elements: boolean, between: number, and: number }
+| { first: number, elements: boolean, which?: ElementWhich }
+| { last: number, elements: boolean, which?: ElementWhich }
+| { at: boolean, least: number, elements: boolean, which?: ElementWhich }
+| { no: boolean, more: boolean, than: number, elements: boolean, which?: ElementWhich }
+| { elements: boolean, between: number, and: number, which?: ElementWhich }
 
 export type ExpectProps =
 & TestModifier

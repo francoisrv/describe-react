@@ -313,6 +313,10 @@ describe('Examples', () => {
   
         <Expect element which={ <Has type={ Foo } /> }>
           <To have state />
+          <To have state="counter" />
+          <To not have state="enabled" />
+          <To have state="counter" which={ <Is a number /> } />
+          <To have state which={ <Is a number /> } />
         </Expect>
 
         <Expect element which={ <Has type={ Bar } /> }>
@@ -321,4 +325,39 @@ describe('Examples', () => {
       </Describe>
     )
   })
+
+  run(() => (
+    <Describe label="Child">
+      <Render>
+        <table>
+          <thead>
+            <tr>
+              <td>
+                <div />
+              </td>
+              <td />
+            </tr>
+          </thead>
+        </table>
+      </Render>
+
+      <Expect element which={ <Has type="table" /> }>
+        <To have children />
+      </Expect>
+
+      <Expect element which={ <Has type="tr" /> }>
+        <To have exactly={2} children />
+        <To have at least={2} children />
+        <To have at least={1} children />
+        <To have more than={1} children />
+        <To have no more than={2} children />
+        <To have between={1} and={2} children />
+        <To have not between={1} and={3} children />
+      </Expect>
+
+      <Expect element which={ <Has type="div" /> }>
+        <To have no children />
+      </Expect>
+    </Describe>
+  ))
 })

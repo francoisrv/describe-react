@@ -26,7 +26,7 @@ run(() => (
     <Render>
       <Counter />
     </Render>
-
+    
     <Expect element which={ <Has type="button" /> }>
       <To have text="0" />
     </Expect>
@@ -36,6 +36,10 @@ run(() => (
     <Expect element which={ <Has type="button" /> }>
       <To have text="1" />
     </Expect>
+
+    <Is an object which={[
+      <Has an entry named="counter" which={ <Is exactly={0} /> } />
+    ]} />
   </Describe>
 ))
 ```

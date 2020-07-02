@@ -4,18 +4,6 @@
 - [Write your own test components](customize.md)
 - [Examples](examples.md)
 
-- Assertion
-
-  - Have
-    - [Type](expectations/type.md)
-    - [Text](expectations/text.md)
-    - [Props](expectations/props.md)
-    - [State](expectations/state.md)
-    - [Children](expectations/child.md)
-    - [Parent](expectations/parent.md)
-    - [Sibling](expectations/sibling.md)
-  - [Be](expectations/be.md)
-
 - Components
 
   - [Describe](components/Describe.md)

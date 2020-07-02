@@ -37,13 +37,24 @@ export type HasPropsProps =
   }
 
 export type HasStateProps =
-| { not?: boolean, no?: boolean, state: true }
+| {
+  not?: boolean
+  no?: boolean
+  state: string | true
+  which?: SingleOrMany<
+    | React.ReactElement<IsProps<TextIdentifier>, typeof Is>
+    | React.ReactElement<HasProps, typeof Has>
+}
 
 export type HasChildrenProps =
 | { not?: boolean, no?: boolean, children: true }
 | {
   not?: boolean
-  only: boolean
+  only?: boolean
+  exactly?: number
+  at?: true, least?: number
+  more?: true, than?: number
+  between?: number, and?: number
   child: true
   which?: SingleOrMany<
     | React.ReactElement<IsProps<TextIdentifier>, typeof Is>

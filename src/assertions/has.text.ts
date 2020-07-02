@@ -18,6 +18,7 @@ export default function hasText(
     }
     return
   }
+  
   const text = getText(elem)
   const isNot = ('not' in props) || ('no' in props)
 

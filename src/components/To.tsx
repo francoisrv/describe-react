@@ -1,4 +1,5 @@
 import { HasProps } from "./Has";
+import React from "react";
 
 export type ToHaveProps =
 & { have: boolean }

@@ -14,9 +14,9 @@ type WhichElement =
 
 function which(value: any, element: WhichElement) {
   if (isReactElementComponentOf(element, Is)) {
-    is(value, element.props)
+    is(value, element.props as IsProps<any>)
   } else if (isReactElementComponentOf(element, Has)) {
-    has(value, element.props)
+    has(value, element.props as HasProps)
   }
 }
 
@@ -87,8 +87,8 @@ export default function pickElements(
     if ('which' in props) {
       const whiches = [props.which]
       for (const which of whiches) {
-        if (isReactElementComponentOf(which, Has)) {
-          if (!predicate(() => has(found, which.props))) {
+        if (isReactElementComponentOf(which as React.ReactElement<any>, Has)) {
+          if (!predicate(() => has(found, (which as React.ReactElement<any>).props))) {
             found = undefined
           }
         }

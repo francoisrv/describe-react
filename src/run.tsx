@@ -4,7 +4,6 @@ import colors from 'colors'
 import { ItProps, ContextInterface } from './types'
 import Context from './context'
 import Render from './components/Render'
-import { before } from 'lodash'
 
 function makeDescriber(opt: ItProps, fn: typeof describe | typeof it = describe) {
   let describer = fn

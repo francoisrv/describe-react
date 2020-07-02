@@ -81,10 +81,10 @@ export function printGeneric(g: any) {
   if (isArray(g)) {
     return truncate(`[${ g.map(printGeneric).join(', ') }]`, { length: TRUNCATE })
   }
+  if (isReactElement(g) || isReactTestRendererInstance(g)) {
+    return printElement(g)
+  }
   if (isObject(g)){
-    if (isReactElement(g) || isReactTestRendererInstance(g)) {
-      return printElement(g)
-    }
     let str = '{ '
     for (const key in g) {
       str += `${ colors.underline(key) }: ${ printGeneric(g[key]) }, `

@@ -44,6 +44,7 @@ export type HasStateProps =
   which?: SingleOrMany<
     | React.ReactElement<IsProps<TextIdentifier>, typeof Is>
     | React.ReactElement<HasProps, typeof Has>
+  >
 }
 
 export type HasChildrenProps =

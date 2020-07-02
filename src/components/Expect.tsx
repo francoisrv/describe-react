@@ -118,7 +118,7 @@ const Expect: React.FC<ExpectProps> = props => {
                       for (const node of found) {
                         let error: Error | undefined
                         try {
-                          has(node, haveProps)
+                          has(node, haveProps as HasProps)
                         } catch (err) {
                           error = err
                         }
@@ -139,7 +139,7 @@ const Expect: React.FC<ExpectProps> = props => {
                         }
                       }
                     } else {
-                      has(found, haveProps)
+                      has(found, haveProps as HasProps)
                     }
                   }
                 }

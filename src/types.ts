@@ -24,8 +24,8 @@ export interface SubSection extends ItProps {
 export interface Section extends ItProps {
   customLabel?: string
   sections: SubSection[]
-  beforeAll?: Function
-  afterAll?: Function
+  beforeAll?: (cb: any) => any
+  afterAll?: (cb: any) => any
 }
 
 export interface ContextInterface {

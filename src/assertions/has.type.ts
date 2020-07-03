@@ -5,11 +5,12 @@ import Is from '../components/Is'
 
 import { HasTypeProps } from '../components/Has'
 import is from './is'
-import { isReactTestRendererInstance, isReactElementComponentOf, predicate } from '../utils'
+import { isReactTestRendererInstance, isReactElementComponentOf, predicate, isReactElement } from '../utils'
 import { printElement, printProps } from '../print'
+import { ReactTestInstance } from 'react-test-renderer'
 
 export default function hasType(
-  elem: React.ReactElement<any>,
+  elem: ReactTestInstance,
   props: HasTypeProps
 ) {
   if (isArray(elem)) {
@@ -22,7 +23,7 @@ export default function hasType(
     throw new DescribeReactError(`Expected elem to examine type from to be a React element\nReceived: `)
   }
 
-  const isNot = ('not' in props) || ('no' in props)
+  const isNot = ('not' in props)
 
   const passed = predicate(() => {
     if ('which' in props) {

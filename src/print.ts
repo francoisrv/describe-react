@@ -1,5 +1,5 @@
 import colors from 'colors'
-import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean } from 'lodash'
+import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean, isNull } from 'lodash'
 import ReactTestRender from 'react-test-renderer'
 
 import { isReactElement, isReactTestRendererInstance } from './utils'
@@ -65,6 +65,9 @@ export function printElement(elem: ReactTestRender.ReactTestInstance | React.Rea
 export function printGeneric(g: any) {
   if (isUndefined(g)) {
     return 'undefined'
+  }
+  if (isNull(g)) {
+    return 'null'
   }
   if (isString(g)) {
     return truncate(`"${g}"`, { length: TRUNCATE })

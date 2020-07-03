@@ -13,15 +13,15 @@ export type IsTypeProps =
 | { not?: boolean, null: boolean }
 | { not?: boolean, defined: boolean }
 | { not?: boolean, undefined: boolean }
-| { not?: boolean, a: boolean, string: boolean }
-| { not?: boolean, an: boolean, empty: boolean, string: boolean }
-| { not?: boolean, a: boolean, number: boolean }
-| { not?: boolean, a: boolean, boolean: boolean }
-| { not?: boolean, an: boolean, object: boolean }
-| { not?: boolean, an: boolean, array: boolean }
-| { not?: boolean, a: boolean, date: boolean }
-| { not?: boolean, an: boolean, error: boolean }
-| { not?: boolean, a: boolean, regular: boolean, expression: boolean }
+| { not?: boolean, a?: boolean, string: boolean }
+| { not?: boolean, an?: boolean, empty: boolean, string: boolean }
+| { not?: boolean, a?: boolean, number: boolean }
+| { not?: boolean, a?: boolean, boolean: boolean }
+| { not?: boolean, an?: boolean, object: boolean }
+| { not?: boolean, an?: boolean, array: boolean }
+| { not?: boolean, a?: boolean, date: boolean }
+| { not?: boolean, an?: boolean, error: boolean }
+| { not?: boolean, a?: boolean, regular: boolean, expression: boolean }
 
 export type IsSpecialProps =
 | { not?: boolean, matching: RegExp }

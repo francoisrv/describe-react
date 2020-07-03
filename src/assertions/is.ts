@@ -1,4 +1,4 @@
-import { isString, isNumber, isBoolean, isObject, isArray, isDate, isError, isRegExp, isEmpty } from 'lodash'
+import { isString, isNumber, isBoolean, isObject, isArray, isDate, isError, isRegExp, isEmpty, Dictionary, isEqual } from 'lodash'
 
 import { IsProps } from '../components/Is'
 
@@ -6,165 +6,100 @@ export default function is<T>(
   value: any,
   props: IsProps<T>
 ) {
-  if ('true' in props) {
-    
-    expect(value).toBe(props.not !== true)
-  
-  } else if ('false' in props) {
-    
-    expect(value).toBe(props.not === true)
-  
-  } else if ('null' in props) {
-    
-    if (props.not) {
-      expect(value).not.toBe(null)
-    } else {
-      expect(value).toBe(null)
-    }
-  
-  } else if ('undefined' in props) {
-    
-    if (props.not) {
-      expect(value).not.toBeUndefined()
-    } else {
-      expect(value).toBeUndefined()
-    }
-  
-  } else if ('string' in props) {
-    
-    let isTrue = null
-    if ('empty' in props) {
-      isTrue = isString(value) && isEmpty(value)
-    } else {
-      isTrue = isString(value)
-    }
-    expect(isTrue).toBe(!props.not)
-  
-  } else if ('number' in props) {
-    
-    if (props.not) {
-      expect(isNumber(value)).not.toBe(true)
-    } else {
-      expect(isNumber(value)).toBe(true)
-    }
-  
-  } else if ('boolean' in props) {
-    
-    if (props.not) {
-      expect(isBoolean(value)).not.toBe(true)
-    } else {
-      expect(isBoolean(value)).toBe(true)
-    }
-  
-  } else if ('object' in props) {
-    
-    if (props.not) {
-      expect(isObject(value)).not.toBe(true)
-    } else {
-      expect(isObject(value)).toBe(true)
-    }
-  
-  } else if ('array' in props) {
-    
-    if (props.not) {
-      expect(isArray(value)).not.toBe(true)
-    } else {
-      expect(isArray(value)).toBe(true)
-    }
-  
-  } else if ('date' in props) {
-    
-    if (props.not) {
-      expect(isDate(value)).not.toBe(true)
-    } else {
-      expect(isDate(value)).toBe(true)
-    }
-  
-  } else if ('error' in props) {
-    
-    if (props.not) {
-      expect(isError(value)).not.toBe(true)
-    } else {
-      expect(isError(value)).toBe(true)
-    }
-  
-  } else if ('regular' in props && 'expression' in props) {
-    
-    if (props.not) {
-      expect(isRegExp(value)).not.toBe(true)
-    } else {
-      expect(isRegExp(value)).toBe(true)
-    }
-  
-  } else if ('exactly' in props) {
-    
-    expect(value).toEqual(props.exactly)
-  
-  } else if ('either' in props  && !('matching' in props)) {
-    
-    const tests: boolean[] = props.either.map(v => {
-      try {
-        expect(v).toEqual(value)
-        return true
-      } catch (error) {
-        return false
-      }
-    })
-    expect(tests.some(Boolean)).toBe(true)
-  
-  } else if ('neither' in props && !('matching' in props)) {
-    
-    const tests: boolean[] = props.neither.map(v => {
-      try {
-        expect(v).toEqual(value)
-        return true
-      } catch (error) {
-        return false
-      }
-    })
-    expect(tests.every(f => f === false)).toBe(true)
-  
-  } else if ('matching' in props) {
-    
-    if ('either' in props) {
-      expect(
-        props.either.some(r => r.test(value))
-      ).toBe(true)
-    } else if ('neither' in props) {
-      expect(
-        props.neither.every(r => !r.test(value))
-      ).toBe(true)
-    } else {
-      expect(props.matching.test(value)).toBe(props.not !== true)
-    }
-  
-  } else if ('greater' in props) {
-    
-    let isTrue = null
-    if (isNumber(props.than)) {
-      isTrue = value.length > props.than
-    } else if ('equals' in props && isNumber(props.equals)) {
-      isTrue = value.length >= props.than
-    }
-    expect(isTrue).toBe(!props.not)
-  
-  } else if ('lesser' in props) {
-    
-    let isTrue = null
-    if (isNumber(props.than)) {
-      isTrue = value.length < props.than
-    } else if ('equals' in props && isNumber(props.equals)) {
-      isTrue = value.length <= props.than
-    }
-    expect(isTrue).toBe(!props.not)
-  
-  } else if ('empty' in props) {
 
-    expect(isEmpty(value)).toBe(!('not' in props))
+  function check(cond: boolean) {
+    expect(cond).toBe(!props.not)
+  }
 
-  } else if ('not' in props) {
+  function checkEquals(v: any) {
+    check(value === v)
+  }
+
+  function checkType(t: any) {
+    check(typeof value === t)
+  }
+
+  switch (true) {
+    case ('array' in props): check(isArray(value)); break
+    case ('boolean' in props): checkType('boolean'); break
+    case ('date' in props): check(isDate(value)); break
+    case ('empty' in props): check(isEmpty(value)); break
+    case ('error' in props): check(isError(value)); break
+    case ('exactly' in props): check(isEqual(value, props.exactly)); break
+    case ('false' in props): checkEquals(false); break
+    case ('function' in props): checkType('function'); break
+    case ('null' in props): checkEquals(null); break
+    case ('number' in props): checkType('number'); break
+    case ('object' in props): checkType('object'); break
+    case ('regular' in props && 'expression' in props): check(isRegExp(value)); break
+    case ('string' in props): checkType('string'); break
+    case ('true' in props): checkEquals(true); break
+    case ('undefined' in props): checkType('undefined'); break
+
+    default: {
+      if ('either' in props  && !('matching' in props)) {
     
-    expect(value).not.toEqual(props.not)
-  
+        const tests: boolean[] = props.either.map(v => {
+          try {
+            expect(v).toEqual(value)
+            return true
+          } catch (error) {
+            return false
+          }
+        })
+        expect(tests.some(Boolean)).toBe(true)
+      
+      } else if ('neither' in props && !('matching' in props)) {
+        
+        const tests: boolean[] = props.neither.map(v => {
+          try {
+            expect(v).toEqual(value)
+            return true
+          } catch (error) {
+            return false
+          }
+        })
+        expect(tests.every(f => f === false)).toBe(true)
+      
+      } else if ('matching' in props) {
+        
+        if ('either' in props) {
+          expect(
+            props.either.some(r => r.test(value))
+          ).toBe(true)
+        } else if ('neither' in props) {
+          expect(
+            props.neither.every(r => !r.test(value))
+          ).toBe(true)
+        } else {
+          expect(props.matching.test(value)).toBe(props.not !== true)
+        }
+      
+      } else if ('greater' in props) {
+        
+        let isTrue = null
+        if (isNumber(props.than)) {
+          isTrue = value.length > props.than
+        } else if ('equals' in props && isNumber(props.equals)) {
+          isTrue = value.length >= props.than
+        }
+        expect(isTrue).toBe(!props.not)
+      
+      } else if ('lesser' in props) {
+        
+        let isTrue = null
+        if (isNumber(props.than)) {
+          isTrue = value.length < props.than
+        } else if ('equals' in props && isNumber(props.equals)) {
+          isTrue = value.length <= props.than
+        }
+        expect(isTrue).toBe(!props.not)
+      
+      } else if ('not' in props) {
+        
+        expect(value).not.toEqual(props.not)
+      
+      }
+    } break
   }
 }

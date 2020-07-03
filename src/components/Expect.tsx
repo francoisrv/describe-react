@@ -42,7 +42,7 @@ export type ExpectElementProps =
 
 
 export type ExpectElementsProps =
-| { elements: boolean }
+| { elements: boolean | string | React.ComponentType<any> }
 | { exactly: number, elements: boolean }
 | { all: boolean, elements: boolean }
 | { some: boolean, elements: boolean }

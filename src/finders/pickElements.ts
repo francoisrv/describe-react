@@ -104,6 +104,9 @@ export default function pickElements(
   }
   if ('elements' in props) {
     let found = [...(prepickElements(root, props) as ReactTestRenderer.ReactTestInstance[])]
+    if (isString(props.elements) || isFunction(props.elements)) {
+      found = found.filter(elem => predicate(() => has(elem, { type: props.elements as string })))
+    }
     return found
   }
 }

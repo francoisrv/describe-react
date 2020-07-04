@@ -1,5 +1,5 @@
 import { ReactTestInstance } from 'react-test-renderer'
-import { toPairs, isString, isEqual, isArray, isEmpty, filter } from 'lodash'
+import { toPairs, isString, isEqual, isArray, isEmpty, filter, isObject, find } from 'lodash'
 
 import DescribeReactError from '../DescribeReactError'
 import which from './which'
@@ -18,41 +18,36 @@ export default function hasProperties(elem: ReactTestInstance | ReactTestInstanc
 
   const isNot = ('not' in props || 'no' in props)
 
-  if (isEqual(props, { properties: true })) {
-    try {
-      expect(isEmpty(elem.props)).toBe(false)
-    } catch (error) {
-      throw new DescribeReactError(`Expected ${ printElement(elem) } to have properties`)
-    }
-  } else if (
-    isEqual(props, { no: true, property: true }) ||
-    isEqual(props, { no: true, properties: true }) ||
-    isEqual(props, { not: true, property: true }) ||
-    isEqual(props, { not: true, properties: true })
-  ) {
-    try {
-      expect(isEmpty(elem.props)).toBe(true)
-    } catch (error) {
-      throw new DescribeReactError(`Expected ${ printElement(elem) } NOT to have properties`)
-    }
-  } else {
-    let properties = toPairs(elem.props || {})
-      .map(([name, value]) => ({ name, value }))
-    
-    if ('property' in props && isString(props.property)) {
-      properties = filter(properties, { name: props.property })
-    }
+  const passed = predicate(() => {
+    if ('properties' in props) {
+      if (props.properties === true) {
+        expect(isEmpty(elem.props)).toBe(false)
+      } else if (isObject(props.properties)) {
+        if ('exact' in props) {
+          expect(elem.props).toEqual(props.properties)
+        } else {
+          for (const key in props.properties) {
+            expect(elem.props).toHaveProperty(key, props.properties[key])
+          }
+        }
+      }
+    } else if ('property' in props) {
+      let properties = toPairs(elem.props || {})
+        .map(([name, value]) => ({ name, value }))
+      
+      if ('property' in props && isString(props.property)) {
+        properties = filter(properties, { name: props.property })
+      }
 
-    if ('which' in props) {
-      properties = properties.filter(
-        property => predicate(() => which(property.value, props.which))
-      )
-    }
+      if ('which' in props) {
+        properties = properties.filter(
+          property => predicate(() => which(property.value, props.which))
+        )
+      }
 
-    try {
-      expect(properties.length > 0).toBe(!isNot)
-    } catch (error) {
-      throw new DescribeReactError(`Expected ${ printElement(elem) } to ${ isNot ? 'not ' : ''}have ${ printProps(props) }`)
+      expect(properties.length > 0).toBe(true)
     }
-  }
+  })
+
+  expect(passed).toBe(!isNot)
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import Is, { IsProps } from "./Is";
 import { TypeIdentifier, TextIdentifier, SingleOrMany, Which } from "../types";
+import { Dictionary } from "lodash";
 
 export type HasTypeProps =
 | { not?: boolean, type: string | React.ComponentType<any> }
@@ -29,7 +30,14 @@ export type HasLengthProps =
 }
 
 export type HasPropsProps =
-| { not?: boolean, no?: boolean, properties: true }
+| (
+  & ({ not?: true } | { no?: true })
+  & { properties: true }
+)
+| (
+  & ({ not?: true } | { no?: true })
+  & { exact?: true, properties: Dictionary<any> }
+)
 | {
     property: string | boolean
     which?: Which<TextIdentifier>

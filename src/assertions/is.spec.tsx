@@ -463,4 +463,189 @@ describe('is', () => {
     ]
     tests.forEach(makeTest)
   })
+  describe('either', () => {
+    const tests: Test[] = [
+      {
+        value: 1,
+        is: { either: [1, 2] },
+        expected: true
+      },
+      {
+        value: 3,
+        is: { either: [1, 2] },
+        expected: false
+      },
+    ]
+    tests.forEach(makeTest)
+  })
+  describe('neither', () => {
+    const tests: Test[] = [
+      {
+        value: 3,
+        is: { neither: [1, 2] },
+        expected: true
+      },
+      {
+        value: 2,
+        is: { neither: [1, 2] },
+        expected: false
+      },
+    ]
+    tests.forEach(makeTest)
+  })
+  describe('matching', () => {
+    const tests: Test[] = [
+      {
+        value: 'abc',
+        is: { matching: /abc/ },
+        expected: true
+      },
+      {
+        value: 'abc',
+        is: { matching: /def/ },
+        expected: false
+      },
+      {
+        value: 'abc',
+        is: { not: T, matching: /def/ },
+        expected: true
+      },
+      {
+        value: 'abc',
+        is: { not: T, matching: /abc/ },
+        expected: false
+      },
+      {
+        value: 'abc',
+        is: { matching: T, either: [/abc/, /def/] },
+        expected: true
+      },
+      {
+        value: 'abc',
+        is: { matching: T, either: [/ghi/, /def/] },
+        expected: false
+      },
+      {
+        value: 'abc',
+        is: { not: T, matching: T, either: [/ghi/, /def/] },
+        expected: true
+      },
+      {
+        value: 'abc',
+        is: { not: T, matching: T, either: [/ghi/, /abc/] },
+        expected: false
+      },
+      {
+        value: 'abc',
+        is: { matching: T, neither: [/ghi/, /def/] },
+        expected: true
+      },
+      {
+        value: 'abc',
+        is: { matching: T, neither: [/abc/, /def/] },
+        expected: false
+      },
+      {
+        value: 'abc',
+        is: { not: T, matching: T, neither: [/abc/, /def/] },
+        expected: true
+      },
+      {
+        value: 'abc',
+        is: { not: T, matching: T, neither: [/ghi/, /def/] },
+        expected: false
+      },
+    ]
+    tests.forEach(makeTest)
+  })
+  describe('greater', () => {
+    const tests: Test[] = [
+      {
+        value: 3,
+        is: { greater: T, than: 2 },
+        expected: true
+      },
+      {
+        value: 2,
+        is: { greater: T, than: 3 },
+        expected: false
+      },
+      {
+        value: 3,
+        is: { not: T, greater: T, than: 4 },
+        expected: true
+      },
+      {
+        value: 2,
+        is: { not: T, greater: T, than: 1 },
+        expected: false
+      },
+      {
+        value: 2,
+        is: { greater: T, than: T, or: T, equals: 2 },
+        expected: true
+      },
+      {
+        value: 1,
+        is: { greater: T, than: T, or: T, equals: 2 },
+        expected: false
+      },
+      {
+        value: 20,
+        is: { not: T, greater: T, than: T, nor: T, equals: 100 },
+        expected: true
+      },
+      {
+        value: 100,
+        is: { not: T, greater: T, than: T, nor: T, equals: 50 },
+        expected: false
+      },
+    ]
+    tests.forEach(makeTest)
+  })
+  describe('lesser', () => {
+    const tests: Test[] = [
+      {
+        value: 3,
+        is: { lesser: T, than: 20 },
+        expected: true
+      },
+      {
+        value: 20,
+        is: { lesser: T, than: 3 },
+        expected: false
+      },
+      {
+        value: 30,
+        is: { not: T, lesser: T, than: 4 },
+        expected: true
+      },
+      {
+        value: 2,
+        is: { not: T, lesser: T, than: 10 },
+        expected: false
+      },
+      {
+        value: 2,
+        is: { lesser: T, than: T, or: T, equals: 2 },
+        expected: true
+      },
+      {
+        value: 10,
+        is: { lesser: T, than: T, or: T, equals: 2 },
+        expected: false
+      },
+      {
+        value: 20,
+        is: { not: T, lesser: T, than: T, nor: T, equals: 10 },
+        expected: true
+      },
+      {
+        value: 100,
+        is: { not: T, lesser: T, than: T, nor: T, equals: 110 },
+        expected: false
+      },
+    ]
+    tests.forEach(makeTest)
+  })
 })

@@ -64,36 +64,32 @@ export default function is<T>(
       } else if ('matching' in props) {
         
         if ('either' in props) {
-          expect(
-            props.either.some(r => r.test(value))
-          ).toBe(true)
+          check(props.either.some(r => r.test(value)))
         } else if ('neither' in props) {
-          expect(
-            props.neither.every(r => !r.test(value))
-          ).toBe(true)
+          check(props.neither.every(r => !r.test(value)))
         } else {
-          expect(props.matching.test(value)).toBe(props.not !== true)
+          check(props.matching.test(value))
         }
       
       } else if ('greater' in props) {
         
         let isTrue = null
         if (isNumber(props.than)) {
-          isTrue = value.length > props.than
+          isTrue = value > props.than
         } else if ('equals' in props && isNumber(props.equals)) {
-          isTrue = value.length >= props.than
+          isTrue = value >= props.equals
         }
-        expect(isTrue).toBe(!props.not)
+        check(isTrue)
       
       } else if ('lesser' in props) {
         
         let isTrue = null
         if (isNumber(props.than)) {
-          isTrue = value.length < props.than
+          isTrue = value < props.than
         } else if ('equals' in props && isNumber(props.equals)) {
-          isTrue = value.length <= props.than
+          isTrue = value <= props.equals
         }
-        expect(isTrue).toBe(!props.not)
+        check(isTrue)
       
       } else if ('not' in props) {
         

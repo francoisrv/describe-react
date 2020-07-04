@@ -17,7 +17,7 @@ describe('Common printers', () => {
 
   describe('Print type', () => {
     it('should print string', () => {
-      expect(printType('div')).toEqual('div')
+      expect(printType('div')).toEqual('"div"')
     })
     it('should print function', () => {
       expect(printType(Is)).toEqual('Is')

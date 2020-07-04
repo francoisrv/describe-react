@@ -1,4 +1,6 @@
 import { ReactTestRenderer, ReactTestInstance } from 'react-test-renderer'
+import Is, { IsProps } from './components/Is'
+import Has, { HasProps } from './components/Has'
 
 // ////////////////////////////////////////////////////////////
 // COMMON
@@ -55,3 +57,9 @@ export type TypeIdentifier = string | React.ComponentType<any>
 // ////////////////////////////////////////////////////////////
 
 export type TextIdentifier = string
+
+export type SingleWhich<T> =
+| React.ReactElement<IsProps<T>, typeof Is>
+| React.ReactElement<HasProps, typeof Has>
+
+export type Which<T> = SingleWhich<T> | SingleWhich<T>[]

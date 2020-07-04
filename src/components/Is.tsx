@@ -7,7 +7,6 @@ export type IsEquality<T> =
 | { neither: T[] }
 
 export type IsTypeProps =
-| { anything: boolean }
 | { not?: boolean, true: boolean }
 | { not?: boolean, false: boolean }
 | { not?: boolean, null: boolean }
@@ -28,7 +27,8 @@ export type IsSpecialProps =
 | { matching: boolean, either: RegExp[] }
 | { matching: boolean, neither: RegExp[] }
 | { not?: boolean, greater: boolean, than: number }
-| { not?: boolean, greater: boolean, than: boolean, or: boolean, equals: number }
+| { greater: boolean, than: boolean, or: boolean, equals: number }
+| { not: boolean, greater: boolean, than: boolean, nor: boolean, equals: number }
 | { not?: boolean, lesser: boolean, than: number }
 | { not?: boolean, lesser: boolean, than: boolean, or: boolean, equals: number }
 | { not?: boolean, empty: boolean }

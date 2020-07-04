@@ -58,6 +58,7 @@ export type TypeIdentifier = string | React.ComponentType<any>
 
 export type TextIdentifier = string
 
+
 export type SingleWhich<T> =
 | React.ReactElement<IsProps<T>, typeof Is>
 | React.ReactElement<HasProps, typeof Has>

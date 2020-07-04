@@ -1,12 +1,10 @@
 import { ReactTestInstance } from 'react-test-renderer'
-import { toPairs, isString, isEqual, isArray, isEmpty, filter, isObject, find } from 'lodash'
+import { toPairs, isString, isArray, isEmpty, filter, isObject } from 'lodash'
 
-import DescribeReactError from '../DescribeReactError'
 import which from './which'
 
 import { HasPropsProps } from '../components/Has'
 import { predicate } from '../utils'
-import { printElement, printProps } from '../print'
 
 export default function hasProperties(elem: ReactTestInstance | ReactTestInstance[], props: HasPropsProps) {
   if (isArray(elem)) {

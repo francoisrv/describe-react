@@ -132,8 +132,283 @@ describe('Has children', () => {
     },
     {
       elem: create(<div><span /><span /><span /></div>).root,
-      props: { no: T, more: T, than: 3, children: 'span' },
+      props: { no: T, more: T, than: 2, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { not: T, more: T, than: 3, children: 'span' },
       expected: true
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { not: T, more: T, than: 2, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { between: 1, and: 3, children: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { between: 1, and: 30, children: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { between: 1, and: 2, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { not: T, between: 1, and: 2, children: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { not: T, between: 1, and: 5, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { first: 2, children: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { first: 20, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><hr /><hr /><span /></div>).root,
+      props: { not: T, first: 2, children: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /><hr /><span /></div>).root,
+      props: { not: T, first: 2, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { last: 2, children: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /><hr /><hr /></div>).root,
+      props: { last: 2, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /><span /><span /></div>).root,
+      props: { last: 20, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><hr /><hr /><span /></div>).root,
+      props: { not: T, last: 2, children: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /><hr /><span /></div>).root,
+      props: { not: T, last: 2, children: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { child: T },
+      expected: true
+    },
+    {
+      elem: create(<div />).root,
+      props: { child: T },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { no: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { no: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { not: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { not: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div />).root,
+      props: { child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<ul><li /></ul>).root,
+      props: { child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { no: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<ul><li /></ul>).root,
+      props: { no: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { no: T, child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { not: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<ul><li /></ul>).root,
+      props: { not: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { not: T, child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { first: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div />).root,
+      props: { first: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { not: T, first: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { not: T, first: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { no: T, first: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { no: T, first: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { first: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><hr /></div>).root,
+      props: { first: T, child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><hr /></div>).root,
+      props: { not: T, first: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { not: T, first: T, child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><hr /></div>).root,
+      props: { no: T, first: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { no: T, first: T, child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { last: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div />).root,
+      props: { last: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { not: T, last: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { not: T, last: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div />).root,
+      props: { no: T, last: T, child: T },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { no: T, last: T, child: T },
+      expected: false
+    },
+    {
+      elem: create(<div><hr /><span /></div>).root,
+      props: { last: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><hr /></div>).root,
+      props: { last: T, child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><hr /></div>).root,
+      props: { not: T, last: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { not: T, last: T, child: 'span' },
+      expected: false
+    },
+    {
+      elem: create(<div><hr /></div>).root,
+      props: { no: T, last: T, child: 'span' },
+      expected: true
+    },
+    {
+      elem: create(<div><span /></div>).root,
+      props: { no: T, last: T, child: 'span' },
+      expected: false
     },
   ]
   tests.forEach(makeTest)

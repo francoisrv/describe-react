@@ -53,22 +53,35 @@ export type HasStateProps =
 
 type NotProps = { not?: true } | { no?: true }
 interface ChildrenProps { children: true | TypeIdentifier }
-interface WhichProps { which?: Which<TypeIdentifier> }
-interface ExactProps { exactly: number }
-interface LeastProps { at: true, least: number }
-interface NoMoreProps { more: true, than: number }
+interface ChildProps { child: true | TypeIdentifier }
 
-type ManyProps =
-| ExactProps
-| LeastProps
-| NoMoreProps
+type ManyChildrenProps =
+& ChildrenProps
+& NotProps
+& { which?: Which<TypeIdentifier> }
+& (
+  | {}
+  | { exactly: number }
+  | { at: true, least: number }
+  | { more: true, than: number }
+  | { between: number, and: number }
+  | { first: number }
+  | { last: number }
+)
 
-type ManyChildrenProps = ChildrenProps & ManyProps
+type SingleChildProps =
+& ChildProps
+& NotProps
+& { which?: Which<TypeIdentifier> }
+& (
+  | {}
+  | { first: true }
+  | { last: true }
+)
 
 export type HasChildrenProps =
-& NotProps
-& WhichProps
-& ManyChildrenProps
+| ManyChildrenProps
+| SingleChildProps
 
 export type HasParentProps =
 | { not?: boolean, no?: boolean, parent: true }

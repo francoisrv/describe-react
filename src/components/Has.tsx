@@ -87,8 +87,34 @@ export type HasParentProps =
 | { not?: boolean, no?: boolean, parent: true }
 | { not?: boolean, no?: boolean, parent: string | React.ComponentType<any> }
 
+interface SiblingsProps { siblings: true | TypeIdentifier }
+interface SiblingProps { sibling: true | TypeIdentifier }
+
+type ManySiblingsProps =
+& SiblingsProps
+& NotProps
+& { which?: Which<TypeIdentifier> }
+& (
+  | {}
+  | { exactly: number }
+  | { at: true, least: number }
+  | { more: true, than: number }
+  | { between: number, and: number }
+)
+
+type SingleSiblingdProps =
+& SiblingProps
+& NotProps
+& { which?: Which<TypeIdentifier> }
+& (
+  | {}
+  | { first: true }
+  | { last: true }
+)
+
 export type HasSiblingsProps =
-| { not?: boolean, no?: boolean, siblings: true }
+| ManySiblingsProps
+| SingleSiblingdProps
 
 export type HasProps =
 | HasTypeProps

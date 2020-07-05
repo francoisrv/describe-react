@@ -51,18 +51,24 @@ export type HasStateProps =
   which?: Which<TextIdentifier>
 }
 
+type NotProps = { not?: true } | { no?: true }
+interface ChildrenProps { children: true | TypeIdentifier }
+interface WhichProps { which?: Which<TypeIdentifier> }
+interface ExactProps { exactly: number }
+interface LeastProps { at: true, least: number }
+interface NoMoreProps { more: true, than: number }
+
+type ManyProps =
+| ExactProps
+| LeastProps
+| NoMoreProps
+
+type ManyChildrenProps = ChildrenProps & ManyProps
+
 export type HasChildrenProps =
-| { not?: boolean, no?: boolean, children: true }
-| {
-  not?: boolean
-  only?: boolean
-  exactly?: number
-  at?: true, least?: number
-  more?: true, than?: number
-  between?: number, and?: number
-  child: true
-  which?: Which<TextIdentifier>
-}
+& NotProps
+& WhichProps
+& ManyChildrenProps
 
 export type HasParentProps =
 | { not?: boolean, no?: boolean, parent: true }

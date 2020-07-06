@@ -2,7 +2,8 @@ import colors from 'colors'
 import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean, isNull } from 'lodash'
 import ReactTestRender from 'react-test-renderer'
 
-import { isReactElement, isReactTestRendererInstance } from './utils'
+import { isReactElement, isReactTestRendererInstance, isReactElementComponentOf } from './utils'
+import Is from './components/Is'
 
 export const TRUNCATE = 100
 
@@ -90,11 +91,39 @@ export function printGeneric(g: any) {
   if (isObject(g)){
     let str = '{ '
     for (const key in g) {
-      str += `${ colors.underline(key) }: ${ printGeneric(g[key]) }, `
+      str += `${ key }: ${ printGeneric(g[key]) }, `
     }
     str = str.replace(/, $/, '')
     str += ' }'
     return truncate(str, { length: TRUNCATE })
   }
   return truncate(JSON.stringify(g), { length: TRUNCATE })
+}
+
+export function printLabel(props: Dictionary<any>) {
+  const bits: string[] = []
+  for (const prop in props) {
+    bits.push(prop)
+    switch (prop) {
+      case 'element': {
+        if (isString(props.element)) {
+          bits.push(props.element)
+        } else if (isFunction(props.element)) {
+          bits.push(printGeneric(props.element))
+        }
+      } break
+
+      case 'which': {
+        if (isReactElementComponentOf(props.which, Is)) {
+          bits.push('is')
+        }
+        bits.push(printLabel(props.which.props))
+      } break
+
+      case 'exactly': {
+        bits.push(printGeneric(props.exactly))
+      } break
+    }
+  }
+  return bits.join(' ')
 }

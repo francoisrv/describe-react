@@ -54,3 +54,5 @@ Quick usage
   Expect element="button"
     ✓ to have text "1"
 ```
+
+View [documentation](https://francoisrv.github.io/describe-react/#/)

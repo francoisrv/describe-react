@@ -7,18 +7,12 @@ import Has, { HasProps } from '../components/Has'
 import has from '../assertions/has'
 import Is, { IsProps } from '../components/Is'
 import is from '../assertions/is'
+import which from '../assertions/which'
 
 type WhichElement =
 | React.ReactElement<IsProps<any>>
 | React.ReactElement<HasProps>
 
-function which(value: any, element: WhichElement) {
-  if (isReactElementComponentOf(element, Is)) {
-    is(value, element.props as IsProps<any>)
-  } else if (isReactElementComponentOf(element, Has)) {
-    has(value, element.props as HasProps)
-  }
-}
 
 export function prepickElements(
   root: ReactTestRenderer.ReactTestInstance,
@@ -76,8 +70,13 @@ export function prepickElements(
 
     return single
   } else if ('elements' in cleanProps) {
-    if ('which' in props) {
-      
+
+    if (isString(cleanProps.elements) || isFunction(cleanProps.elements)) {
+      found = found.filter(elem => elem.type === cleanProps.elements)
+    }
+
+    if ('which' in cleanProps) {
+      found = found.filter(e => predicate(() => which(e, cleanProps.which)))
     }
 
     return found

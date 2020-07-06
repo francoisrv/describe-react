@@ -2,17 +2,12 @@ import ReactTestRenderer, { ReactTestInstance } from 'react-test-renderer'
 import React from 'react'
 import pickElements from './pickElements'
 import Has, { HasProps } from '../components/Has'
-import { Dictionary, isUndefined } from 'lodash'
+import { isUndefined } from 'lodash'
 import { ExpectElementProps, ExpectElementsProps } from '../components/Expect'
 import { printProps } from '../print'
 import Is from '../components/Is'
-import is from '../assertions/is'
 import { predicate, getText } from '../utils'
 
-type Fn = 
-| undefined
-| ReactTestRenderer.ReactTestInstance
-| ReactTestRenderer.ReactTestInstance[]
 
 function isType(e: any, t: any) {
   expect(e).toHaveProperty('type', t)

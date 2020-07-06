@@ -78,14 +78,6 @@ describe('Examples', () => {
         </table>
       </Render>
 
-      <Expect element which={[ <Has type="h1" />, <Has parent="td" /> ]}>
-        <To have only child which={ <Has type="span" /> } />
-      </Expect>
-
-      <Expect first element which={ <Has type="td" /> }>
-        <To have only child which={ <Has type="span" /> } />
-      </Expect>
-
       <Expect last element which={ <Has type="span" /> }>
         <To have text="bye" />
       </Expect>

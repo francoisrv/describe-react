@@ -84,7 +84,7 @@ describe('Has parent', () => {
     {
       elem: create(<div><span /><span /><span /></div>).root,
       props: { exactly: 2, siblings: 'span' },
-      expected: false,
+      expected: true,
       position: 1
     },
   ]

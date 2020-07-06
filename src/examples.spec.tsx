@@ -112,10 +112,6 @@ describe('Examples', () => {
         <To have text="hello" />
       </Expect>
 
-      <Expect first element="td">
-        <To have only child which={ <Has type="span" /> } />
-      </Expect>
-
       <Expect last element="span">
         <To have text="bye" />
       </Expect>

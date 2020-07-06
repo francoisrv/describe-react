@@ -27,6 +27,7 @@ export default function hasText(
       const whiches = isArray(props.which) ? props.which : [props.which]
       for (const which of whiches) {
         if (isReactElementComponentOf(which, Is)) {
+          // @ts-ignore
           is(text, which.props)
         }
       }

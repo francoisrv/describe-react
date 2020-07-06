@@ -13,14 +13,9 @@ export type HasTypeProps =
 }
 
 export type HasTextProps =
-| { not?: boolean, text: string }
-| { not: boolean, text: boolean }
-| { no?: boolean, text: string }
-| { no: boolean, text: boolean }
-| {
-  text: boolean,
-  which?: Which<TextIdentifier>
-}
+& ( { not?: true } | { no?: true } )
+& { text: string | true }
+& { which?: Which<TextIdentifier> }
 
 export type HasLengthProps =
 | { not?: boolean, length: number }

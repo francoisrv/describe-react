@@ -8,6 +8,7 @@ export default function is<T>(
 ) {
 
   function check(cond: boolean) {
+    // @ts-ignore
     expect(cond).toBe(!props.not)
   }
 
@@ -25,6 +26,7 @@ export default function is<T>(
     case ('date' in props): check(isDate(value)); break
     case ('empty' in props): check(isEmpty(value)); break
     case ('error' in props): check(isError(value)); break
+    // @ts-ignore
     case ('exactly' in props): check(isEqual(value, props.exactly)); break
     case ('false' in props): checkEquals(false); break
     case ('function' in props): checkType('function'); break

@@ -2,41 +2,44 @@ import React from 'react'
 
 export type IsEquality<T> =
 | { exactly: T }
-| { not: T }
 | { either: T[] }
 | { neither: T[] }
+| { not: T }
 
 export type IsTypeProps =
-| { not?: boolean, true: boolean }
-| { not?: boolean, false: boolean }
-| { not?: boolean, null: boolean }
-| { not?: boolean, defined: boolean }
-| { not?: boolean, undefined: boolean }
-| { not?: boolean, a?: boolean, string: boolean }
-| { not?: boolean, an?: boolean, empty: boolean, string: boolean }
-| { not?: boolean, a?: boolean, number: boolean }
-| { not?: boolean, a?: boolean, boolean: boolean }
-| { not?: boolean, an?: boolean, object: boolean }
-| { not?: boolean, an?: boolean, array: boolean }
-| { not?: boolean, a?: boolean, date: boolean }
-| { not?: boolean, an?: boolean, error: boolean }
-| { not?: boolean, a?: boolean, regular: boolean, expression: boolean }
+| { true: boolean }
+| { false: boolean }
+| { null: boolean }
+| { defined: boolean }
+| { undefined: boolean }
+| { a?: boolean, string: boolean }
+| { an?: boolean, empty: boolean, string: boolean }
+| { a?: boolean, number: boolean }
+| { a?: boolean, boolean: boolean }
+| { an?: boolean, object: boolean }
+| { an?: boolean, array: boolean }
+| { a?: boolean, date: boolean }
+| { an?: boolean, error: boolean }
+| { a?: boolean, regular: boolean, expression: boolean }
 
 export type IsSpecialProps =
-| { not?: boolean, matching: RegExp }
+| { matching: RegExp }
 | { matching: boolean, either: RegExp[] }
 | { matching: boolean, neither: RegExp[] }
-| { not?: boolean, greater: boolean, than: number }
+| { greater: boolean, than: number }
 | { greater: boolean, than: boolean, or: boolean, equals: number }
 | { not: boolean, greater: boolean, than: boolean, nor: boolean, equals: number }
-| { not?: boolean, lesser: boolean, than: number }
-| { not?: boolean, lesser: boolean, than: boolean, or: boolean, equals: number }
-| { not?: boolean, empty: boolean }
+| { lesser: boolean, than: number }
+| { lesser: boolean, than: boolean, or: boolean, equals: number }
+| { empty: boolean }
 
 export type IsProps<T> =
-| IsEquality<T>
-| IsTypeProps
-| IsSpecialProps
+& ( { not?: true } | { no?: true } )
+& (
+  | IsEquality<T>
+  | IsTypeProps
+  | IsSpecialProps
+)
 
 export default function Is<T>(_props: IsProps<T>) {
   return <div />

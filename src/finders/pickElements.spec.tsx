@@ -182,15 +182,26 @@ const tests: Test[] = [
     verify: e => hasLength(e, 2),
   },
   {
-    // @ts-ignore
-    props: { ...SOME, ...ELEMENTS('span'), 't1': true },
+    props: { ...SOME, ...ELEMENTS('span') },
     elem: <div><div /><div /></div>,
     verify: e => hasLength(e, 0),
+  },
+  {
+    props: { ...FIRST(2), ...ELEMENTS('span') },
+    elem: <div><span /><span /><span /></div>,
+    verify: e => hasLength(e, 2),
+  },
+  {
+    props: { ...LAST(2), ...ELEMENTS('span') },
+    elem: <div><span /><span /><span /></div>,
+    verify: e => hasLength(e, 2),
   },
 ]
 
 describe('Pick elements', () => {
-  for (const t of tests) {
-    makeTest(t)
-  }
+  tests.forEach((test, index) => {
+    describe(`#${ index }`, () => {
+      makeTest(test)
+    })
+  })
 })

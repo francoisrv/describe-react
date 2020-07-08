@@ -3,12 +3,12 @@ import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp
 import ReactTestRender from 'react-test-renderer'
 
 import { isReactElement, isReactTestRendererInstance, isReactElementComponentOf } from './utils'
-import Is from './components/Is'
+import Is, { IsProps } from './components/Is'
 
 export const TRUNCATE = 100
 
 export function printType(type: string | React.ComponentType<any>) {
-  return printGeneric(type)
+  return isString(type) ? type : printGeneric(type)
 }
 
 export function printLogicOperator(str: string) {
@@ -33,19 +33,16 @@ export function printProps(object: Dictionary<any>) {
       continue
     } else if (isString(object[key])) {
       props.push(`${ key }="${ object[key] }"`)
-    } else if (object[key] === true) {
-      props.push(`${ key }`)
+    } else if (isError(object[key])) {
+      props.push(`${ key }={ ${ object[key].toString() } }`)
     } else if (isFunction(object[key])) {
       props.push(`${ key }={ ${ printType(object[key]) } }`)
-    } else if (
-      typeof object[key] === 'object' &&
-      'key' in object[key] &&
-      'ref' in object[key] &&
-      'props' in object[key] &&
-      '_owner' in object[key] &&
-      '_store' in object[key]
-    ) {
-      props.push(`${ key }={ <${ object[key].type.name } ${ printProps(object[key].props) } /> }`)
+    } else if (isNull(object[key])) {
+      props.push(`${ key }={ null }`)
+    } else if (isBoolean(object[key])) {
+      props.push(`${ key }={ ${ object[key] } }`)
+    } else if (isReactElement(object[key])) {
+      props.push(`${ key }={ ${ printElement(object[key]) } }`)
     } else if (isRegExp(object[key])) {
       props.push(`${ key }={ ${ object[key].toString() } }`)
     } else if (isArray(object[key])) {
@@ -83,7 +80,7 @@ export function printGeneric(g: any) {
     return truncate(g.toString(), { length: TRUNCATE })
   }
   if (isArray(g)) {
-    return truncate(`[${ g.map(printGeneric).join(', ') }]`, { length: TRUNCATE })
+    return truncate(`[ ${ g.map(printGeneric).join(', ') } ]`, { length: TRUNCATE })
   }
   if (isReactElement(g) || isReactTestRendererInstance(g)) {
     return printElement(g)
@@ -126,4 +123,10 @@ export function printLabel(props: Dictionary<any>) {
     }
   }
   return bits.join(' ')
+}
+
+export function printIs<T>(props: IsProps<T>) {
+  if ('exactly' in props) {
+    return `exactly ${ printGeneric(props.exactly) }`
+  }
 }

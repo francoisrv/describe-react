@@ -1,5 +1,5 @@
-import { printGeneric, printType, printLabel } from './print'
-import Is from './components/Is'
+import { printGeneric, printType, printLabel, printProps, printIs } from './print'
+import Is, { IsProps } from './components/Is'
 import Describe from './components/Describe'
 import React from 'react'
 
@@ -9,7 +9,7 @@ describe('Common printers', () => {
       expect(printGeneric(24)).toEqual('24')
     })
     it('should print number in array', () => {
-      expect(printGeneric([24])).toEqual('[24]')
+      expect(printGeneric([24])).toEqual('[ 24 ]')
     })
     it('should print named function', () => {
       expect(printGeneric(encodeURIComponent))
@@ -19,7 +19,7 @@ describe('Common printers', () => {
 
   describe('Print type', () => {
     it('should print string', () => {
-      expect(printType('div')).toEqual('"div"')
+      expect(printType('div')).toEqual('div')
     })
     it('should print function', () => {
       expect(printType(Is)).toEqual('Is')
@@ -64,5 +64,77 @@ describe('Common printers', () => {
     for (const t of tests) {
       makeTest(t)
     }
+  })
+
+  describe('Print is', () => {
+    interface IsTest<T> {
+      props: IsProps<T>
+      printed: string
+    }
+
+    function makeTest<T>(t: IsTest<T>) {
+      it(`${ printProps(t.props) } >> ${ t.printed }`, () => {
+        expect(printIs<T>(t.props)).toEqual(t.printed)
+      })
+    }
+
+    describe('Equality', () => {
+      describe('Exactly', () => {
+        makeTest<undefined>({
+          props: { exactly: undefined },
+          printed: 'exactly undefined'
+        })
+        makeTest<null>({
+          props: { exactly: null },
+          printed: 'exactly null'
+        })
+        makeTest<boolean>({
+          props: { exactly: true },
+          printed: 'exactly true'
+        })
+        makeTest<boolean>({
+          props: { exactly: false },
+          printed: 'exactly false'
+        })
+        makeTest<string>({
+          props: { exactly: 'hello' },
+          printed: 'exactly "hello"'
+        })
+        makeTest<number>({
+          props: { exactly: 123 },
+          printed: 'exactly 123'
+        })
+        makeTest<object>({
+          props: { exactly: { a: 'b' } },
+          printed: 'exactly { a: "b" }'
+        })
+        function fn() {}
+        makeTest<Function>({
+          props: { exactly: fn },
+          printed: 'exactly fn'
+        })
+        makeTest<React.ReactElement<any>>({
+          props: { exactly: <div id="foo" tabIndex={2} /> },
+          printed: 'exactly <div id="foo" tabIndex={ 2 } />'
+        })
+        const date = new Date()
+        makeTest<Date>({
+          props: { exactly: date },
+          printed: `exactly ${ date.toString() }`
+        })
+        makeTest<RegExp>({
+          props: { exactly: /abc/ },
+          printed: 'exactly /abc/'
+        })
+        makeTest<Error>({
+          props: { exactly: new Error('foo') },
+          printed: 'exactly Error: foo'
+        })
+        makeTest<any[]>({
+          props: { exactly: [1, 'abc'] },
+          printed: 'exactly [ 1, "abc" ]'
+        })
+      })
+    })
   })
 })

@@ -4,3 +4,4 @@ docs/
 .npmrc
 .git
 node_modules
+.vscode

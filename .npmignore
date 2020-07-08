@@ -1,0 +1,6 @@
+!dist
+src/
+docs/
+.npmrc
+.git
+node_modules

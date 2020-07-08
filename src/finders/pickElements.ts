@@ -112,6 +112,10 @@ export default function pickElements(
       found = found.slice(0, props.first)
     } else if ('last' in props) {
       found = found.slice(found.length - props.last)
+    } else if ('exactly' in props) {
+      if (found.length !== props.exactly) {
+        found = []
+      }
     }
     
     return found

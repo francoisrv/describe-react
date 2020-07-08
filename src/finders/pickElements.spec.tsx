@@ -68,6 +68,7 @@ const FIRST = (t?: any) => ({ first: isUndefined(t) ? true : t })
 const LAST = (t?: any) => ({ last: isUndefined(t) ? true : t })
 const NUMBER = (n: number) => ({ number: n })
 const AT = (n: number) => ({ at: n })
+const EXACTLY = (n: number) => ({ exactly: n })
 const WHICH = (w: any) => ({ which: w })
 const TYPE = (w: any) => ({ type: w })
 const HAS = (p: HasProps) => <Has {...p} />
@@ -187,14 +188,29 @@ const tests: Test[] = [
     verify: e => hasLength(e, 0),
   },
   {
+    props: { ...FIRST(2), ...ELEMENTS() },
+    elem: <div><span /><table /><section /></div>,
+    verify: e => hasLength(e, 2),
+  },
+  {
     props: { ...FIRST(2), ...ELEMENTS('span') },
     elem: <div><span /><span /><span /></div>,
+    verify: e => hasLength(e, 2),
+  },
+  {
+    props: { ...LAST(2), ...ELEMENTS() },
+    elem: <div><span /><table /><section /></div>,
     verify: e => hasLength(e, 2),
   },
   {
     props: { ...LAST(2), ...ELEMENTS('span') },
     elem: <div><span /><span /><span /></div>,
     verify: e => hasLength(e, 2),
+  },
+  {
+    props: { ...EXACTLY(3), ...ELEMENTS() },
+    elem: <div><span /><span /></div>,
+    verify: e => hasLength(e, 3),
   },
 ]
 

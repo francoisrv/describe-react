@@ -160,6 +160,10 @@ describe('Examples', () => {
         <To have type which={ <Is exactly="li" /> } />
       </Expect>
 
+      <Expect more than={3} elements>
+        <To have type which={ <Is exactly="li" /> } />
+      </Expect>
+
       <Expect no more than={3} elements>
         <To have type which={ <Is exactly="li" /> } />
       </Expect>

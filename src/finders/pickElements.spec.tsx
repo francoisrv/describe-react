@@ -62,13 +62,17 @@ function makeTest(t: Test) {
 const ROOT = { root: true }
 const ALL = { all: true }
 const SOME = { some: true }
+const MORE = { more: true }
+const NO = { no: true }
 const ELEMENT = (t?: any) => ({ element: isUndefined(t) ? true : t })
 const ELEMENTS = (t?: any) => ({ elements: isUndefined(t) ? true : t })
 const FIRST = (t?: any) => ({ first: isUndefined(t) ? true : t })
 const LAST = (t?: any) => ({ last: isUndefined(t) ? true : t })
 const NUMBER = (n: number) => ({ number: n })
-const AT = (n: number) => ({ at: n })
+const AT = (n: number | true = true ) => ({ at: n })
 const EXACTLY = (n: number) => ({ exactly: n })
+const THAN = (n: number) => ({ than: n })
+const LEAST = (n: number) => ({ least: n })
 const WHICH = (w: any) => ({ which: w })
 const TYPE = (w: any) => ({ type: w })
 const HAS = (p: HasProps) => <Has {...p} />
@@ -181,6 +185,7 @@ const tests: Test[] = [
     props: { ...SOME, ...ELEMENTS('span') },
     elem: <div><span /><span /></div>,
     verify: e => hasLength(e, 2),
+    fail: <ul><li /></ul>
   },
   {
     props: { ...SOME, ...ELEMENTS('span') },
@@ -191,26 +196,67 @@ const tests: Test[] = [
     props: { ...FIRST(2), ...ELEMENTS() },
     elem: <div><span /><table /><section /></div>,
     verify: e => hasLength(e, 2),
+    fail: <div />
   },
   {
     props: { ...FIRST(2), ...ELEMENTS('span') },
     elem: <div><span /><span /><span /></div>,
     verify: e => hasLength(e, 2),
+    fail: <div><span /></div>
   },
   {
     props: { ...LAST(2), ...ELEMENTS() },
     elem: <div><span /><table /><section /></div>,
     verify: e => hasLength(e, 2),
+    fail: <div />
   },
   {
     props: { ...LAST(2), ...ELEMENTS('span') },
     elem: <div><span /><span /><span /></div>,
     verify: e => hasLength(e, 2),
+    fail: <ul><li /><li /></ul>
   },
   {
     props: { ...EXACTLY(3), ...ELEMENTS() },
     elem: <div><span /><span /></div>,
     verify: e => hasLength(e, 3),
+    fail: <ul><li /><li /><li /></ul>
+  },
+  {
+    props: { ...EXACTLY(2), ...ELEMENTS('span') },
+    elem: <div><span /><span /></div>,
+    verify: e => hasLength(e, 2),
+    fail: <div><span /><span /><span /></div>
+  },
+  {
+    props: { ...AT(), ...LEAST(3), ...ELEMENTS() },
+    elem: <div><span /><span /></div>,
+    verify: e => hasLength(e, 3),
+    fail: <ul><li /></ul>
+  },
+  {
+    props: { ...MORE, ...THAN(3), ...ELEMENTS() },
+    elem: <div><span /><span /><span /></div>,
+    verify: e => hasLength(e, 4),
+    fail: <ul><li /><li /></ul>
+  },
+  {
+    props: { ...NO, ...MORE, ...THAN(3), ...ELEMENTS() },
+    elem: <div><span /><span /></div>,
+    verify: e => hasLength(e, 3),
+    fail: <ul><li /><li /><li /></ul>
+  },
+  {
+    props: { ...MORE, ...THAN(3), ...ELEMENTS('span') },
+    elem: <div><span /><span /><span /><span /></div>,
+    verify: e => hasLength(e, 4),
+    fail: <div><span /><span /><span /><div /></div>
+  },
+  {
+    props: { ...NO, ...MORE, ...THAN(3), ...ELEMENTS('span') },
+    elem: <div><span /><span /></div>,
+    verify: e => hasLength(e, 2),
+    fail: <ul><span /><span /><span /><span /></ul>
   },
 ]
 

@@ -116,6 +116,20 @@ export default function pickElements(
       if (found.length !== props.exactly) {
         found = []
       }
+    } else if ('least' in props) {
+      if (found.length < props.least) {
+        found = []
+      }
+    } else if ('than' in props) {
+      if ('no' in props) {
+        if (found.length > props.than) {
+          found = []
+        }
+      } else {
+        if (found.length < (props as any).than) {
+          found = []
+        }
+      }
     }
     
     return found

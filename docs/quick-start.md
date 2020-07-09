@@ -59,5 +59,5 @@ This will print the following to the console:
 PASS ./App.spec.js
 App
   Expect root element
-    ✓ to have text which equals "Hello world!"
+    ✓ to have text="Hello world!"
 ```

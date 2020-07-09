@@ -1,6 +1,6 @@
 {
   "name": "describe-react",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Write your react tests in JSX and using Jest",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

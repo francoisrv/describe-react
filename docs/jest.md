@@ -45,7 +45,7 @@ You can use `only` and `skip` with properties `_only` and `_skip`
     <div>Hello world!</div>
   </Render>
 
-  <Expect>
+  <Expect _only>
     <To have text="Hello world!" _skip />
   </Expect>
 </Describe>

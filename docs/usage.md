@@ -25,7 +25,7 @@ View our section on [jest](jest) for more details
 `Expect` expects:
 
 - properties that are a [selector](selectors)
-- children that are a `To` element containing an expectation
+- children that are a [To](components/To) element containing an expectation
 
 Example:
 

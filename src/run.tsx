@@ -32,7 +32,12 @@ export function convertToTests(ctx: ContextInterface) {
               afterAll(section.afterAll)
             }
             for (const subSection of section.sections) {
-              makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())
+              makeDescriber(subSection, it)(subSection.label, async () => {
+                if (subSection.timeout) {
+                  jest.setTimeout(subSection.timeout)
+                }
+                subSection.fn()
+              })
             }
           })
         })
@@ -45,7 +50,12 @@ export function convertToTests(ctx: ContextInterface) {
             afterAll(section.afterAll)
           }
           for (const subSection of section.sections) {
-            makeDescriber(subSection, it)(subSection.label, async () => subSection.fn())
+            makeDescriber(subSection, it)(subSection.label, async () => {
+              if (subSection.timeout) {
+                jest.setTimeout(subSection.timeout)
+              }
+              subSection.fn()
+            })
           }
         })
       }

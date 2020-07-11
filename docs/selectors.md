@@ -55,7 +55,6 @@ If it is not clear which element to pick, the root element will be used. So the 
 - `<Expect element>...</Expect>`
 - `<Expect root element>...</Expect>`
 - `<Expect first element>...</Expect>`
-- `<Expect only element>...</Expect>`
 
 ## Many elements
 

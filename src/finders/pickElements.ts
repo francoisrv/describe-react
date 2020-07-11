@@ -130,6 +130,17 @@ export default function pickElements(
           found = []
         }
       }
+    } else if ('between' in props) {
+      const isBetween = props.between <= found.length && props.and >= found.length
+      if ('not' in props) {
+        if (isBetween) {
+          found = []
+        }
+      } else {
+        if (!isBetween) {
+          found = []
+        }
+      }
     }
     
     return found

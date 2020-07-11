@@ -64,6 +64,7 @@ const ALL = { all: true }
 const SOME = { some: true }
 const MORE = { more: true }
 const NO = { no: true }
+const NOT = { not: true }
 const ELEMENT = (t?: any) => ({ element: isUndefined(t) ? true : t })
 const ELEMENTS = (t?: any) => ({ elements: isUndefined(t) ? true : t })
 const FIRST = (t?: any) => ({ first: isUndefined(t) ? true : t })
@@ -73,6 +74,8 @@ const AT = (n: number | true = true ) => ({ at: n })
 const EXACTLY = (n: number) => ({ exactly: n })
 const THAN = (n: number) => ({ than: n })
 const LEAST = (n: number) => ({ least: n })
+const BETWEEN = (n: number) => ({ between: n })
+const AND = (n: number) => ({ and: n })
 const WHICH = (w: any) => ({ which: w })
 const TYPE = (w: any) => ({ type: w })
 const HAS = (p: HasProps) => <Has {...p} />
@@ -257,6 +260,30 @@ const tests: Test[] = [
     elem: <div><span /><span /></div>,
     verify: e => hasLength(e, 2),
     fail: <ul><span /><span /><span /><span /></ul>
+  },
+  {
+    props: { ...BETWEEN(1), ...AND(3), ...ELEMENTS() },
+    elem: <div><span /><span /></div>,
+    verify: e => hasLength(e, 3),
+    fail: <ul><li /><li /><li /></ul>
+  },
+  {
+    props: { ...NOT, ...BETWEEN(1), ...AND(3), ...ELEMENTS() },
+    elem: <div><span /><span /><span /></div>,
+    verify: e => hasLength(e, 4),
+    fail: <ul><li /><li /></ul>
+  },
+  {
+    props: { ...BETWEEN(1), ...AND(3), ...ELEMENTS('span') },
+    elem: <div><span /><span /></div>,
+    verify: e => hasLength(e, 2),
+    fail: <ul><li /><li /><li /></ul>
+  },
+  {
+    props: { ...NOT, ...BETWEEN(1), ...AND(3), ...ELEMENTS('span') },
+    elem: <div><span /><span /><span /><span /></div>,
+    verify: e => hasLength(e, 4),
+    fail: <div><span /><span /></div>
   },
 ]
 

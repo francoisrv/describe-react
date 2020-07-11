@@ -2,6 +2,7 @@
 - [Usage](usage.md)
 - [Jest](jest.md)
 - [Selectors](selectors.md)
+- [Whcih](which.md)
 - [Write your own test components](customize.md)
 - [Examples](examples.md)
 

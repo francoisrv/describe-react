@@ -116,3 +116,21 @@ Expect between n and n2 matching elements
 <Expect between={5} and={10} elements>...</Expect>
 ```
 
+## Element type
+
+You can specify the element type
+
+```jsx
+<Expect element="span" number={2} />
+<Expect first={5} elements="span" />
+```
+
+## Element which
+
+You can use [which](which)
+
+```jsx
+<Expect last element which={ <Has text="abc" /> } />
+<Expect first={5} elements="span" which={[ <Have property="foo" />, <Have text="abc" /> ]} />
+```
+

@@ -1,9 +1,10 @@
 import colors from 'colors'
-import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean, isNull } from 'lodash'
+import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean, isNull, isNumber } from 'lodash'
 import ReactTestRender from 'react-test-renderer'
 
 import { isReactElement, isReactTestRendererInstance, isReactElementComponentOf } from './utils'
 import Is, { IsProps } from './components/Is'
+import { ExpectElementProps, ExpectElementsProps } from './components/Expect'
 
 export const TRUNCATE = 100
 
@@ -129,4 +130,56 @@ export function printIs<T>(props: IsProps<T>) {
   if ('exactly' in props) {
     return `exactly ${ printGeneric(props.exactly) }`
   }
+}
+
+export function printSelector(props: ExpectElementProps | ExpectElementsProps) {
+  const bits: string[] = []
+  for (const prop in props) {
+    switch (prop) {
+      case 'element':
+      case 'elements': {
+        bits.push(prop)
+        // @ts-ignore
+        if (!isBoolean(props[prop])) {
+          // @ts-ignore
+          bits.push(printType(props[prop]))
+        }
+      } break
+
+      case 'root':
+      case 'less':
+      case 'more':
+      case 'no':
+      case 'not': {
+        bits.push(prop)
+      } break
+
+      case 'number':
+      case 'exactly':
+      case 'than':
+      case 'least':
+      case 'between':
+      case 'and': {
+        bits.push(prop, props[prop])
+      } break
+
+      case 'first':
+      case 'last': {
+        if (isBoolean(props[prop])) {
+          bits.push(prop)
+        } else {
+          bits.push(prop, props[prop])
+        }
+      } break
+
+      case 'at': {
+        if (isNumber(props[prop])) {
+          bits.push('number', props[prop] + 1)
+        } else {
+          bits.push(prop)
+        }
+      } break
+    }
+  }
+  return bits.join(' ')
 }

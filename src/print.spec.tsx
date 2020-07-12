@@ -1,7 +1,8 @@
-import { printGeneric, printType, printLabel, printProps, printIs } from './print'
+import { printGeneric, printType, printLabel, printProps, printIs, printSelector } from './print'
 import Is, { IsProps } from './components/Is'
 import Describe from './components/Describe'
 import React from 'react'
+import { ExpectElementProps, ExpectElementsProps } from './components/Expect'
 
 describe('Common printers', () => {
   describe('Print generic', () => {
@@ -136,5 +137,93 @@ describe('Common printers', () => {
         })
       })
     })
+  })
+
+  describe('Print selectors', () => {
+    interface SelectorTest {
+      props: ExpectElementProps | ExpectElementsProps
+      string: string
+    }
+
+    function makeTest(t: SelectorTest) {
+      it(t.string, () => {
+        expect(printSelector(t.props)).toEqual(t.string)
+      })
+    }
+
+    const tests: SelectorTest[] = [
+      {
+        props: { element: true },
+        string: 'element'
+      },
+      {
+        props: { element: 'span' },
+        string: 'element span'
+      },
+      {
+        props: { element: Describe },
+        string: 'element Describe'
+      },
+      {
+        props: { root: true, element: true },
+        string: 'root element'
+      },
+      {
+        props: { first: true, element: true },
+        string: 'first element'
+      },
+      {
+        props: { last: true, element: true },
+        string: 'last element'
+      },
+      {
+        props: { element: true, number: 2 },
+        string: 'element number 2'
+      },
+      {
+        props: { element: true, at: 2 },
+        string: 'element number 3'
+      },
+      {
+        props: { elements: true },
+        string: 'elements'
+      },
+      {
+        props: { exactly: 5, elements: true },
+        string: 'exactly 5 elements'
+      },
+      {
+        props: { less: true, than: 5, elements: true },
+        string: 'less than 5 elements'
+      },
+      {
+        props: { at: true, least: 5, elements: true },
+        string: 'at least 5 elements'
+      },
+      {
+        props: { more: true, than: 5, elements: true },
+        string: 'more than 5 elements'
+      },
+      {
+        props: { no: true, more: true, than: 5, elements: true },
+        string: 'no more than 5 elements'
+      },
+      {
+        props: { between: 5, and: 10, elements: true },
+        string: 'between 5 and 10 elements'
+      },
+      {
+        props: { first: 10, elements: true },
+        string: 'first 10 elements'
+      },
+      {
+        props: { last: 10, elements: true },
+        string: 'last 10 elements'
+      },
+    ]
+
+    for (const t of tests) {
+      makeTest(t)
+    }
   })
 })

@@ -121,12 +121,18 @@ export default function pickElements(
         found = []
       }
     } else if ('than' in props) {
-      if ('no' in props) {
-        if (found.length > props.than) {
-          found = []
+      if ('more' in props) {
+        if ('no' in props) {
+          if (found.length > props.than) {
+            found = []
+          }
+        } else {
+          if (found.length < (props as any).than) {
+            found = []
+          }
         }
-      } else {
-        if (found.length < (props as any).than) {
+      } else if ('less' in props) {
+        if (found.length >= (props as any).than) {
           found = []
         }
       }

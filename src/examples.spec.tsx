@@ -72,13 +72,13 @@ describe('Examples', () => {
             </td>
             <td>
               <h1>hello</h1>
-              <span>bye</span>
+              <span id="foo">bye</span>
             </td>
           </tr>
         </table>
       </Render>
 
-      <Expect last element which={ <Has type="span" /> }>
+      <Expect last element which={[ <Has type="span" />, <Has property="id" which={ <Is exactly="foo" /> } /> ]}>
         <To have text="bye" />
       </Expect>
 
@@ -252,6 +252,7 @@ describe('Examples', () => {
 
       <Expect element which={ <Has type={ Foo } /> }>
         <To have type={ Foo } />
+        <To have type which={ <Is not="div" /> } />
       </Expect>
     </Describe>
   ))
@@ -277,7 +278,7 @@ describe('Examples', () => {
         <To have text="abc" />
         <To have text which={ <Is matching={ /abc/ } /> } />
         <To have text which={ <Has length /> } />
-        <To have text which={ <Has length={3} /> } />
+        <To have text which={[ <Has length={3} />, <Has length which={ <Is greater than={2} /> } /> ]} />
       </Expect>
 
       <Expect element which={ <Has type="a" /> }>
@@ -384,7 +385,27 @@ describe('Examples', () => {
       </Expect>
 
       <Expect elements which={ <Have type="tr" /> }>
-        <To have type="tr" />
+        <To have at least={2} children />
+      </Expect>
+
+      <Expect elements which={ <Have type="tr" /> }>
+        <To have exactly={2} children />
+      </Expect>
+
+      <Expect elements which={ <Have type="tr" /> }>
+        <To have no more than={2} children />
+      </Expect>
+
+      <Expect elements which={ <Have type="tr" /> }>
+        <To have more than={1} child />
+      </Expect>
+
+      <Expect elements which={ <Have type="tr" /> }>
+        <To have between={2} and={3} children />
+      </Expect>
+
+      <Expect element="thead">
+        <To have less than={2} children />
       </Expect>
 
       <Expect element which={ <Has type="div" /> }>

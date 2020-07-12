@@ -59,6 +59,7 @@ type ManyChildrenProps =
   | { exactly: number }
   | { at: true, least: number }
   | { more: true, than: number }
+  | { less: true, than: number }
   | { between: number, and: number }
   | { first: number }
   | { last: number }

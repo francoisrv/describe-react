@@ -5,7 +5,7 @@ import ReactTestRenderer from 'react-test-renderer'
 import Context from '../context'
 import { TestModifier, SingleOrMany } from '../types'
 import { HasProps } from './Has'
-import { printProps, printType } from '../print'
+import { printProps, printSelector, printType } from '../print'
 import { isReactElementComponentOf } from '../utils'
 import To from './To'
 import pickElements from '../finders/pickElements'
@@ -50,6 +50,7 @@ export type ExpectElementsProps =
 | { last: number, elements: boolean, which?: ElementWhich }
 | { at: boolean, least: number, elements: boolean, which?: ElementWhich }
 | { no: boolean, more: boolean, than: number, elements: boolean, which?: ElementWhich }
+| { less: boolean, than: number, elements: boolean, which?: ElementWhich }
 | { elements: boolean, between: number, and: number, which?: ElementWhich }
 
 export type ExpectProps =
@@ -67,7 +68,8 @@ const Expect: React.FC<ExpectProps> = props => {
     <Context.Consumer>
       { ctx => {
         const children = isArray(props.children) ? props.children : [props.children]
-        const describeLabel = `Expect ${ printProps(omit(props, ['children', '_skip', '_only', '_label', '_timeout'])) }`
+        // @ts-ignore
+        const describeLabel = `Expect ${ printSelector(omit(props, ['children', '_skip', '_only', '_label', '_timeout'])) }`
         const tests: TestError[] = []
         ctx.sections.push({
           label: describeLabel,

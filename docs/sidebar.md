@@ -4,16 +4,13 @@
 - [Selectors](selectors.md)
 - [Which](which.md)
 - [Write your own test components](customize.md)
-- [Examples](examples.md)
 
 - Components
 
   - [Describe](components/Describe.md)
-  - [Element](components/Element.md)
   - [Expect](components/Expect.md)
   - [Is](components/Is.md)
   - [Has](components/Has.md)
-  - [Or](components/Or.md)
   - [Render](components/Render.md)
   - [Run](components/Run.md)
   - [To](components/Trigger.md)

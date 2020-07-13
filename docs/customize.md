@@ -10,13 +10,20 @@ function MyCustomTest(props) {
     <Context.Consumer>
     {
       ctx => {
-        ctx.describe('Describe test here', () => {
-          ctx.it('should do something', () => {
-            // ... Your test here
-          })
-          ctx.it('should do something else', () => {
-            // ... Your test here
-          })
+        ctx.sections.push({
+          label: 'Describe test here',
+          skip: false,
+          only: false,
+          timeout: null,
+          sections: [
+            {
+              label: 'it should do something',
+              fn: () => {
+                // ... Your test here
+                // You can use async functions too
+              }
+            }
+          ]
         })
         // Don't forget to return an element
         return <div />
@@ -36,5 +43,4 @@ PASS
 My custom test
   Describe test here
     ✓ should do something
-    ✓ should do something else
 ```

@@ -7,6 +7,7 @@ import Is, { IsProps } from './components/Is'
 import { ExpectElementProps, ExpectElementsProps } from './components/Expect'
 import { Which } from './types'
 import Has, { HasProps } from './components/Has'
+import Have from './components/Have'
 
 export const TRUNCATE = 100
 
@@ -137,6 +138,14 @@ export function printIs<T>(props: IsProps<T>) {
       return `not ${ printGeneric(props.not) }`
     }
   }
+  if ('either' in props) {
+    // @ts-ignore
+    return `either ${ props.either.map(printGeneric).join(' or ')}`
+  }
+  if ('neither' in props) {
+    // @ts-ignore
+    return `neither ${ props.neither.map(printGeneric).join(' nor ')}`
+  }
   if ('string' in props) {
     let str = 'a string'
     if ('not' in props) {
@@ -203,6 +212,13 @@ export function printHas(props: HasProps) {
     }
     return `${ ('not' in props) ? 'not ' : '' }text ${ printGeneric(props.text) }`
   }
+  if ('property' in props) {
+    const bits: string[] = ['property']
+    if (isString(props.property)) {
+      bits.push(props.property)
+    }
+    return bits.join(' ')
+  }
 }
 
 export function printWhich<T>(which: Which<T>): string {
@@ -214,6 +230,9 @@ export function printWhich<T>(which: Which<T>): string {
   }
   if (isReactElementComponentOf(which, Has)) {
     return `has ${ printHas(which.props as HasProps) }`
+  }
+  if (isReactElementComponentOf(which, Have)) {
+    return `have ${ printHas(which.props as HasProps) }`
   }
 }
 

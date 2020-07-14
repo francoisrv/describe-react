@@ -3,7 +3,7 @@ import Is, { IsProps } from './components/Is'
 import Describe from './components/Describe'
 import React from 'react'
 import { ExpectElementProps, ExpectElementsProps } from './components/Expect'
-import { Has } from '.'
+import { Has, Have } from '.'
 
 describe('Common printers', () => {
   describe('Print generic', () => {
@@ -195,6 +195,20 @@ describe('Common printers', () => {
         })
       })
 
+      describe('Either', () => {
+        makeTest<any>({
+          props: { either: [undefined, null, true, false, 1, 'abc'] },
+          printed: 'either undefined or null or true or false or 1 or "abc"'
+        })
+      })
+
+      describe('Neither', () => {
+        makeTest<any>({
+          props: { neither: [undefined, null, true, false, 1, 'abc'] },
+          printed: 'neither undefined nor null nor true nor false nor 1 nor "abc"'
+        })
+      })
+
       describe('string', () => {
         makeTest<any>({
           props: { string: true },
@@ -347,6 +361,11 @@ describe('Common printers', () => {
         expect(printHas({ not: true, text: true })).toEqual('no text')
       })
     })
+    describe('Property', () => {
+      it('has property p', () => {
+        expect(printHas({ property: 'foo' })).toEqual('property foo')
+      })
+    })
   })
 
   describe('Print which', () => {
@@ -355,6 +374,9 @@ describe('Common printers', () => {
     })
     it('should print Has', () => {
       expect(printWhich(<Has type="span" />)).toEqual('has type span')
+    })
+    it('should print Have', () => {
+      expect(printWhich(<Have type="span" />)).toEqual('have type span')
     })
     it('should print array', () => {
       expect(printWhich([<Has type="span" />, <Is exactly="foo" />]))

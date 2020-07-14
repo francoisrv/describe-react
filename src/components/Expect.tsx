@@ -5,7 +5,7 @@ import ReactTestRenderer from 'react-test-renderer'
 import Context from '../context'
 import { TestModifier, SingleOrMany } from '../types'
 import { HasProps } from './Has'
-import { printProps, printSelector, printType } from '../print'
+import { printHas, printProps, printSelector, printType } from '../print'
 import { isReactElementComponentOf } from '../utils'
 import To from './To'
 import pickElements from '../finders/pickElements'
@@ -118,7 +118,10 @@ const Expect: React.FC<ExpectProps> = props => {
           },
           sections: children.map(child => {
             const elem = child as React.ReactElement<any>
-            const label = `${ printType(elem.type) } ${ printProps(elem.props) }`
+            let label = 'To'
+            if ('have' in elem.props) {
+              label += ` have ${ printHas(elem.props) }`
+            }
             return {
               label,
               only: !!elem.props._only,

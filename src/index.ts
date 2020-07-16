@@ -1,4 +1,5 @@
 export { default as default } from './run'
+export { default as Context } from './context'
 
 export { default as Describe } from './components/Describe'
 export { default as Expect } from './components/Expect'

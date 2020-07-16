@@ -1,6 +1,7 @@
 import { ReactTestRenderer, ReactTestInstance } from 'react-test-renderer'
 import Is, { IsProps } from './components/Is'
 import Has, { HasProps } from './components/Has'
+import { ContextState } from './context'
 
 // ////////////////////////////////////////////////////////////
 // COMMON
@@ -35,6 +36,7 @@ export interface ContextInterface {
   sections: Section[]
   getTestRenderer: () => ReactTestRenderer
   getRendered: () => ReactTestInstance | string | undefined
+  state: ContextState
 }
 
 export interface TestModifier {

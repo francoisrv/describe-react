@@ -3,7 +3,7 @@ import React from 'react'
 import colors from 'colors'
 
 import { ItProps, ContextInterface } from './types'
-import Context from './context'
+import Context, { ContextState } from './context'
 import Render from './components/Render'
 
 function makeDescriber(opt: ItProps, fn: typeof describe | typeof it = describe) {
@@ -69,7 +69,8 @@ export default function run(Tests: React.ComponentType<any>) {
     describer: null,
     sections: [],
     getTestRenderer: () => value,
-    getRendered: () => value.root.findByType(Render).children[0]
+    getRendered: () => value.root.findByType(Render).children[0],
+    state: new ContextState({})
   }
   value = ReactTestRenderer.create(
     <Context.Provider value={ context }>

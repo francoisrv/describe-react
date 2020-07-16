@@ -36,13 +36,13 @@ export default function hasChildren(
         isString(props.children) || isFunction(props.children)
       )
     ) {
-      children = children.filter(child => child.type === props.children)
+      children = children.filter(child => !isString(child) && child.type === props.children)
     } else if (
       'child' in props && (
         isString(props.child) || isFunction(props.child)
       )
     ) {
-      children = children.filter(child => child.type === props.child)
+      children = children.filter(child => !isString(child) && child.type === props.child)
     }
 
     if ('which' in props) {

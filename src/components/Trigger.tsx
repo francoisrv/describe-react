@@ -5,6 +5,7 @@ import { upperFirst, isString, isArray, first } from "lodash";
 import DescribeReactError from "../DescribeReactError";
 import pickElements from "../finders/pickElements";
 import { act } from "react-test-renderer";
+import { printGeneric } from "../print";
 
 export type TriggerProps =
 & { event: string, data?: any }
@@ -21,14 +22,14 @@ export default function Trigger(props: TriggerProps) {
     <Context.Consumer>
       { ctx => {
         ctx.sections.push({
-          label: 'Run',
+          label: 'Trigger',
           skip: !!props._skip,
           only: !!props._only,
           timeout: props._timeout,
           customLabel: props._label,
           sections: [
             {
-              label: 'function',
+              label: `event ${ printGeneric(props.event) }`,
               fn: async () => {
                 const root = ctx.getRendered()
                 if (!root || isString(root)) {

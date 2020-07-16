@@ -1,6 +1,6 @@
-import Has, { HasChildrenProps } from "../components/Has"
+import { HasChildrenProps } from "../components/Has"
 import React from "react"
-import { printProps, printElement } from "../print"
+import { printElement, printHas } from "../print"
 import { predicate } from "../utils"
 import { create, ReactTestInstance } from "react-test-renderer"
 import hasChildren from "./has.children"
@@ -15,7 +15,7 @@ describe('Has children', () => {
     expected: boolean
   }
   function makeTest(t: Test, i: number) {
-    it(`#${ i } - ${ printElement(t.elem) } has ${ printProps(t.props) } should ${ t.expected ? 'pass' : 'fail' }`, () => {
+    it(`#${ i } - ${ printElement(t.elem) } has ${ printHas(t.props) } should ${ t.expected ? 'pass' : 'fail' }`, () => {
       expect(predicate(() => hasChildren(t.elem, t.props))).toBe(t.expected)
     })
   }

@@ -366,6 +366,55 @@ describe('Common printers', () => {
         expect(printHas({ property: 'foo' })).toEqual('property foo')
       })
     })
+    describe('Children', () => {
+      it('has children', () => {
+        expect(printHas({ children: true })).toEqual('children')
+      })
+      it('has not children', () => {
+        expect(printHas({ not: true, children: true })).toEqual('no children')
+      })
+      it('has no children', () => {
+        expect(printHas({ no: true, children: true })).toEqual('no children')
+      })
+    })
+    describe('Child', () => {
+      it('has child', () => {
+        expect(printHas({ child: true })).toEqual('child')
+      })
+      it('has not child', () => {
+        expect(printHas({ not: true, child: true })).toEqual('no child')
+      })
+      it('has no child', () => {
+        expect(printHas({ no: true, child: true })).toEqual('no child')
+      })
+      it('has child div', () => {
+        expect(printHas({ child: 'div' })).toEqual('child div')
+      })
+      it('has not child div', () => {
+        expect(printHas({ not: true, child: 'div' })).toEqual('no child div')
+      })
+      it('has no child div', () => {
+        expect(printHas({ no: true, child: 'div' })).toEqual('no child div')
+      })
+      it('has first child', () => {
+        expect(printHas({ first: true, child: true })).toEqual('first child')
+      })
+      it('has not first child', () => {
+        expect(printHas({ not: true, first: true, child: true })).toEqual('no first child')
+      })
+      it('has no first child', () => {
+        expect(printHas({ no: true, first: true, child: true })).toEqual('no first child')
+      })
+      it('has first child div', () => {
+        expect(printHas({ first: true, child: 'div' })).toEqual('first child div')
+      })
+      it('has not first child div', () => {
+        expect(printHas({ not: true, first: true, child: 'div' })).toEqual('no first child div')
+      })
+      it('has no first child div', () => {
+        expect(printHas({ no: true, first: true, child: 'div' })).toEqual('no first child div')
+      })
+    })
   })
 
   describe('Print which', () => {

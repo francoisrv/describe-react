@@ -413,4 +413,31 @@ describe('Examples', () => {
       </Expect>
     </Describe>
   ))
+
+  describe('Others', () => {
+    run(() => {
+      function Foo() {
+        return <div />
+      }
+      return (
+        <Describe label="Ex#1">
+          <Render>
+            <div>
+              <Foo />
+            </div>
+          </Render>
+
+          <Expect element={ Foo }>
+            <To
+              have first child="div"
+              which={[
+                <Has no text />,
+                <Has no children />
+              ]}
+            />
+          </Expect>
+        </Describe>
+      )
+    })
+  })
 })

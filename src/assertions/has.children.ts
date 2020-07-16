@@ -23,7 +23,7 @@ export default function hasChildren(
   let reason: Error | undefined
 
   try {
-    const { children: _children } = elem.props
+    const { children: _children } = elem
 
     if (!_children) {
       throw new DescribeReactError(`Expected ${ printElement(elem) } to have children`)

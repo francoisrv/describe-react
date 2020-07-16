@@ -1,11 +1,11 @@
 import { ExpectElementProps } from "./Expect";
 import Context from "../context";
 import React from 'react'
-import { upperFirst, isString, isArray, first } from "lodash";
+import { upperFirst, isString, isArray, first, omit } from "lodash";
 import DescribeReactError from "../DescribeReactError";
 import pickElements from "../finders/pickElements";
 import { act } from "react-test-renderer";
-import { printGeneric } from "../print";
+import { printGeneric, printSelector } from "../print";
 
 export type TriggerProps =
 & { event: string, data?: any }
@@ -21,15 +21,25 @@ export default function Trigger(props: TriggerProps) {
   return (
     <Context.Consumer>
       { ctx => {
+        let label = `Trigger event ${ printGeneric(props.event) }`
+        if ('data' in props) {
+          label += ` with data ${ printGeneric(props.data) }`
+        }
+        let subLabel = ''
+        if ('to' in props) {
+          subLabel = `to ${ printSelector(omit(props, ['event', 'data', 'to'])) }`
+        } else {
+          subLabel = 'to root element'
+        }
         ctx.sections.push({
-          label: 'Trigger',
+          label,
           skip: !!props._skip,
           only: !!props._only,
           timeout: props._timeout,
           customLabel: props._label,
           sections: [
             {
-              label: `event ${ printGeneric(props.event) }`,
+              label: subLabel,
               fn: async () => {
                 const root = ctx.getRendered()
                 if (!root || isString(root)) {

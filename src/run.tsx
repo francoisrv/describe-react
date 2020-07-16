@@ -21,6 +21,7 @@ export function convertToTests(ctx: ContextInterface) {
     throw new Error('Missing Describe element')
   }
   makeDescriber(ctx.describer)(colors.bold(ctx.describer.label), () => {
+    let index = 0
     for (const section of ctx.sections) {
       if (section.customLabel) {
         makeDescriber(section)(colors.underline(section.customLabel), () => {
@@ -42,7 +43,7 @@ export function convertToTests(ctx: ContextInterface) {
           })
         })
       } else {
-        makeDescriber(section)(section.label, () => {
+        makeDescriber(section)(`${ colors.gray.italic(index.toString()) } ${ section.label }`, () => {
           if (section.beforeAll) {
             beforeAll(section.beforeAll)
           }
@@ -59,6 +60,7 @@ export function convertToTests(ctx: ContextInterface) {
           }
         })
       }
+      index++
     }
   })
 }
@@ -77,7 +79,5 @@ export default function run(Tests: React.ComponentType<any>) {
       <Tests />
     </Context.Provider>
   )
-  // console.log({context})
-  // @ts-ignore
   convertToTests(context)
 }

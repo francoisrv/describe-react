@@ -12,7 +12,9 @@ import Have from './components/Have'
 export const TRUNCATE = 100
 
 export function printType(type: string | React.ComponentType<any>) {
-  return isString(type) ? type : printGeneric(type)
+  return isString(type) ? type : (
+    type.displayName || printGeneric(type)
+  )
 }
 
 export function printLogicOperator(str: string) {

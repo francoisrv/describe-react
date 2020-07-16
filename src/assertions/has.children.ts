@@ -97,7 +97,11 @@ export default function hasChildren(
       if (isNumber(props.first)) {
         expect(children.length >= props.first).toBe(true)
       } else if (isBoolean(props.first)) {
-        expect(children.length >= 1).toBe(true)
+        try {
+          expect(children.length >= 1).toBe(true)
+        } catch (error) {
+          throw new DescribeReactError(`Expected ${ printElement(elem) } to have a first child, but it has no children`)
+        }
       }
     } else if ('last' in props) {
       if (isNumber(props.last)) {

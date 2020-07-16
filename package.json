@@ -28,7 +28,7 @@
     "@types/react-test-renderer": "^16.9.2",
     "@types/strip-color": "^0.1.0",
     "colors": "^1.4.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",

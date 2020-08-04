@@ -1,8 +1,30 @@
 import colors from 'colors'
-import { Dictionary, isEmpty, isObject, truncate, isFunction, isString, isRegExp, isDate, isError, omit, isArray, isUndefined, isBoolean, isNull, isNumber, isEqual, keys } from 'lodash'
+import {
+  Dictionary,
+  isEmpty,
+  isObject,
+  truncate,
+  isFunction,
+  isString,
+  isRegExp,
+  isDate,
+  isError,
+  omit,
+  isArray,
+  isUndefined,
+  isBoolean,
+  isNull,
+  isNumber,
+  isEqual,
+  keys,
+} from 'lodash'
 import ReactTestRender from 'react-test-renderer'
 
-import { isReactElement, isReactTestRendererInstance, isReactElementComponentOf } from './utils'
+import {
+  isReactElement,
+  isReactTestRendererInstance,
+  isReactElementComponentOf,
+} from './utils'
 import Is, { IsProps } from './components/Is'
 import { ExpectElementProps, ExpectElementsProps } from './components/Expect'
 import { Which } from './types'
@@ -12,9 +34,7 @@ import Have from './components/Have'
 export const TRUNCATE = 100
 
 export function printType(type: string | React.ComponentType<any>) {
-  return isString(type) ? type : (
-    type.displayName || printGeneric(type)
-  )
+  return isString(type) ? type : type.displayName || printGeneric(type)
 }
 
 export function printLogicOperator(str: string) {
@@ -38,32 +58,36 @@ export function printProps(object: Dictionary<any>) {
       }
       continue
     } else if (isString(object[key])) {
-      props.push(`${ key }="${ object[key] }"`)
+      props.push(`${key}="${object[key]}"`)
     } else if (isError(object[key])) {
-      props.push(`${ key }={ ${ object[key].toString() } }`)
+      props.push(`${key}={ ${object[key].toString()} }`)
     } else if (isFunction(object[key])) {
-      props.push(`${ key }={ ${ printType(object[key]) } }`)
+      props.push(`${key}={ ${printType(object[key])} }`)
     } else if (isNull(object[key])) {
-      props.push(`${ key }={ null }`)
+      props.push(`${key}={ null }`)
     } else if (isBoolean(object[key])) {
-      props.push(`${ key }={ ${ object[key] } }`)
+      props.push(`${key}={ ${object[key]} }`)
     } else if (isReactElement(object[key])) {
-      props.push(`${ key }={ ${ printElement(object[key]) } }`)
+      props.push(`${key}={ ${printElement(object[key])} }`)
     } else if (isRegExp(object[key])) {
-      props.push(`${ key }={ ${ object[key].toString() } }`)
+      props.push(`${key}={ ${object[key].toString()} }`)
     } else if (isArray(object[key])) {
-      props.push(`${ key }={ ${ printGeneric(object[key]) } }`)
+      props.push(`${key}={ ${printGeneric(object[key])} }`)
     } else if (isObject(object[key])) {
-      props.push(`${ key }={ ${ JSON.stringify(object[key]) } }`)
+      props.push(`${key}={ ${JSON.stringify(object[key])} }`)
     } else {
-      props.push(`${ key }={ ${ object[key] } }`)
+      props.push(`${key}={ ${object[key]} }`)
     }
   }
   return props.join(' ')
 }
 
-export function printElement(elem: ReactTestRender.ReactTestInstance | React.ReactElement<any>) {
-  return `<${ printType(elem.type) }${ isEmpty(omit(elem.props, ['children'])) ? '' : ' ' }${ printProps(elem.props) } />`
+export function printElement(
+  elem: ReactTestRender.ReactTestInstance | React.ReactElement<any>
+) {
+  return `<${printType(elem.type)}${
+    isEmpty(omit(elem.props, ['children'])) ? '' : ' '
+  }${printProps(elem.props)} />`
 }
 
 export function printGeneric(g: any) {
@@ -86,15 +110,17 @@ export function printGeneric(g: any) {
     return truncate(g.toString(), { length: TRUNCATE })
   }
   if (isArray(g)) {
-    return truncate(`[ ${ g.map(printGeneric).join(', ') } ]`, { length: TRUNCATE })
+    return truncate(`[ ${g.map(printGeneric).join(', ')} ]`, {
+      length: TRUNCATE,
+    })
   }
   if (isReactElement(g) || isReactTestRendererInstance(g)) {
     return printElement(g)
   }
-  if (isObject(g)){
+  if (isObject(g)) {
     let str = '{ '
     for (const key in g) {
-      str += `${ key }: ${ printGeneric(g[key]) }, `
+      str += `${key}: ${printGeneric(g[key])}, `
     }
     str = str.replace(/, $/, '')
     str += ' }'
@@ -108,24 +134,30 @@ export function printLabel(props: Dictionary<any>) {
   for (const prop in props) {
     bits.push(prop)
     switch (prop) {
-      case 'element': {
-        if (isString(props.element)) {
-          bits.push(props.element)
-        } else if (isFunction(props.element)) {
-          bits.push(printGeneric(props.element))
+      case 'element':
+        {
+          if (isString(props.element)) {
+            bits.push(props.element)
+          } else if (isFunction(props.element)) {
+            bits.push(printGeneric(props.element))
+          }
         }
-      } break
+        break
 
-      case 'which': {
-        if (isReactElementComponentOf(props.which, Is)) {
-          bits.push('is')
+      case 'which':
+        {
+          if (isReactElementComponentOf(props.which, Is)) {
+            bits.push('is')
+          }
+          bits.push(printLabel(props.which.props))
         }
-        bits.push(printLabel(props.which.props))
-      } break
+        break
 
-      case 'exactly': {
-        bits.push(printGeneric(props.exactly))
-      } break
+      case 'exactly':
+        {
+          bits.push(printGeneric(props.exactly))
+        }
+        break
     }
   }
   return bits.join(' ')
@@ -133,123 +165,159 @@ export function printLabel(props: Dictionary<any>) {
 
 export function printIs<T>(props: IsProps<T>) {
   if ('exactly' in props) {
-    return `exactly ${ printGeneric(props.exactly) }`
+    return `exactly ${printGeneric(props.exactly)}`
   }
   if ('not' in props) {
     if (isEqual(keys(props), ['not'])) {
-      return `not ${ printGeneric(props.not) }`
+      return `not ${printGeneric(props.not)}`
     }
   }
   if ('either' in props) {
     // @ts-ignore
-    return `either ${ props.either.map(printGeneric).join(' or ')}`
+    return `either ${props.either.map(printGeneric).join(' or ')}`
   }
   if ('neither' in props) {
     // @ts-ignore
-    return `neither ${ props.neither.map(printGeneric).join(' nor ')}`
+    return `neither ${props.neither.map(printGeneric).join(' nor ')}`
   }
   if ('string' in props) {
     let str = 'a string'
     if ('not' in props) {
-      str = `not ${ str }`
+      str = `not ${str}`
     }
     return str
   }
   if ('number' in props) {
     let str = 'a number'
     if ('not' in props) {
-      str = `not ${ str }`
+      str = `not ${str}`
     }
     return str
   }
   if ('boolean' in props) {
     let str = 'a boolean'
     if ('not' in props) {
-      str = `not ${ str }`
+      str = `not ${str}`
     }
     return str
   }
   if ('array' in props) {
     let str = 'an array'
     if ('not' in props) {
-      str = `not ${ str }`
+      str = `not ${str}`
     }
     return str
   }
   if ('object' in props) {
     let str = 'an object'
     if ('not' in props) {
-      str = `not ${ str }`
+      str = `not ${str}`
     }
     return str
   }
   if ('error' in props) {
     let str = 'an error'
     if ('not' in props) {
-      str = `not ${ str }`
+      str = `not ${str}`
     }
     return str
   }
   if ('regular' in props) {
     let str = 'a regular expression'
     if ('not' in props) {
-      str = `not ${ str }`
+      str = `not ${str}`
     }
     return str
   }
 }
 
 export function printHas(props: HasProps) {
-  function core() {
-    if ('type' in props) {
-      // @ts-ignore
-      return `${ ('not' in props) ? 'not ' : '' }type ${ printType(props.type) }`
-    }
-    if ('text' in props) {
-      if (isBoolean(props.text)) {
-        let str = 'text'
-        if ('not' in props || 'no' in props) {
-          str = `no ${ str }`
-        }
-        return str
-      }
-      return `${ ('not' in props) ? 'not ' : '' }text ${ printGeneric(props.text) }`
-    }
-    if ('property' in props) {
-      const bits: string[] = ['property']
-      if (isString(props.property)) {
-        bits.push(props.property)
-      }
-      return bits.join(' ')
-    }
-    if ('children' in props) {
-      if (isBoolean(props.children)) {
-        let str = 'children'
-        if ('not' in props || 'no' in props) {
-          str = `no ${ str }`
-        }
-        return str
-      }
-    }
-    if ('child' in props) {
-      let str = 'child'
-      if ('first' in props) {
-        str = `first ${ str }`
-      }
-      if ('not' in props || 'no' in props) {
-        str = `no ${ str }`
-      }
-      if (!isBoolean(props.child)) {
-        str += ` ${ printType(props.child) }`
-      }
-      return str
+  const bits: string[] = []
+
+  for (const prop in props) {
+    bits.push(prop)
+    if (props[prop] === true) {
+    } else if (
+      isReactElementComponentOf(props[prop], Have) ||
+      isReactElementComponentOf(props[prop], Has) ||
+      isReactElementComponentOf(props[prop], Is)
+    ) {
+      bits.push(printWhich(props[prop]))
+    } else {
+      bits.push(props[prop])
     }
   }
-  let str = core()
-  if ('which' in props) {
-    str += ` which (${ printWhich(props.which) })`
-  }
-  return str
+
+  return bits.join(' ')
+
+  // function core() {
+  //   if ('type' in props) {
+  //     // @ts-ignore
+  //     return `${'not' in props ? 'not ' : ''}type ${printType(props.type)}`
+  //   }
+  //   if ('text' in props) {
+  //     if (isBoolean(props.text)) {
+  //       let str = 'text'
+  //       if ('not' in props || 'no' in props) {
+  //         str = `no ${str}`
+  //       }
+  //       return str
+  //     }
+  //     return `${'not' in props ? 'not ' : ''}text ${printGeneric(props.text)}`
+  //   }
+  //   if ('property' in props) {
+  //     const bits: string[] = ['property']
+  //     if (isString(props.property)) {
+  //       bits.push(props.property)
+  //     }
+  //     return bits.join(' ')
+  //   }
+  //   if ('children' in props) {
+  //     if ('all' in props && 'except' in props) {
+  //       if (isBoolean(props.children)) {
+  //         return `all children except child number ${props.except + 1}`
+  //       }
+  //       return `all children ${props.children} except child number ${
+  //         props.except + 1
+  //       }`
+  //     }
+  //     if (isBoolean(props.children)) {
+  //       let str = 'children'
+  //       if ('not' in props || 'no' in props) {
+  //         str = `no ${str}`
+  //       }
+  //       return str
+  //     } else {
+  //       let str = `children ${printType(props.children)}`
+  //       if ('not' in props || 'no' in props) {
+  //         str = `no ${str}`
+  //       }
+  //       return str
+  //     }
+  //     if ('exactly' in props) {
+  //       // @ts-ignore
+  //       return `exactly ${props.exactly} children`
+  //     }
+  //   }
+  //   if ('child' in props) {
+  //     let str = 'child'
+  //     if ('first' in props) {
+  //       str = `first ${str}`
+  //     }
+  //     if ('not' in props || 'no' in props) {
+  //       str = `no ${str}`
+  //     }
+  //     if (!isBoolean(props.child)) {
+  //       str += ` ${printType(props.child)}`
+  //     }
+  //     return str
+  //   }
+  // }
+  // let str = core()
+  // if ('which' in props) {
+  //   str += ` which (${printWhich(props.which)})`
+  // }
+  // return str
 }
 
 export function printWhich<T>(which: Which<T>): string {
@@ -257,13 +325,13 @@ export function printWhich<T>(which: Which<T>): string {
     return which.map(printWhich).join(' and ')
   }
   if (isReactElementComponentOf(which, Is)) {
-    return `is ${ printIs(which.props as IsProps<T>) }`
+    return `is ${printIs(which.props as IsProps<T>)}`
   }
   if (isReactElementComponentOf(which, Has)) {
-    return `has ${ printHas(which.props as HasProps) }`
+    return `has ${printHas(which.props as HasProps)}`
   }
   if (isReactElementComponentOf(which, Have)) {
-    return `have ${ printHas(which.props as HasProps) }`
+    return `have ${printHas(which.props as HasProps)}`
   }
 }
 
@@ -272,52 +340,64 @@ export function printSelector(props: ExpectElementProps | ExpectElementsProps) {
   for (const prop in props) {
     switch (prop) {
       case 'element':
-      case 'elements': {
-        bits.push(prop)
-        // @ts-ignore
-        if (!isBoolean(props[prop])) {
+      case 'elements':
+        {
+          bits.push(prop)
           // @ts-ignore
-          bits.push(printType(props[prop]))
+          if (!isBoolean(props[prop])) {
+            // @ts-ignore
+            bits.push(printType(props[prop]))
+          }
         }
-      } break
+        break
 
       case 'root':
       case 'less':
       case 'more':
       case 'no':
-      case 'not': {
-        bits.push(prop)
-      } break
+      case 'not':
+        {
+          bits.push(prop)
+        }
+        break
 
       case 'number':
       case 'exactly':
       case 'than':
       case 'least':
       case 'between':
-      case 'and': {
-        bits.push(prop, props[prop])
-      } break
-
-      case 'first':
-      case 'last': {
-        if (isBoolean(props[prop])) {
-          bits.push(prop)
-        } else {
+      case 'and':
+        {
           bits.push(prop, props[prop])
         }
-      } break
+        break
 
-      case 'at': {
-        if (isNumber(props[prop])) {
-          bits.push('number', props[prop] + 1)
-        } else {
-          bits.push(prop)
+      case 'first':
+      case 'last':
+        {
+          if (isBoolean(props[prop])) {
+            bits.push(prop)
+          } else {
+            bits.push(prop, props[prop])
+          }
         }
-      } break
+        break
 
-      case 'which': {
-        bits.push('which', printWhich<any>(props[prop]))
-      } break
+      case 'at':
+        {
+          if (isNumber(props[prop])) {
+            bits.push('number', props[prop] + 1)
+          } else {
+            bits.push(prop)
+          }
+        }
+        break
+
+      case 'which':
+        {
+          bits.push('which', printWhich<any>(props[prop]))
+        }
+        break
     }
   }
   return bits.join(' ')

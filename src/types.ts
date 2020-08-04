@@ -60,9 +60,22 @@ export type TypeIdentifier = string | React.ComponentType<any>
 
 export type TextIdentifier = string
 
-
 export type SingleWhich<T> =
-| React.ReactElement<IsProps<T>, typeof Is>
-| React.ReactElement<HasProps, typeof Has>
+  | React.ReactElement<IsProps<T>, typeof Is>
+  | React.ReactElement<HasProps, typeof Has>
 
 export type Which<T> = SingleWhich<T> | SingleWhich<T>[]
+
+export type NodeFilter = (nodes: ReactTestInstance[]) => ReactTestInstance[]
+
+export type NodeFilterFP<A extends any[] = any[]> = (...args: A) => NodeFilter
+
+export type LengthIdentifier =
+  | 'has'
+  | 'has not'
+  | 'exactly'
+  | 'not exactly'
+  | 'at least'
+  | 'more'
+  | 'no more'
+  | 'between'

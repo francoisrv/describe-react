@@ -43,7 +43,7 @@ export function convertToTests(ctx: ContextInterface) {
           })
         })
       } else {
-        makeDescriber(section)(`${ colors.gray.italic(index.toString()) } ${ section.label }`, () => {
+        makeDescriber(section)(`~${ colors.gray.italic(index.toString()) } ${ section.label }`, () => {
           if (section.beforeAll) {
             beforeAll(section.beforeAll)
           }

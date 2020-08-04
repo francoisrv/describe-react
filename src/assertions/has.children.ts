@@ -1,10 +1,10 @@
-import { ReactTestInstance } from "react-test-renderer";
-import { HasChildrenProps } from "../components/Has";
-import { predicate } from "../utils";
-import { isArray, isString, isFunction, isNumber, isBoolean, first, compact, last } from "lodash";
-import DescribeReactError from "../DescribeReactError";
-import { printElement, printProps } from "../print";
-import which from "./which";
+import { isArray } from 'lodash'
+
+import { ReactTestInstance } from 'react-test-renderer'
+import { HasChildrenProps } from '../components/Has'
+import DescribeReactError from '../DescribeReactError'
+import { printElement, printHas } from '../print'
+import { filterChildren, expectLength, filterByWhich } from '../utils/dom.utils'
 
 export default function hasChildren(
   elem: ReactTestInstance | ReactTestInstance[],
@@ -17,7 +17,7 @@ export default function hasChildren(
     return
   }
 
-  const isNot = ('not' in props) || ('no' in props)
+  const isNot = 'not' in props || 'no' in props
 
   let passed = true
   let reason: Error | undefined
@@ -26,91 +26,39 @@ export default function hasChildren(
     const { children: _children } = elem
 
     if (!_children) {
-      throw new DescribeReactError(`Expected ${ printElement(elem) } to have children`)
+      throw new DescribeReactError(
+        `Expected ${printElement(elem)} to have children`
+      )
     }
 
-    let children = isArray(_children) ? _children : [_children]
+    let children = (isArray(_children)
+      ? _children
+      : [_children]) as ReactTestInstance[]
 
-    if (
-      'children' in props && (
-        isString(props.children) || isFunction(props.children)
-      )
-    ) {
-      children = children.filter(child => !isString(child) && child.type === props.children)
-    } else if (
-      'child' in props && (
-        isString(props.child) || isFunction(props.child)
-      )
-    ) {
-      children = children.filter(child => !isString(child) && child.type === props.child)
-    }
+    children = filterChildren(props)(children)
 
     if ('which' in props) {
-      children = children.filter(child => predicate(() => which(child, props.which)))
+      children = filterByWhich(props.which)(children)
     }
 
-    if ('first' in props) {
-      if (isNumber(props.first)) {
-        children = children.slice(0, props.first)
-        if (children.length < props.first) {
-          throw new DescribeReactError(`Expected ${ printElement(elem) } to have at least ${ props.first } children, but only ${ children.length } children found`)
-        }
-      } else if (isBoolean(props.first)) {
-        children = compact([first(children)])
-      }
-    } else if ('last' in props) {
-      if (isNumber(props.last)) {
-        children = children.slice(children.length - props.last)
-        if (children.length < props.last) {
-          throw new DescribeReactError(`Expected ${ printElement(elem) } to have at least ${ props.last } children, but only ${ children.length } children found`)
-        }
-      } else if (isBoolean(props.last)) {
-        children = compact([last(children)])
-      }
-    }
+    // console.log(children.map((c) => c.type))
 
-    if ('exactly' in props) {
-      try {
-        expect(children).toHaveLength(props.exactly)
-      } catch (error) {
-        throw new DescribeReactError(`Expect ${ printElement(elem) } to have exactly ${ props.exactly } children. Got ${ children.length }`)
-      }
+    if ('exactly' in props && 'not' in props) {
+      expectLength(children, 'not exactly', props.exactly)
+    } else if ('exactly' in props) {
+      expectLength(children, 'exactly', props.exactly)
     } else if ('least' in props) {
-      try {
-        expect(children.length >= props.least).toBe(true)
-      } catch (error) {
-        throw new DescribeReactError(`Expect ${ printElement(elem) } to have at least ${ props.least } children. Got ${ children.length }`)
-      }
+      expectLength(children, 'at least', props.least)
+    } else if ('more' in props && 'no' in props) {
+      expectLength(children, 'no more', props.than)
     } else if ('more' in props) {
-      try {
-        expect(children.length > props.than).toBe(true)
-      } catch (error) {
-        throw new DescribeReactError(`Expect ${ printElement(elem) } to have at more than ${ props.than } children. Got ${ children.length }`)
-      }
+      expectLength(children, 'more', props.than)
     } else if ('between' in props) {
-      try {
-        expect(children.length >= props.between && children.length <= props.and).toBe(true)
-      } catch (error) {
-        throw new DescribeReactError(`Expect ${ printElement(elem) } to have at between ${ props.between } and ${ props.and } children. Got ${ children.length }`)
-      }
-    } else if ('first' in props) {
-      if (isNumber(props.first)) {
-        expect(children.length >= props.first).toBe(true)
-      } else if (isBoolean(props.first)) {
-        try {
-          expect(children.length >= 1).toBe(true)
-        } catch (error) {
-          throw new DescribeReactError(`Expected ${ printElement(elem) } to have a first child, but it has no children`)
-        }
-      }
-    } else if ('last' in props) {
-      if (isNumber(props.last)) {
-        expect(children.length >= props.last).toBe(true)
-      } else if (isBoolean(props.last)) {
-        expect(children.length >= 1).toBe(true)
-      }
+      expectLength(children, 'between', props.between, props.and)
+    } else if ('no' in props) {
+      expectLength(children, 'has not', 0)
     } else {
-      expect(children.length > 0).toBe(true)
+      expectLength(children, 'has', 0)
     }
   } catch (error) {
     passed = false
@@ -118,11 +66,16 @@ export default function hasChildren(
   }
 
   try {
-    expect(passed).toBe(!isNot)
+    expect(passed).toBe(true)
   } catch (error) {
     if (!isNot && reason) {
       throw reason
     }
-    throw new DescribeReactError(`Expected ${ printElement(elem) } to ${ printProps(props) }\n${ reason }`)
+    if (!reason) {
+      reason = error
+    }
+    throw new DescribeReactError(
+      `Expected ${printElement(elem)} to have ${printHas(props)}\n${reason}`
+    )
   }
 }

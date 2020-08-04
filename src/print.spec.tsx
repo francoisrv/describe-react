@@ -1,4 +1,13 @@
-import { printGeneric, printType, printLabel, printProps, printIs, printSelector, printWhich, printHas } from './print'
+import {
+  printGeneric,
+  printType,
+  printLabel,
+  printProps,
+  printIs,
+  printSelector,
+  printWhich,
+  printHas,
+} from './print'
 import Is, { IsProps } from './components/Is'
 import Describe from './components/Describe'
 import React from 'react'
@@ -14,8 +23,7 @@ describe('Common printers', () => {
       expect(printGeneric([24])).toEqual('[ 24 ]')
     })
     it('should print named function', () => {
-      expect(printGeneric(encodeURIComponent))
-      .toEqual('encodeURIComponent')
+      expect(printGeneric(encodeURIComponent)).toEqual('encodeURIComponent')
     })
   })
 
@@ -35,7 +43,7 @@ describe('Common printers', () => {
     }
 
     function makeTest(t: PrintLabelTest) {
-      it(`${ printGeneric(t.props) } >> ${ t.label }`, () => {
+      it(`${printGeneric(t.props)} >> ${t.label}`, () => {
         expect(printLabel(t.props)).toEqual(t.label)
       })
     }
@@ -43,23 +51,23 @@ describe('Common printers', () => {
     const tests: PrintLabelTest[] = [
       {
         props: { element: true },
-        label: 'element'
+        label: 'element',
       },
       {
         props: { root: true, element: true },
-        label: 'root element'
+        label: 'root element',
       },
       {
-        props: {element: 'span' },
-        label: 'element span'
+        props: { element: 'span' },
+        label: 'element span',
       },
       {
-        props: {element: Describe },
-        label: 'element Describe'
+        props: { element: Describe },
+        label: 'element Describe',
       },
       {
         props: { element: true, which: <Is exactly="span" /> },
-        label: 'element which is exactly "span"'
+        label: 'element which is exactly "span"',
       },
     ]
 
@@ -75,7 +83,7 @@ describe('Common printers', () => {
     }
 
     function makeTest<T>(t: IsTest<T>) {
-      it(`${ printProps(t.props) } >> ${ t.printed }`, () => {
+      it(`${printProps(t.props)} >> ${t.printed}`, () => {
         expect(printIs<T>(t.props)).toEqual(t.printed)
       })
     }
@@ -84,260 +92,260 @@ describe('Common printers', () => {
       describe('Exactly', () => {
         makeTest<undefined>({
           props: { exactly: undefined },
-          printed: 'exactly undefined'
+          printed: 'exactly undefined',
         })
         makeTest<null>({
           props: { exactly: null },
-          printed: 'exactly null'
+          printed: 'exactly null',
         })
         makeTest<boolean>({
           props: { exactly: true },
-          printed: 'exactly true'
+          printed: 'exactly true',
         })
         makeTest<boolean>({
           props: { exactly: false },
-          printed: 'exactly false'
+          printed: 'exactly false',
         })
         makeTest<string>({
           props: { exactly: 'hello' },
-          printed: 'exactly "hello"'
+          printed: 'exactly "hello"',
         })
         makeTest<number>({
           props: { exactly: 123 },
-          printed: 'exactly 123'
+          printed: 'exactly 123',
         })
         makeTest<object>({
           props: { exactly: { a: 'b' } },
-          printed: 'exactly { a: "b" }'
+          printed: 'exactly { a: "b" }',
         })
         function fn() {}
         makeTest<Function>({
           props: { exactly: fn },
-          printed: 'exactly fn'
+          printed: 'exactly fn',
         })
         makeTest<React.ReactElement<any>>({
           props: { exactly: <div id="foo" tabIndex={2} /> },
-          printed: 'exactly <div id="foo" tabIndex={ 2 } />'
+          printed: 'exactly <div id="foo" tabIndex={ 2 } />',
         })
         const date = new Date()
         makeTest<Date>({
           props: { exactly: date },
-          printed: `exactly ${ date.toString() }`
+          printed: `exactly ${date.toString()}`,
         })
         makeTest<RegExp>({
           props: { exactly: /abc/ },
-          printed: 'exactly /abc/'
+          printed: 'exactly /abc/',
         })
         makeTest<Error>({
           props: { exactly: new Error('foo') },
-          printed: 'exactly Error: foo'
+          printed: 'exactly Error: foo',
         })
         makeTest<any[]>({
           props: { exactly: [1, 'abc'] },
-          printed: 'exactly [ 1, "abc" ]'
+          printed: 'exactly [ 1, "abc" ]',
         })
       })
 
       describe('Not', () => {
         makeTest<undefined>({
           props: { not: undefined },
-          printed: 'not undefined'
+          printed: 'not undefined',
         })
         makeTest<null>({
           props: { not: null },
-          printed: 'not null'
+          printed: 'not null',
         })
         makeTest<boolean>({
           props: { not: true },
-          printed: 'not true'
+          printed: 'not true',
         })
         makeTest<boolean>({
           props: { not: false },
-          printed: 'not false'
+          printed: 'not false',
         })
         makeTest<string>({
           props: { not: 'hello' },
-          printed: 'not "hello"'
+          printed: 'not "hello"',
         })
         makeTest<number>({
           props: { not: 123 },
-          printed: 'not 123'
+          printed: 'not 123',
         })
         makeTest<object>({
           props: { not: { a: 'b' } },
-          printed: 'not { a: "b" }'
+          printed: 'not { a: "b" }',
         })
         function fn() {}
         makeTest<Function>({
           props: { not: fn },
-          printed: 'not fn'
+          printed: 'not fn',
         })
         makeTest<React.ReactElement<any>>({
           props: { not: <div id="foo" tabIndex={2} /> },
-          printed: 'not <div id="foo" tabIndex={ 2 } />'
+          printed: 'not <div id="foo" tabIndex={ 2 } />',
         })
         const date = new Date()
         makeTest<Date>({
           props: { not: date },
-          printed: `not ${ date.toString() }`
+          printed: `not ${date.toString()}`,
         })
         makeTest<RegExp>({
           props: { not: /abc/ },
-          printed: 'not /abc/'
+          printed: 'not /abc/',
         })
         makeTest<Error>({
           props: { not: new Error('foo') },
-          printed: 'not Error: foo'
+          printed: 'not Error: foo',
         })
         makeTest<any[]>({
           props: { not: [1, 'abc'] },
-          printed: 'not [ 1, "abc" ]'
+          printed: 'not [ 1, "abc" ]',
         })
       })
 
       describe('Either', () => {
         makeTest<any>({
           props: { either: [undefined, null, true, false, 1, 'abc'] },
-          printed: 'either undefined or null or true or false or 1 or "abc"'
+          printed: 'either undefined or null or true or false or 1 or "abc"',
         })
       })
 
       describe('Neither', () => {
         makeTest<any>({
           props: { neither: [undefined, null, true, false, 1, 'abc'] },
-          printed: 'neither undefined nor null nor true nor false nor 1 nor "abc"'
+          printed:
+            'neither undefined nor null nor true nor false nor 1 nor "abc"',
         })
       })
 
       describe('string', () => {
         makeTest<any>({
           props: { string: true },
-          printed: 'a string'
+          printed: 'a string',
         })
         makeTest<any>({
           props: { a: true, string: true },
-          printed: 'a string'
+          printed: 'a string',
         })
         makeTest<any>({
           props: { not: true, string: true },
-          printed: 'not a string'
+          printed: 'not a string',
         })
         makeTest<any>({
           props: { not: true, a: true, string: true },
-          printed: 'not a string'
+          printed: 'not a string',
         })
       })
 
       describe('number', () => {
         makeTest<any>({
           props: { number: true },
-          printed: 'a number'
+          printed: 'a number',
         })
         makeTest<any>({
           props: { a: true, number: true },
-          printed: 'a number'
+          printed: 'a number',
         })
         makeTest<any>({
           props: { not: true, number: true },
-          printed: 'not a number'
+          printed: 'not a number',
         })
         makeTest<any>({
           props: { not: true, a: true, number: true },
-          printed: 'not a number'
+          printed: 'not a number',
         })
       })
 
       describe('boolean', () => {
         makeTest<any>({
           props: { boolean: true },
-          printed: 'a boolean'
+          printed: 'a boolean',
         })
         makeTest<any>({
           props: { a: true, boolean: true },
-          printed: 'a boolean'
+          printed: 'a boolean',
         })
         makeTest<any>({
           props: { not: true, boolean: true },
-          printed: 'not a boolean'
+          printed: 'not a boolean',
         })
         makeTest<any>({
           props: { not: true, a: true, boolean: true },
-          printed: 'not a boolean'
+          printed: 'not a boolean',
         })
       })
 
       describe('array', () => {
         makeTest<any>({
           props: { array: true },
-          printed: 'an array'
+          printed: 'an array',
         })
         makeTest<any>({
           props: { an: true, array: true },
-          printed: 'an array'
+          printed: 'an array',
         })
         makeTest<any>({
           props: { not: true, array: true },
-          printed: 'not an array'
+          printed: 'not an array',
         })
         makeTest<any>({
           props: { not: true, an: true, array: true },
-          printed: 'not an array'
+          printed: 'not an array',
         })
       })
 
       describe('object', () => {
         makeTest<any>({
           props: { object: true },
-          printed: 'an object'
+          printed: 'an object',
         })
         makeTest<any>({
           props: { an: true, object: true },
-          printed: 'an object'
+          printed: 'an object',
         })
         makeTest<any>({
           props: { not: true, object: true },
-          printed: 'not an object'
+          printed: 'not an object',
         })
         makeTest<any>({
           props: { not: true, an: true, object: true },
-          printed: 'not an object'
+          printed: 'not an object',
         })
       })
 
       describe('error', () => {
         makeTest<any>({
           props: { error: true },
-          printed: 'an error'
+          printed: 'an error',
         })
         makeTest<any>({
           props: { an: true, error: true },
-          printed: 'an error'
+          printed: 'an error',
         })
         makeTest<any>({
           props: { not: true, error: true },
-          printed: 'not an error'
+          printed: 'not an error',
         })
         makeTest<any>({
           props: { not: true, an: true, error: true },
-          printed: 'not an error'
+          printed: 'not an error',
         })
       })
 
       describe('regular expression', () => {
         makeTest<any>({
           props: { regular: true, expression: true },
-          printed: 'a regular expression'
+          printed: 'a regular expression',
         })
         makeTest<any>({
           props: { a: true, regular: true, expression: true },
-          printed: 'a regular expression'
+          printed: 'a regular expression',
         })
         makeTest<any>({
           props: { not: true, regular: true, expression: true },
-          printed: 'not a regular expression'
+          printed: 'not a regular expression',
         })
       })
-
     })
   })
 
@@ -376,6 +384,23 @@ describe('Common printers', () => {
       it('has no children', () => {
         expect(printHas({ no: true, children: true })).toEqual('no children')
       })
+      it('has exactly 5 children', () => {
+        expect(printHas({ exactly: 5, children: 'div' })).toEqual(
+          'exactly 5 children'
+        )
+      })
+
+      it('all children except', () => {
+        expect(printHas({ all: true, children: true, except: 0 })).toEqual(
+          'all children except child number 1'
+        )
+      })
+
+      it('all children x except', () => {
+        expect(printHas({ all: true, children: 'div', except: 0 })).toEqual(
+          'all children div except child number 1'
+        )
+      })
     })
     describe('Child', () => {
       it('has child', () => {
@@ -400,19 +425,29 @@ describe('Common printers', () => {
         expect(printHas({ first: true, child: true })).toEqual('first child')
       })
       it('has not first child', () => {
-        expect(printHas({ not: true, first: true, child: true })).toEqual('no first child')
+        expect(printHas({ not: true, first: true, child: true })).toEqual(
+          'no first child'
+        )
       })
       it('has no first child', () => {
-        expect(printHas({ no: true, first: true, child: true })).toEqual('no first child')
+        expect(printHas({ no: true, first: true, child: true })).toEqual(
+          'no first child'
+        )
       })
       it('has first child div', () => {
-        expect(printHas({ first: true, child: 'div' })).toEqual('first child div')
+        expect(printHas({ first: true, child: 'div' })).toEqual(
+          'first child div'
+        )
       })
       it('has not first child div', () => {
-        expect(printHas({ not: true, first: true, child: 'div' })).toEqual('no first child div')
+        expect(printHas({ not: true, first: true, child: 'div' })).toEqual(
+          'no first child div'
+        )
       })
       it('has no first child div', () => {
-        expect(printHas({ no: true, first: true, child: 'div' })).toEqual('no first child div')
+        expect(printHas({ no: true, first: true, child: 'div' })).toEqual(
+          'no first child div'
+        )
       })
     })
   })
@@ -428,8 +463,9 @@ describe('Common printers', () => {
       expect(printWhich(<Have type="span" />)).toEqual('have type span')
     })
     it('should print array', () => {
-      expect(printWhich([<Has type="span" />, <Is exactly="foo" />]))
-      .toEqual('has type span and is exactly "foo"')
+      expect(printWhich([<Has type="span" />, <Is exactly="foo" />])).toEqual(
+        'has type span and is exactly "foo"'
+      )
     })
   })
 
@@ -448,75 +484,75 @@ describe('Common printers', () => {
     const tests: SelectorTest[] = [
       {
         props: { element: true },
-        string: 'element'
+        string: 'element',
       },
       {
         props: { element: 'span' },
-        string: 'element span'
+        string: 'element span',
       },
       {
         props: { element: Describe },
-        string: 'element Describe'
+        string: 'element Describe',
       },
       {
         props: { root: true, element: true },
-        string: 'root element'
+        string: 'root element',
       },
       {
         props: { first: true, element: true },
-        string: 'first element'
+        string: 'first element',
       },
       {
         props: { last: true, element: true },
-        string: 'last element'
+        string: 'last element',
       },
       {
         props: { element: true, number: 2 },
-        string: 'element number 2'
+        string: 'element number 2',
       },
       {
         props: { element: true, at: 2 },
-        string: 'element number 3'
+        string: 'element number 3',
       },
       {
         props: { elements: true },
-        string: 'elements'
+        string: 'elements',
       },
       {
         props: { exactly: 5, elements: true },
-        string: 'exactly 5 elements'
+        string: 'exactly 5 elements',
       },
       {
         props: { less: true, than: 5, elements: true },
-        string: 'less than 5 elements'
+        string: 'less than 5 elements',
       },
       {
         props: { at: true, least: 5, elements: true },
-        string: 'at least 5 elements'
+        string: 'at least 5 elements',
       },
       {
         props: { more: true, than: 5, elements: true },
-        string: 'more than 5 elements'
+        string: 'more than 5 elements',
       },
       {
         props: { no: true, more: true, than: 5, elements: true },
-        string: 'no more than 5 elements'
+        string: 'no more than 5 elements',
       },
       {
         props: { between: 5, and: 10, elements: true },
-        string: 'between 5 and 10 elements'
+        string: 'between 5 and 10 elements',
       },
       {
         props: { first: 10, elements: true },
-        string: 'first 10 elements'
+        string: 'first 10 elements',
       },
       {
         props: { last: 10, elements: true },
-        string: 'last 10 elements'
+        string: 'last 10 elements',
       },
       {
         props: { element: true, which: <Has type="span" /> },
-        string: 'element which has type span'
+        string: 'element which has type span',
       },
     ]
 

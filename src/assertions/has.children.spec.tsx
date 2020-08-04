@@ -37,6 +37,7 @@ function makeTree(tree: Tree, index = -1): React.ReactElement {
     if (isString(child)) {
       return child
     }
+    // @ts-ignore
     return makeTree(child, childIndex)
   })
   const parent = React.createElement(name, props, children)

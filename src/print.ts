@@ -243,81 +243,19 @@ export function printHas(props: HasProps) {
       isReactElementComponentOf(props[prop], Is)
     ) {
       bits.push(printWhich(props[prop]))
+    } else if (prop === 'except') {
+      bits.push(`number ${props[prop] + 1}`)
+    } else if (
+      (prop === 'child' || prop === 'children' || prop === 'type') &&
+      !isBoolean(props[prop])
+    ) {
+      bits.push(printType(props[prop]))
     } else {
       bits.push(props[prop])
     }
   }
 
   return bits.join(' ')
-
-  // function core() {
-  //   if ('type' in props) {
-  //     // @ts-ignore
-  //     return `${'not' in props ? 'not ' : ''}type ${printType(props.type)}`
-  //   }
-  //   if ('text' in props) {
-  //     if (isBoolean(props.text)) {
-  //       let str = 'text'
-  //       if ('not' in props || 'no' in props) {
-  //         str = `no ${str}`
-  //       }
-  //       return str
-  //     }
-  //     return `${'not' in props ? 'not ' : ''}text ${printGeneric(props.text)}`
-  //   }
-  //   if ('property' in props) {
-  //     const bits: string[] = ['property']
-  //     if (isString(props.property)) {
-  //       bits.push(props.property)
-  //     }
-  //     return bits.join(' ')
-  //   }
-  //   if ('children' in props) {
-  //     if ('all' in props && 'except' in props) {
-  //       if (isBoolean(props.children)) {
-  //         return `all children except child number ${props.except + 1}`
-  //       }
-  //       return `all children ${props.children} except child number ${
-  //         props.except + 1
-  //       }`
-  //     }
-  //     if (isBoolean(props.children)) {
-  //       let str = 'children'
-  //       if ('not' in props || 'no' in props) {
-  //         str = `no ${str}`
-  //       }
-  //       return str
-  //     } else {
-  //       let str = `children ${printType(props.children)}`
-  //       if ('not' in props || 'no' in props) {
-  //         str = `no ${str}`
-  //       }
-  //       return str
-  //     }
-  //     if ('exactly' in props) {
-  //       // @ts-ignore
-  //       return `exactly ${props.exactly} children`
-  //     }
-  //   }
-  //   if ('child' in props) {
-  //     let str = 'child'
-  //     if ('first' in props) {
-  //       str = `first ${str}`
-  //     }
-  //     if ('not' in props || 'no' in props) {
-  //       str = `no ${str}`
-  //     }
-  //     if (!isBoolean(props.child)) {
-  //       str += ` ${printType(props.child)}`
-  //     }
-  //     return str
-  //   }
-  // }
-  // let str = core()
-  // if ('which' in props) {
-  //   str += ` which (${printWhich(props.which)})`
-  // }
-  // return str
 }
 
 export function printWhich<T>(which: Which<T>): string {

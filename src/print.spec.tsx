@@ -366,7 +366,7 @@ describe('Common printers', () => {
         expect(printHas({ no: true, text: true })).toEqual('no text')
       })
       it('has not text', () => {
-        expect(printHas({ not: true, text: true })).toEqual('no text')
+        expect(printHas({ not: true, text: true })).toEqual('not text')
       })
     })
     describe('Property', () => {
@@ -379,26 +379,26 @@ describe('Common printers', () => {
         expect(printHas({ children: true })).toEqual('children')
       })
       it('has not children', () => {
-        expect(printHas({ not: true, children: true })).toEqual('no children')
+        expect(printHas({ not: true, children: true })).toEqual('not children')
       })
       it('has no children', () => {
         expect(printHas({ no: true, children: true })).toEqual('no children')
       })
       it('has exactly 5 children', () => {
         expect(printHas({ exactly: 5, children: 'div' })).toEqual(
-          'exactly 5 children'
+          'exactly 5 children div'
         )
       })
 
       it('all children except', () => {
         expect(printHas({ all: true, children: true, except: 0 })).toEqual(
-          'all children except child number 1'
+          'all children except number 1'
         )
       })
 
       it('all children x except', () => {
         expect(printHas({ all: true, children: 'div', except: 0 })).toEqual(
-          'all children div except child number 1'
+          'all children div except number 1'
         )
       })
     })
@@ -407,7 +407,7 @@ describe('Common printers', () => {
         expect(printHas({ child: true })).toEqual('child')
       })
       it('has not child', () => {
-        expect(printHas({ not: true, child: true })).toEqual('no child')
+        expect(printHas({ not: true, child: true })).toEqual('not child')
       })
       it('has no child', () => {
         expect(printHas({ no: true, child: true })).toEqual('no child')
@@ -416,7 +416,7 @@ describe('Common printers', () => {
         expect(printHas({ child: 'div' })).toEqual('child div')
       })
       it('has not child div', () => {
-        expect(printHas({ not: true, child: 'div' })).toEqual('no child div')
+        expect(printHas({ not: true, child: 'div' })).toEqual('not child div')
       })
       it('has no child div', () => {
         expect(printHas({ no: true, child: 'div' })).toEqual('no child div')
@@ -426,7 +426,7 @@ describe('Common printers', () => {
       })
       it('has not first child', () => {
         expect(printHas({ not: true, first: true, child: true })).toEqual(
-          'no first child'
+          'not first child'
         )
       })
       it('has no first child', () => {
@@ -441,7 +441,7 @@ describe('Common printers', () => {
       })
       it('has not first child div', () => {
         expect(printHas({ not: true, first: true, child: 'div' })).toEqual(
-          'no first child div'
+          'not first child div'
         )
       })
       it('has no first child div', () => {

@@ -61,11 +61,12 @@ type ManyChildrenProps = ChildrenProps &
     | { all: true; except: number }
   )
 
-type SingleChildProps = ChildProps &
+export type SingleChildProps = ChildProps &
   NotProps & { which?: Which<TypeIdentifier> } & (
     | {}
     | { first: true }
     | { last: true }
+    | { number: number }
   )
 
 export type HasChildrenProps = ManyChildrenProps | SingleChildProps
@@ -90,11 +91,12 @@ type ManySiblingsProps = SiblingsProps &
     | { between: number; and: number }
   )
 
-type SingleSiblingdProps = SiblingProps &
+export type SingleSiblingdProps = SiblingProps &
   NotProps & { which?: Which<TypeIdentifier> } & (
     | {}
     | { first: true }
     | { last: true }
+    | { number: number }
   )
 
 export type HasSiblingsProps = ManySiblingsProps | SingleSiblingdProps

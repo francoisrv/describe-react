@@ -7,7 +7,7 @@ import {
 } from '../types'
 import { compact, first, last, isString, isNumber, isBoolean } from 'lodash'
 import DescribeReactError from '../DescribeReactError'
-import { HasChildrenProps } from '../components/Has'
+import { HasChildrenProps, SingleChildProps } from '../components/Has'
 import { isReactTestRendererInstance, predicate } from '../utils'
 import { ReactTestInstance } from 'react-test-renderer'
 import which from '../assertions/which'
@@ -49,6 +49,9 @@ export const pickAllChildrenExcept: NodeFilterFP = (except: number) => (
   nodes
 ) => nodes.filter((_node, index) => index !== except)
 
+export const pickChildByNumber: NodeFilterFP = (number: number) => (nodes) =>
+  compact([nodes[number - 1]])
+
 export const filterChildren: NodeFilterFP<[HasChildrenProps]> = (props) => (
   nodes
 ) => {
@@ -82,6 +85,9 @@ export const filterChildren: NodeFilterFP<[HasChildrenProps]> = (props) => (
     }
   } else if ('except' in props) {
     filters.push(pickAllChildrenExcept(props.except))
+  } else if ('number' in props) {
+    // @ts-ignore
+    filters.push(pickChildByNumber((props as SingleChildProps).number))
   }
 
   let children = [...nodes]
@@ -96,6 +102,15 @@ export const filterChildren: NodeFilterFP<[HasChildrenProps]> = (props) => (
 export const filterByWhich: NodeFilterFP<[Which<any>]> = (whichProps) => (
   nodes
 ) => nodes.filter((node) => predicate(() => which(node, whichProps)))
+
+export function assertWhich(
+  nodes: ReactTestInstance[],
+  whichProps: Which<any>
+) {
+  for (const node of nodes) {
+    which(node, whichProps)
+  }
+}
 
 export function expectLength(
   nodes: ReactTestInstance[],

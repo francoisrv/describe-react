@@ -367,8 +367,22 @@ describe('Has children', () => {
 
         makeTest({
           has: ['first', { child: 'p' }],
-          true: ['div', ['p']],
+          true: ['div', ['p'], ['span']],
           false: ['div', ['span']],
+        })
+      })
+
+      describe('Number', () => {
+        makeTest({
+          has: ['child', { number: 1 }],
+          true: ['div', ['span']],
+          false: ['div'],
+        })
+
+        makeTest({
+          has: ['child', { number: 2 }],
+          true: ['div', ['span'], ['p']],
+          false: ['div', ['p']],
         })
       })
     })

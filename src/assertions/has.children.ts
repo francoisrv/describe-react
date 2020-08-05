@@ -4,7 +4,12 @@ import { ReactTestInstance } from 'react-test-renderer'
 import { HasChildrenProps } from '../components/Has'
 import DescribeReactError from '../DescribeReactError'
 import { printElement, printHas } from '../print'
-import { filterChildren, expectLength, filterByWhich } from '../utils/dom.utils'
+import {
+  filterChildren,
+  expectLength,
+  filterByWhich,
+  assertWhich,
+} from '../utils/dom.utils'
 
 export default function hasChildren(
   elem: ReactTestInstance | ReactTestInstance[],
@@ -38,6 +43,7 @@ export default function hasChildren(
     children = filterChildren(props)(children)
 
     if ('which' in props) {
+      assertWhich(children, props.which)
       children = filterByWhich(props.which)(children)
     }
 

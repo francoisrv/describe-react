@@ -1,6 +1,6 @@
 import { create, ReactTestInstance } from 'react-test-renderer'
 import React from 'react'
-import { pickChildByNumber } from './dom.utils'
+import { pickChildByNumber, expectLength } from './dom.utils'
 
 describe('DOM utils', () => {
   describe('Pick child by number', () => {
@@ -19,6 +19,42 @@ describe('DOM utils', () => {
       expect(result1[0].type).toEqual('span')
       expect(result2[0].type).toEqual('p')
       expect(result3[0].type).toEqual('div')
+    })
+  })
+
+  describe('Expect length', () => {
+    describe('Not exactly', () => {
+      it('should work', () => {
+        expectLength(
+          create(
+            <div>
+              <span />
+              <span />
+            </div>
+          ).root.children as ReactTestInstance[],
+          'not exactly',
+          3
+        )
+      })
+
+      it('should fail', () => {
+        let failed = false
+        try {
+          expectLength(
+            create(
+              <div>
+                <span />
+                <span />
+              </div>
+            ).root.children as ReactTestInstance[],
+            'not exactly',
+            2
+          )
+        } catch (error) {
+          failed = true
+        }
+        expect(failed).toBe(true)
+      })
     })
   })
 })

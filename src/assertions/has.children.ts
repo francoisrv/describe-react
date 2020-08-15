@@ -43,7 +43,12 @@ export default function hasChildren(
     children = filterChildren(props)(children)
 
     if ('which' in props) {
-      assertWhich(children, props.which)
+      if (
+        !('exactly' in props && 'not' in props) &&
+        !('at' in props && 'least' in props)
+      ) {
+        assertWhich(children, props.which)
+      }
       children = filterByWhich(props.which)(children)
     }
 

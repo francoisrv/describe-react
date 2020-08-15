@@ -49,12 +49,19 @@ describe('Has children', () => {
     true: Tree
     false: Tree
     has: Prop[]
+    only?: boolean
   }
 
   function makeTest(t: Test) {
     const props = makeProps(t.has)
 
-    describe(`has ${printHas(props)}`, () => {
+    let fn = describe
+
+    if (t.only) {
+      fn = describe.only
+    }
+
+    fn(`has ${printHas(props)}`, () => {
       it('should pass', () => {
         const { root } = create(makeTree(t.true))
         hasChildren(root, props)
